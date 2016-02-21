@@ -34,6 +34,8 @@ Essentially you can come up with tons of different things to automate, so you ca
 
 <h2>User Stories<h2>
 
+What can be added to the app or improve.
+
 - As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app.
 - As a user, I can specify who can use certain functions so that I can maintain privacy.
 - As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use.
