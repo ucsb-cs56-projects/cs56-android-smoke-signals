@@ -32,9 +32,7 @@ Essentially you can come up with tons of different things to automate, so you ca
 - **//Battery:** Add info regarding if charging/discharging status
 - **//SMS [number] m:[message] :** Send an sms to [number] saying [message].
 
-<h2>User Stories<h2>
-
-What can be added to the app or improve.
+<h2>User Stories</h2>
 
 - As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app.
 - As a user, I can specify who can use certain functions so that I can maintain privacy.
