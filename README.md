@@ -1,7 +1,8 @@
 # SmokeSignals#
 CS56 Winter 2015 - Independent Android Project
 
-Original Author: [Pedro M. Sosa](http://www.konukoii.com)
+Original Author: [Pedro M. Sosa]
+Authors: Franklin Tang, Jackey Lau
 
 <h2>Project Objective</h2>
 Android app that allows you to automate several tasks that can be triggered by an incoming SMS
@@ -29,3 +30,9 @@ Essentially you can come up with tons of different things to automate, so you ca
 - **(NEW) //ScreenSnap:** Take a screenshot of what is going on your phone currently and send media sms with the picture
 - **//Battery:** Add info regarding if charging/discharging status
 - **//SMS [number] m:[message] :** Send an sms to [number] saying [message].
+
+<h2>User Stories<h2>
+- As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app.
+- As a user, I can specify who can use certain functions so that I can maintain privacy.
+- As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use.
+- As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
