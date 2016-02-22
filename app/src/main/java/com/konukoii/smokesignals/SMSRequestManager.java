@@ -12,6 +12,7 @@ import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.telephony.gsm.SmsMessage;
 import android.util.Log;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 import java.util.ArrayList;
@@ -28,9 +29,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import java.util.Calendar;
+import java.util.Random;
+
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.view.View;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -51,12 +55,30 @@ public class SMSRequestManager {
     private final static int BATTERYLIFE = 4;
     private final static int RING = 5;
     private final static int HELP = 6;
+    private final static int JOKE = 7;
+
+    Settings toggle = new Settings();
+
+    private static String J0 = "Will my college degree come in Fahrenheit or Celsius?\n";
+    private static String J1 = "Why do people come back from baby changing stations with the same baby?\n";
+    private static String J2 = "If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?\n";
+    private static String J3 = "Does the five-second rule apply to soup? Please hurry.\n";
+    private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?\n";
+    private static String J5 = "Is the ocean salty because the land doesn't wave back?\n";
+    private static String J6 = "If I flip a coin 1,000,000 times, what are the oddds of my wasting my time?\n";
+    private static String J7 = "How many calories does girlfriend burn by jumping to conclusions?\n";
+    private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?\n";
+    private static String J9 = "Do spiders in Europe have 2.4384 instead of 8 feet?\n";
+
+
+    private final static String[] JOKES = {J0,J1,J2,J3,J4,J5,J6,J7,J8,J9};
 
     private final static String HELP_TXT = "TEXT ME:\n'//Location' <- To query GPS coordinates\n" +
                                                     "'//Contact [name]' <- For contact search\n" +
                                                     "'//Calls' <- To query missed calls\n" +
                                                     "'//Battery' <-To query battery life\n"+
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
+                                                    "'//StupidQuestion' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n";
 
 
@@ -86,13 +108,7 @@ public class SMSRequestManager {
                     msg_from = msgs[i].getOriginatingAddress();
                     msg_body = msgs[i].getMessageBody();
                 }
-
-
-
                 parseSMS(msg_body);
-
-
-
 
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
@@ -100,27 +116,52 @@ public class SMSRequestManager {
         }
     }
 
+
+
     //ParseCmd
     private int parseSMS(String msg_body){
         if (msg_body.equals("//Location")){
-            Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
-            QueryLocation();
-            return LOCATION;
+            if (toggle.getLocation() == true) {
+                Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
+                QueryLocation();
+                return LOCATION;
+            }
+            else{
+                return 0;
+            }
         }
         else if (msg_body.equals("//Ring")){
-            Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
-            QueryRing();
-            return RING;
+            if (toggle.getRing() == true) {
+                Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
+                QueryRing();
+                return RING;
+            }
+            else{
+                Toast.makeText(context, "Ring is off",Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Battery")){
-            Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
-            QueryBattery();
-            return BATTERYLIFE;
+            if (toggle.getBattery() == true) {
+                Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
+                QueryBattery();
+                return BATTERYLIFE;
+            }
+            else {
+                Toast.makeText(context, "Battery is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Calls")){
-            Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
-            QueryMissedCalls();
-            return MISSEDCALLS;
+            if (toggle.getCalls() == true) {
+                Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
+                QueryMissedCalls();
+                return MISSEDCALLS;
+            }
+            else {
+                Toast.makeText(context, "Calls is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Help")){
             Toast.makeText(context, "Help?", Toast.LENGTH_LONG).show();
@@ -128,9 +169,26 @@ public class SMSRequestManager {
             return HELP;
         }
         else if (msg_body.substring(0,9).equals("//Contact")){
-            Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-            QueryContact(msg_body.substring(10));
-            return CONTACTSEARCH;
+            if (toggle.getContact() == true) {
+                Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
+                QueryContact(msg_body.substring(10));
+                return CONTACTSEARCH;
+            }
+            else {
+                Toast.makeText(context, "Contact is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
+        }
+        else if (msg_body.equals("//StupidQuestion")){
+            if (toggle.getJoke() == true) {
+                Toast.makeText(context, "StupidQuestion", Toast.LENGTH_LONG).show();
+                QueryJokes();
+                return JOKE;
+            }
+            else{
+                Toast.makeText(context, "StupidQuestion is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
 
 
@@ -169,7 +227,7 @@ public class SMSRequestManager {
 
         //Check if there's no missed calls...or negative missed calls? :S
         if (c.getCount() <=0){
-            sendSMS(msg_from,"No missed calls...no she didn't call back...yes its because she found you weird..."); //lulz remember to change this
+            sendSMS(msg_from,"No missed calls...no she didn't call back...yes it's because she found you weird..."); //lulz remember to change this
         }
 
         //Make a nice list of missed calls (Hopefully you don't have 42 missed phone calls from you girlfriend in the last hour)
@@ -272,7 +330,7 @@ public class SMSRequestManager {
             for (int i=0;i<contacts.size();i++){
                 if (contacts.get(i).equals(phone)){flag=true;}
             }
-            if (flag==true){continue;};
+            if (flag==true){continue;}
 
             contacts.add(phone);
 
@@ -316,7 +374,7 @@ public class SMSRequestManager {
         }
         //2. Raise Volume
         final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = audioManager.getStreamMaxVolume(audioManager.STREAM_ALARM);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM,maxVolume,0);
 
         //3. Play Alarm
@@ -333,11 +391,15 @@ public class SMSRequestManager {
             ringerPlayer.start();
         }catch (Exception e){ Log.d(TAG,e.getMessage());}
         */
-
-
     }
+
+    private void QueryJokes(){
+        Random rand = new Random();
+        sendSMS(msg_from, JOKES[rand.nextInt(10)]);
+    }
+
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
-    /*Broadcasters/Listeners take time to awnser. (you can think of them as separate processes.
+    /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.
     //However the service doesn't know when these guys are done doing their thing, so they
     //gotta be inner classes to be able to unregister themselves
@@ -377,7 +439,7 @@ public class SMSRequestManager {
                 mLocationManager.removeUpdates(this); //Super Important to RemoveUpdates (only want to query once)
             }
             else {
-                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)==true) {
+                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                 }else{
                     sendSMS(msg_from,"GPS is Turned Off! Can't Report Location :'(");
@@ -398,12 +460,14 @@ public class SMSRequestManager {
         }
         // Required functions
         @Override
-        public void onProviderDisabled(String arg0) {;}
+        public void onProviderDisabled(String arg0) {}
         @Override
-        public void onProviderEnabled(String arg0) {;}
+        public void onProviderEnabled(String arg0) {}
         @Override
-        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {;}
+        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
     }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

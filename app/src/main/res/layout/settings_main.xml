@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:id="@+id/switch1"
+        android:layout_marginTop="115dp"
+        android:checked="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="switchLocation"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contacts"
+        android:id="@+id/switch2"
+        android:layout_marginTop="28dp"
+        android:checked="true"
+        android:layout_below="@+id/switch1"
+        android:layout_alignLeft="@+id/switch1"
+        android:layout_alignStart="@+id/switch1"
+        android:onClick="switchContacts"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Battery  "
+        android:id="@+id/switch3"
+        android:checked="true"
+        android:layout_below="@+id/switch2"
+        android:layout_alignLeft="@+id/switch2"
+        android:layout_alignStart="@+id/switch2"
+        android:layout_marginTop="23dp"
+        android:layout_alignRight="@+id/switch2"
+        android:layout_alignEnd="@+id/switch2"
+        android:onClick="switchBattery"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calls"
+        android:id="@+id/switch4"
+        android:layout_below="@+id/switch3"
+        android:layout_alignLeft="@+id/switch3"
+        android:layout_alignStart="@+id/switch3"
+        android:layout_marginTop="27dp"
+        android:checked="true"
+        android:layout_alignRight="@+id/switch3"
+        android:layout_alignEnd="@+id/switch3"
+        android:onClick="switchCalls"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ring"
+        android:id="@+id/switch5"
+        android:layout_below="@+id/switch4"
+        android:layout_alignLeft="@+id/switch4"
+        android:layout_alignStart="@+id/switch4"
+        android:layout_marginTop="27dp"
+        android:checked="true"
+        android:layout_alignRight="@+id/switch4"
+        android:layout_alignEnd="@+id/switch4"
+        android:onClick="switchRing"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jokes"
+        android:id="@+id/switch6"
+        android:layout_below="@+id/switch5"
+        android:layout_alignRight="@+id/switch5"
+        android:layout_alignEnd="@+id/switch5"
+        android:layout_marginTop="29dp"
+        android:checked="true"
+        android:layout_alignLeft="@+id/switch5"
+        android:layout_alignStart="@+id/switch5"
+        android:onClick="switchJokes"/>
+
+</RelativeLayout>
