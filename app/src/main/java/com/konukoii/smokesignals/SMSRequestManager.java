@@ -78,7 +78,7 @@ public class SMSRequestManager {
                                                     "'//Calls' <- To query missed calls\n" +
                                                     "'//Battery' <-To query battery life\n"+
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
-                                                    "'//Joke' <-To get a lame joke\n"+
+                                                    "'//Jokes' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n";
 
 
@@ -130,6 +130,17 @@ public class SMSRequestManager {
                 return 0;
             }
         }
+        else if (msg_body.equals("//Joke")){
+            if (toggle.getJoke() == true) {
+                Toast.makeText(context, "Joke", Toast.LENGTH_LONG).show();
+                QueryJokes();
+                return JOKE;
+            }
+            else{
+                Toast.makeText(context, "Joke is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
+        }
         else if (msg_body.equals("//Ring")){
             if (toggle.getRing() == true) {
                 Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
@@ -176,17 +187,6 @@ public class SMSRequestManager {
             }
             else {
                 Toast.makeText(context, "Contact is off", Toast.LENGTH_LONG).show();
-                return 0;
-            }
-        }
-        else if (msg_body.equals("//Joke")){
-            if (toggle.getJoke() == true) {
-                Toast.makeText(context, "Joke", Toast.LENGTH_LONG).show();
-                QueryJokes();
-                return JOKE;
-            }
-            else{
-                Toast.makeText(context, "Joke is off", Toast.LENGTH_LONG).show();
                 return 0;
             }
         }
@@ -428,7 +428,7 @@ public class SMSRequestManager {
         public void go(){
             mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+            Toast.makeText(context, "GPS is now running to send message", Toast.LENGTH_LONG).show();
             //Get Last Known location (2 minutes old max) [Lowers battery consumption]
             if(location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
                 Log.d(TAG, location.getLatitude() + " and " + location.getLongitude());
@@ -439,7 +439,7 @@ public class SMSRequestManager {
                 mLocationManager.removeUpdates(this); //Super Important to RemoveUpdates (only want to query once)
             }
             else {
-                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { //this checks a boolean
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                 }else{
                     sendSMS(msg_from,"GPS is Turned Off! Can't Report Location :'(");

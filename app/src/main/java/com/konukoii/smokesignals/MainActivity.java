@@ -94,10 +94,10 @@ public class MainActivity extends ActionBarActivity {
         Switch contact = (Switch) findViewById(R.id.switch4);
         toggle.toggleContact(contact.isChecked());
         if(contact.isChecked() == true){
-            Log.d("switchContacts","Calls is on");
+            Log.d("switchContacts", "Contact is on");
         }
         else{
-            Log.d("switchContacts","Calls is off");
+            Log.d("switchContacts","Contact is off");
         }
     }
     public void switchJokes(View view){
