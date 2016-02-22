@@ -55,7 +55,7 @@ public class SMSRequestManager {
     private final static int BATTERYLIFE = 4;
     private final static int RING = 5;
     private final static int HELP = 6;
-    private final static int JOKE = 7; 
+    private final static int JOKE = 7;
 
     Settings toggle = new Settings();
 
@@ -66,7 +66,7 @@ public class SMSRequestManager {
     private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?\n";
     private static String J5 = "Is the ocean salty because the land doesn't wave back?\n";
     private static String J6 = "If I flip a coin 1,000,000 times, what are the oddds of my wasting my time?\n";
-    private static String J7 = "How many calories does girlfriend burn by jumping to conclusions?\n";
+    private static String J7 = "How many calories does my girlfriend burn by jumping to conclusions?\n";
     private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?\n";
     private static String J9 = "Do spiders in Europe have 2.4384 instead of 8 feet?\n";
 
@@ -78,7 +78,7 @@ public class SMSRequestManager {
                                                     "'//Calls' <- To query missed calls\n" +
                                                     "'//Battery' <-To query battery life\n"+
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
-                                                    "'//StupidQuestion' <-To get a lame joke\n"+
+                                                    "'//Joke' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n";
 
 
@@ -179,14 +179,14 @@ public class SMSRequestManager {
                 return 0;
             }
         }
-        else if (msg_body.equals("//StupidQuestion")){
+        else if (msg_body.equals("//Joke")){
             if (toggle.getJoke() == true) {
-                Toast.makeText(context, "StupidQuestion", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Joke", Toast.LENGTH_LONG).show();
                 QueryJokes();
                 return JOKE;
             }
             else{
-                Toast.makeText(context, "StupidQuestion is off", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Joke is off", Toast.LENGTH_LONG).show();
                 return 0;
             }
         }

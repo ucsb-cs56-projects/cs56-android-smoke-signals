@@ -15,7 +15,9 @@ public class Settings { //used to determine the state of the switches across the
 
     // SETTER FUNCTIONS
     //sets the state of the app functions to true or false
-    public void toggleLocation(boolean state){location = state;}
+    public void toggleLocation(boolean state){
+        location = state;
+    }
     public void toggleContact(boolean state){
         contact = state;
     }
@@ -28,11 +30,15 @@ public class Settings { //used to determine the state of the switches across the
     public void toggleRing(boolean state){
         ring = state;
     }
-    public void toggleJoke(boolean state) { joke = state;}
+    public void toggleJoke(boolean state) {
+        joke = state;
+    }
 
     // GETTER FUNCTIONS
     //gets the state of the functions
-    public boolean getLocation(){return location;}
+    public boolean getLocation(){
+        return location;
+    }
     public boolean getContact(){
         return contact;
     }
@@ -45,7 +51,9 @@ public class Settings { //used to determine the state of the switches across the
     public boolean getRing(){
         return ring;
     }
-    public boolean getJoke(){return joke;}
+    public boolean getJoke(){
+        return joke;
+    }
 
 
 
