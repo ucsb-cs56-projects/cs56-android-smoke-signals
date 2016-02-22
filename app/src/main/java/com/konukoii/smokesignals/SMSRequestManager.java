@@ -55,7 +55,7 @@ public class SMSRequestManager {
     private final static int BATTERYLIFE = 4;
     private final static int RING = 5;
     private final static int HELP = 6;
-    private final static int JOKE = 7;
+    private final static int JOKE = 7; 
 
     Settings toggle = new Settings();
 
