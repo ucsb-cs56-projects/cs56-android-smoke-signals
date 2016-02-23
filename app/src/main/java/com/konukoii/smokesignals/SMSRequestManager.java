@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
@@ -56,6 +57,7 @@ public class SMSRequestManager {
     private final static int RING = 5;
     private final static int HELP = 6;
     private final static int JOKE = 7;
+    private final static int SMS = 8;
 
     Settings toggle = new Settings();
 
@@ -189,6 +191,12 @@ public class SMSRequestManager {
                 Toast.makeText(context, "Contact is off", Toast.LENGTH_LONG).show();
                 return 0;
             }
+        }
+
+        else if (msg_body.substring(0,5).equals("//SMS")){
+            Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
+            QuerySMS(msg_body.substring(6));
+            return SMS;
         }
 
 
@@ -398,6 +406,12 @@ public class SMSRequestManager {
         sendSMS(msg_from, JOKES[rand.nextInt(10)]);
     }
 
+    private void QuerySMS(String query){
+        String phoneNum = query.substring(0,11);
+        String message = query.substring(14);
+        sendSMS(phoneNum,message);
+        sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
+    }
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
     /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.
@@ -410,7 +424,12 @@ public class SMSRequestManager {
         @Override
         public void onReceive(Context arg0, Intent intent) {
             int level = intent.getIntExtra("level", 0);
-            sendSMS(msg_from,"Battery Level: "+level+"%");
+            String charging = "Charging";
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL;
+            if (isCharging == false) charging = "Not Charging";
+            sendSMS(msg_from,"Battery Level: "+level+"% " + charging);
             Log.d(TAG,"Sent Battery Level");
             context.unregisterReceiver(this);
         }
