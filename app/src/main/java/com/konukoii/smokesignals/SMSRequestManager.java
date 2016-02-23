@@ -78,10 +78,11 @@ public class SMSRequestManager {
     private final static String HELP_TXT = "TEXT ME:\n'//Location' <- To query GPS coordinates\n" +
                                                     "'//Contact [name]' <- For contact search\n" +
                                                     "'//Calls' <- To query missed calls\n" +
-                                                    "'//Battery' <-To query battery life\n"+
+                                                    "'//Battery' <-To query battery life and charging status\n"+
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
                                                     "'//Jokes' <-To get a lame joke\n"+
-                                                    "'//Help' <-To display this help menu again\n";
+                                                    "'//Help' <-To display this help menu again\n" +
+                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n";
 
 
     Context context;    //The context that called this
