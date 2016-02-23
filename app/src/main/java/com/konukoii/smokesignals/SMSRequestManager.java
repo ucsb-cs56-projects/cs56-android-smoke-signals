@@ -195,11 +195,16 @@ public class SMSRequestManager {
         }
 
         else if (msg_body.substring(0,5).equals("//SMS")){
-            Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-            QuerySMS(msg_body.substring(6));
-            return SMS;
+            if(toggle.getSms()==true) {
+                Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
+                QuerySMS(msg_body.substring(6));
+                return SMS;
+            }
+            else {
+                Toast.makeText(context, "SMS is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
-
 
         return 0;
     }
@@ -212,7 +217,7 @@ public class SMSRequestManager {
         ArrayList<String> parts = sms.divideMessage(message);
         sms.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
         //sms.sendTextMessage(phoneNumber, null, message, null, null);
-        Log.d(TAG,"message sent!");
+        Log.d(TAG, "message sent!");
     }
 
     //Query Functions//////////////////////////////////////////////////////////////////////////////

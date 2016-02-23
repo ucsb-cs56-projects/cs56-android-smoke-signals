@@ -110,4 +110,14 @@ public class MainActivity extends ActionBarActivity {
             Log.d("switchJokes","Jokes is off");
         }
     }
+
+    public void switchSms(View view){
+        Switch sms = (Switch) findViewById(R.id.switch7);
+        toggle.toggleSMS(sms.isChecked());
+        if(sms.isChecked() == true){
+            Log.d("switchSms","SMS is on");
+        }
+        else Log.d("switchSms","SMS is off");
+    }
+
 }

@@ -10,6 +10,7 @@ public class Settings { //used to determine the state of the switches across the
     private static boolean battery = true; //"d"
     private static boolean ring = true; //"e"
     private static boolean joke = true;
+    private static boolean sms = true;
 
 
 
@@ -33,6 +34,7 @@ public class Settings { //used to determine the state of the switches across the
     public void toggleJoke(boolean state) {
         joke = state;
     }
+    public void toggleSMS(boolean state) {sms = state;}
 
     // GETTER FUNCTIONS
     //gets the state of the functions
@@ -54,6 +56,7 @@ public class Settings { //used to determine the state of the switches across the
     public boolean getJoke(){
         return joke;
     }
+    public boolean getSms() { return sms;}
 
 
 
