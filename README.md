@@ -12,10 +12,12 @@ Android app that allows you to automate several tasks that can be triggered by a
 Say you forgot your phone, Using someone else's phone you can text yourself:
 - **"//Location" :**  and the phone will text you back with it's gps coordinates.
 - **"//Contact [name]" :** and the phone will text you back with the stored contact info of anyone who fully or partially matches [name].
-- **"//Battery" :** and the phone will text you back with it's battery percentage.
+- **"//Battery" :** and the phone will text you back with its battery percentage and charging status.
 - **"//Calls" :** and the phone will text you back the last phone calls it has gotten.
 - **"//Ring" : (WIP)** and the phone will start ringing.
 - **"//Help" :** Return the list of all possible 
+- **"//SMS [number] m:[message]" :** Send an sms to [number] saying [message].
+- **"//Joke" :** Send a random joke from an array of jokes.
 
 <h2>Ideas for Improvments</h2>
 
@@ -29,8 +31,7 @@ Essentially you can come up with tons of different things to automate, so you ca
 - **(NEW) //Powersave:** Turn off/on Wi-Fi or Mobile Data
 - **(NEW) //Snap:** Take a selfie and send media sms with the picture (mobile data has to be enabled)
 - **(NEW) //ScreenSnap:** Take a screenshot of what is going on your phone currently and send media sms with the picture
-- **//Battery:** Add info regarding if charging/discharging status
-- **//SMS [number] m:[message] :** Send an sms to [number] saying [message].
+
 
 <h2>User Stories</h2>
 
