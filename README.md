@@ -40,3 +40,6 @@ Essentially you can come up with tons of different things to automate, so you ca
 - As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use.
 - As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
 - As a user, I can text my phone to send a message to a phone number so that people will know I don't have my phone. 
+- As a user, I can text my phone to check what functions are on, like wifi or bluetooth.
+- As a user, I can text my phone to turn off functions to save battery life.
+- As a user, I can blacklist or whitelist people from the app.
