@@ -6,5 +6,26 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/action_settings"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:clickable="true"
+        android:onClick="settings"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:text="Smoke Signals"
+        android:layout_centerHorizontal="true"
+        android:editable="false"
+        android:textColor="#5e4a4a"
+        android:textSize="@dimen/abc_text_size_headline_material"
+        android:textStyle="bold" />
 
 </RelativeLayout>
