@@ -6,7 +6,7 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location"
+        android:text="Location   "
         android:id="@+id/switch1"
         android:checked="true"
         android:onClick="toggleLocation"
@@ -26,7 +26,9 @@
         android:layout_below="@+id/switch1"
         android:layout_alignLeft="@+id/switch1"
         android:layout_alignStart="@+id/switch1"
-        android:onClick="toggleContact"/>
+        android:onClick="toggleContact"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_alignEnd="@+id/switch1" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -52,9 +54,9 @@
         android:layout_alignStart="@+id/switch3"
         android:layout_marginTop="27dp"
         android:checked="true"
+        android:onClick="toggleCalls"
         android:layout_alignRight="@+id/switch3"
-        android:layout_alignEnd="@+id/switch3"
-        android:onClick="toggleCalls"/>
+        android:layout_alignEnd="@+id/switch3" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -137,5 +139,18 @@
         android:checked="true"
         android:layout_alignRight="@+id/switch5"
         android:layout_alignEnd="@+id/switch5" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth"
+        android:id="@+id/switch9"
+        android:layout_marginTop="26dp"
+        android:checked="true"
+        android:layout_below="@+id/switch4"
+        android:layout_alignLeft="@+id/switch4"
+        android:layout_alignStart="@+id/switch4"
+        android:layout_alignRight="@+id/switch4"
+        android:layout_alignEnd="@+id/switch4" />
 
 </RelativeLayout>

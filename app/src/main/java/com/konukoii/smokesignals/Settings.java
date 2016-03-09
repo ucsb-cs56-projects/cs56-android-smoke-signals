@@ -23,6 +23,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch jok;
     Switch tex;
     Switch wif;
+    Switch blu;
 
 
 
@@ -37,6 +38,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         jok = (Switch) findViewById(R.id.switch6);
         tex = (Switch) findViewById(R.id.switch7);
         wif = (Switch) findViewById(R.id.switch8);
+        blu = (Switch) findViewById(R.id.switch9);
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -78,6 +80,11 @@ public class Settings extends Activity { //used to determine the state of the sw
                 toggleWifi(buttonView);
             }
         });
+        blu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleBluetooth(buttonView);
+            }
+        });
         Log.d("onCreate","onCreate");
 
     }
@@ -101,6 +108,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("jokes", jok.isChecked());
         edit.putBoolean("sms", tex.isChecked());
         edit.putBoolean("wifi",wif.isChecked());
+        edit.putBoolean("bluetooth",blu.isChecked());
         edit.apply();
 
         Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
@@ -123,14 +131,15 @@ public class Settings extends Activity { //used to determine the state of the sw
     }
 
     //Shared variables so that every instance knows the state of the switches. Kinda cheating but it works.
-    private static boolean location = true; //"a"
-    private static boolean contact = true; //"b"
-    private static boolean calls = true; //"c"
-    private static boolean battery = true; //"d"
-    private static boolean ring = true; //"e"
+    private static boolean location = true;
+    private static boolean contact = true;
+    private static boolean calls = true;
+    private static boolean battery = true;
+    private static boolean ring = true;
     private static boolean joke = true;
     private static boolean sms = true;
     private static boolean wifi = true;
+    private static boolean bluetooth = true;
 
 
     // SETTER FUNCTIONS
@@ -175,6 +184,11 @@ public class Settings extends Activity { //used to determine the state of the sw
         wifi = state;
     }
 
+    public void setBluetooth(boolean state) {
+        blu.setChecked(state);
+        bluetooth = state;
+    }
+
 
     // GETTER FUNCTIONS
     //gets the state of the functions
@@ -215,6 +229,10 @@ public class Settings extends Activity { //used to determine the state of the sw
 
     public boolean getWifi(){
         return wifi;
+    }
+
+    public boolean getBluetooth(){
+        return bluetooth;
     }
 
 
@@ -319,6 +337,19 @@ public class Settings extends Activity { //used to determine the state of the sw
         }
         else{
             Log.d("toggleWifi", "Wifi is off");
+        }
+        this.saveSettings();
+    }
+
+    public void toggleBluetooth(View view) {
+        bluetooth = blu.isChecked();
+        blu.setChecked(bluetooth);
+
+        if(bluetooth){
+            Log.d("toggleBluetooth", "Bluetooth is on");
+        }
+        else{
+            Log.d("toggleBluetooth", "Bluetooth is off");
         }
         this.saveSettings();
     }
