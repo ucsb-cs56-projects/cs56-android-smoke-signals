@@ -14,9 +14,6 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
 
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name="Settings"></activity>
-        <activity android:name="Whitelist"></activity>
+        <activity android:name="WhiteList"></activity>
         <service android:enabled="true" android:name=".MainService" />
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

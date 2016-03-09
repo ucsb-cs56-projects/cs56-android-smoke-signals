@@ -18,6 +18,10 @@ import android.telephony.gsm.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import android.telephony.SmsManager;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.IntentFilter;
@@ -39,6 +43,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.view.View;
 import android.net.wifi.WifiManager;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -99,8 +104,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
                                                     "'//Joke' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n" +
-                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
-                                                    "'//Wifi' <-To display the Wifi status of my phone\n";
+                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n";
 
 
     Context context;    //The context that called this
@@ -483,7 +487,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             context.unregisterReceiver(this);
         }
     };
-
 
     //GPS Location Listener
     public class GPSLocation implements LocationListener{
