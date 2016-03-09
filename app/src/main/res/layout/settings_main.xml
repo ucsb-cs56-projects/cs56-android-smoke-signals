@@ -138,4 +138,15 @@
         android:layout_alignRight="@+id/switch5"
         android:layout_alignEnd="@+id/switch5" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Whitelist"
+        android:id="@+id/switch9"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/switch4"
+        android:layout_alignLeft="@+id/switch4"
+        android:layout_alignStart="@+id/switch4"
+        android:checked="true" />
+
 </RelativeLayout>

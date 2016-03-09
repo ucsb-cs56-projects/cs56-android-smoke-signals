@@ -23,6 +23,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch jok;
     Switch tex;
     Switch wif;
+    Switch whit;
 
 
 
@@ -37,6 +38,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         jok = (Switch) findViewById(R.id.switch6);
         tex = (Switch) findViewById(R.id.switch7);
         wif = (Switch) findViewById(R.id.switch8);
+        whit = (Switch) findViewById(R.id.switch9);
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -78,7 +80,12 @@ public class Settings extends Activity { //used to determine the state of the sw
                 toggleWifi(buttonView);
             }
         });
-        Log.d("onCreate","onCreate");
+        whit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleWhitelist(buttonView);
+            }
+        });
+        Log.d("onCreate", "onCreate");
 
     }
 
@@ -101,6 +108,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("jokes", jok.isChecked());
         edit.putBoolean("sms", tex.isChecked());
         edit.putBoolean("wifi",wif.isChecked());
+        edit.putBoolean("whitelist",whit.isChecked());
         edit.apply();
 
         Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
@@ -117,7 +125,8 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setRing(sharePref.getBoolean("ring", true));
         this.setJoke(sharePref.getBoolean("jokes", true));
         this.setSMS(sharePref.getBoolean("sms", true));
-        this.setSMS(sharePref.getBoolean("wifi",true));
+        this.setWifi(sharePref.getBoolean("wifi",true));
+        this.setWhitelist(sharePref.getBoolean("whitelist",true));
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
@@ -131,6 +140,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     private static boolean joke = true;
     private static boolean sms = true;
     private static boolean wifi = true;
+    private static boolean whitelist = true;
 
 
     // SETTER FUNCTIONS
@@ -175,6 +185,10 @@ public class Settings extends Activity { //used to determine the state of the sw
         wifi = state;
     }
 
+    public void setWhitelist(boolean state){
+        whit.setChecked(state);
+        whitelist=state;
+    }
 
     // GETTER FUNCTIONS
     //gets the state of the functions
@@ -217,6 +231,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         return wifi;
     }
 
+    public boolean getWhitelist() {return whitelist;}
 
     //toggle the switches
     public void toggleLocation(View view) {
@@ -319,6 +334,19 @@ public class Settings extends Activity { //used to determine the state of the sw
         }
         else{
             Log.d("toggleWifi", "Wifi is off");
+        }
+        this.saveSettings();
+    }
+
+    public void toggleWhitelist(View view) {
+        whitelist = whit.isChecked();
+        whit.setChecked(whitelist);
+
+        if(whitelist){
+            Log.d("toggleWhitelist", "Whitelist is on");
+        }
+        else{
+            Log.d("toggleWhitelist", "Whitelist is off");
         }
         this.saveSettings();
     }
