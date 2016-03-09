@@ -79,14 +79,12 @@ public class MainService extends Service{
 
 
                     String searchMe = str;
-                    //String findMe = "Eggs";
                     int phoneNumberLength = msg_from.length();
                     int savedNumber = 7;//str.length();
                     boolean foundIt = false;
                     for (int i = 0; i <= (phoneNumberLength-savedNumber); i++) {
                             if (msg_from.regionMatches(i, searchMe, 0, savedNumber)) {
                                 isValid = true;
-                                //System.out.println(searchMe.substring(i, i + findMeLength));
                                 break;
                             }
                         }
