@@ -1,5 +1,7 @@
 package com.konukoii.smokesignals;
 
+import android.app.Activity;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +11,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.IBinder; // unnecessary?
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.telephony.gsm.SmsMessage;
 import android.util.Log;
-import android.widget.Switch;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.view.View;
+import android.net.wifi.WifiManager;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -43,9 +46,9 @@ import android.view.View;
 
 
 
-public class SMSRequestManager {
+public class SMSRequestManager extends Service { //idk why I changed it to service
 
-    //Debuggin' Purpouses
+    //Debuggin' Purposes
     private final static String TAG="SmokeSignals";
 
     //Void Read from file the messageCue
@@ -58,32 +61,32 @@ public class SMSRequestManager {
     private final static int HELP = 6;
     private final static int JOKE = 7;
     private final static int SMS = 8;
+    private final static int WIFI = 9;
 
     Settings toggle = new Settings();
 
-
-    private static String J0 = "Will my college degree come in Fahrenheit or Celsius?\n";
-    private static String J1 = "Why do people come back from baby changing stations with the same baby?\n";
-    private static String J2 = "If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?\n";
-    private static String J3 = "Does the five-second rule apply to soup? Please hurry.\n";
-    private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?\n";
-    private static String J5 = "Is the ocean salty because the land doesn't wave back?\n";
-    private static String J6 = "If I flip a coin 1,000,000 times, what are the odds of my wasting my time?\n";
-    private static String J7 = "How many calories does my girlfriend burn by jumping to conclusions?\n";
-    private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?\n";
-    private static String J9 = "Do spiders in Europe have 2.4384 instead of 8 feet?\n";
-    private static String J10 = "Why couldn't the bike stand on its own?\n" + "Because it's two tired\n";
-    private static String J11 = "What do you call an elephant that doesn't matter?\n" + "irrelephant!\n";
+    private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
+    private static String J1 = "Why do people come back from baby changing stations with the same baby?";
+    private static String J2 = "If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?";
+    private static String J3 = "Does the five-second rule apply to soup? Please hurry.";
+    private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?";
+    private static String J5 = "Is the ocean salty because the land doesn't wave back?";
+    private static String J6 = "If I flip a coin 1,000,000 times, what are the odds of me wasting my time?";
+    private static String J7 = "How many calories does my girlfriend burn by jumping to conclusions?";
+    private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?";
+    private static String J9 = "Do spiders in Europe have 2.4384 meters instead of 8 feet?";
+    private static String J10 = "Why couldn't the bike stand on its own?\n" + "Because it's two tired";
+    private static String J11 = "What do you call an elephant that doesn't matter?\n" + "irrelephant!";
     private static String J12 = "Student debt\n";
-    private static String J13 = "What do you get when you cross a snowman with a vampire?\n" + "Frostbite.\n";
-    private static String J14 = "Can YouTube slow down time? I just read that they upload 300 hours of video every 1 minute.\n";
-    private static String J15 ="If electricity always follows the path of least resistance, why doesn't lightning only strike in France?\n";
-    private static String J16 = "In American, someone is shot every 15 seconds. How is that person still alive?\n";
-    private static String J17 = "I've already squirted two whole bottles of 'no tears' baby shampoo into my daughter's face. Why is she still crying?\n";
-    private static String J18 = "If I heat my solid state hard drive until it becomes a gaseous state hard drive, would that enable cloud computing?\n";
-    private static String J19 = "My doctor said he's been practicing for 30 years. When will he start doing his job for real?\n";
-    private static String J20 = "At what point in a bobcat's life, as it grows and matures, does it prefer to be called a robertcat?\n";
-    private static String J21 = "If animals don't want to be eaten why are they made of food?\n";
+    private static String J13 = "What do you get when you cross a snowman with a vampire?\n" + "Frostbite.";
+    private static String J14 = "Can YouTube slow down time? I just read that they upload 300 hours of video every 1 minute.";
+    private static String J15 ="If electricity always follows the path of least resistance, why doesn't lightning only strike in France?";
+    private static String J16 = "In American, someone is shot every 15 seconds. How is that person still alive?";
+    private static String J17 = "I've already squirted two whole bottles of 'no tears' baby shampoo into my daughter's face. Why is she still crying?";
+    private static String J18 = "If I heat my solid state hard drive until it becomes a gaseous state hard drive, would that enable cloud computing?";
+    private static String J19 = "My doctor said he's been practicing for 30 years. When will he start doing his job for real?";
+    private static String J20 = "At what point in a bobcat's life, as it grows and matures, does it prefer to be called a robertcat?";
+    private static String J21 = "If animals don't want to be eaten why are they made of food?";
 
 
 
@@ -96,7 +99,8 @@ public class SMSRequestManager {
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
                                                     "'//Joke' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n" +
-                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n";
+                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
+                                                    "'//Wifi' <-To display the Wifi status of my phone\n";
 
 
     Context context;    //The context that called this
@@ -138,7 +142,7 @@ public class SMSRequestManager {
     //ParseCmd
     private int parseSMS(String msg_body){
         if (msg_body.equals("//Location")){
-            if (toggle.getLocation() == true) {
+            if (toggle.getLocation()) {
                 Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
                 QueryLocation();
                 return LOCATION;
@@ -148,8 +152,8 @@ public class SMSRequestManager {
             }
         }
         else if (msg_body.equals("//Joke")){
-            if (toggle.getJoke() == true) {
-                Toast.makeText(context, "Joke", Toast.LENGTH_LONG).show();
+            if (toggle.getJoke()) {
+                Toast.makeText(context, "Joke?", Toast.LENGTH_LONG).show();
                 QueryJokes();
                 return JOKE;
             }
@@ -159,7 +163,7 @@ public class SMSRequestManager {
             }
         }
         else if (msg_body.equals("//Ring")){
-            if (toggle.getRing() == true) {
+            if (toggle.getRing()) {
                 Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
                 QueryRing();
                 return RING;
@@ -170,7 +174,7 @@ public class SMSRequestManager {
             }
         }
         else if (msg_body.equals("//Battery")){
-            if (toggle.getBattery() == true) {
+            if (toggle.getBattery()) {
                 Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
                 QueryBattery();
                 return BATTERYLIFE;
@@ -181,7 +185,7 @@ public class SMSRequestManager {
             }
         }
         else if (msg_body.equals("//Calls")){
-            if (toggle.getCalls() == true) {
+            if (toggle.getCalls()) {
                 Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
                 QueryMissedCalls();
                 return MISSEDCALLS;
@@ -196,8 +200,13 @@ public class SMSRequestManager {
             QueryHelp();
             return HELP;
         }
+        else if (msg_body.equals("//Wifi")){
+            Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
+            QueryWifi();
+            return WIFI;
+        }
         else if (msg_body.substring(0,9).equals("//Contact")){
-            if (toggle.getContact() == true) {
+            if (toggle.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
                 QueryContact(msg_body.substring(10));
                 return CONTACTSEARCH;
@@ -209,7 +218,7 @@ public class SMSRequestManager {
         }
 
         else if (msg_body.substring(0,5).equals("//SMS")){
-            if(toggle.getSms()==true) {
+            if(toggle.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
                 QuerySMS(msg_body.substring(6));
                 return SMS;
@@ -432,6 +441,20 @@ public class SMSRequestManager {
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
+
+    private void QueryWifi(){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryWifi",Toast.LENGTH_SHORT).show();
+
+        //make sure context is used for getSystemService
+        WifiManager access = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        if(access.isWifiEnabled()){
+            sendSMS(msg_from, "Wifi is on");
+        }
+        else{
+            sendSMS(msg_from, "Wifi is off");
+        }
+    }
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
     /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.
@@ -454,6 +477,7 @@ public class SMSRequestManager {
             context.unregisterReceiver(this);
         }
     };
+
 
     //GPS Location Listener
     public class GPSLocation implements LocationListener{
@@ -504,6 +528,11 @@ public class SMSRequestManager {
         public void onProviderEnabled(String arg0) {}
         @Override
         public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
     }
 
 

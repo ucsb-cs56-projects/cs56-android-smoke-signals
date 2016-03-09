@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import android.net.wifi.WifiManager;
+
 
 
 /**
@@ -21,6 +23,8 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch rin;
     Switch jok;
     Switch tex;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +114,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
 
-
+    //Shared variables so that every instance knows the state of the switches. Kinda cheating but it works.
     private static boolean location = true; //"a"
     private static boolean contact = true; //"b"
     private static boolean calls = true; //"c"
