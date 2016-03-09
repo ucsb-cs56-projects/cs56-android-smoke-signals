@@ -44,6 +44,7 @@ Essentially you can come up with tons of different things to automate, so you ca
 - As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
 - ~~As a user, I can text my phone to send a message to a phone number so that people will know I don't have my phone.~~ **50 points**
 - ~~As a user, I can text my phone to send the Wifi state of my phone so I know if it's using battery life on Wifi.~~ **75 points**
+- ~~As a user, I can text my phone to send the Bluetooth state of my phone so I know if it's using battery life on Bluetooth.~~ **75 points**
 - ~~As a user, I can whitelist phone numbers to prohibit most people from using the app so that I can maintain privacy.~~ **100 points**
 - As a user, I can text my phone to check what functions are on, like wifi or bluetooth.
 - As a user, I can text my phone to turn off functions to save battery life.
