@@ -16,8 +16,13 @@ import android.telephony.gsm.SmsMessage;
 import android.os.Bundle;
 import android.provider.Telephony.Sms;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class MainService extends Service{
 
+    private final static String storeText ="storeText.txt";
     //Debuggin' Purpouses
     private final static String TAG="SmokeSignals";
 
@@ -29,13 +34,87 @@ public class MainService extends Service{
             String action = intent.getAction();
             SMSRequestManager smsRequestManager = new SMSRequestManager();
             if(action.equals("android.provider.Telephony.SMS_RECEIVED")){
-                Log.d(TAG,"Firing up the SMSRequestManager!");
-                smsRequestManager.go(context, intent);
+                if(verify(context, intent)==true) {
+                    Log.d(TAG, "Firing up the SMSRequestManager!");
+                    smsRequestManager.go(context, intent);
+                }
             }
         }
     };
 
+    public boolean verify(Context context, Intent intent){
+        boolean isValid = false;
 
+        Bundle bundle = intent.getExtras();
+        SmsMessage[] msgs = null;
+        String msg_from;
+        msg_from="";
+        String msg_body="";
+        if (bundle != null) {
+            try {
+                Object[] pdus = (Object[]) bundle.get("pdus");
+                msgs = new SmsMessage[pdus.length];
+                for (int i = 0; i < msgs.length; i++) {
+                    msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                    msg_from = msgs[i].getOriginatingAddress();
+                }
+
+
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+
+
+
+        try {
+
+            InputStream in = openFileInput(storeText);
+            if (in != null) {
+                InputStreamReader tmp=new InputStreamReader(in);
+                BufferedReader reader=new BufferedReader(tmp);
+                String str;
+
+                while ((str = reader.readLine()) != null) {
+
+
+                    String searchMe = str;
+                    //String findMe = "Eggs";
+                    int phoneNumberLength = msg_from.length();
+                    int savedNumber = 7;//str.length();
+                    boolean foundIt = false;
+                    for (int i = 0; i <= (phoneNumberLength-savedNumber); i++) {
+                            if (msg_from.regionMatches(i, searchMe, 0, savedNumber)) {
+                                isValid = true;
+                                //System.out.println(searchMe.substring(i, i + findMeLength));
+                                break;
+                            }
+                        }
+
+
+
+
+
+
+                    if (str.equals(msg_from)) isValid = true;
+
+
+                }
+
+                in.close();
+
+            }
+        }
+
+        catch (java.io.FileNotFoundException e) {
+// that's OK, we probably haven't created it yet
+        }
+
+        catch (Throwable t) {
+            Toast.makeText(this, "Exception: " + t.toString(), Toast.LENGTH_LONG).show();
+        }
+        return isValid;
+    }
 
 
     @Override

@@ -16,6 +16,10 @@ import android.util.Log;
 import android.widget.Switch;
 import android.widget.Toast;
 import android.telephony.SmsManager;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.IntentFilter;
@@ -36,6 +40,7 @@ import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.view.View;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -432,6 +437,7 @@ public class SMSRequestManager {
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
+
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
     /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.

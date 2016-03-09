@@ -28,4 +28,16 @@
         android:textSize="@dimen/abc_text_size_headline_material"
         android:textStyle="bold" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WHITELIST"
+        android:id="@+id/action_whiteList"
+        android:layout_below="@+id/action_settings"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp"
+        android:onClick="whiteList"
+        android:clickable="true"/>
+
 </RelativeLayout>

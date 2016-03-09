@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
 
     Settings toggle = new Settings();
     Button click;
+    Button clickWhiteList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //start the service from here //MainService is your service class name
@@ -29,6 +30,15 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this,Settings.class);
                 startActivity(intent);
             }
+        });
+        clickWhiteList = (Button)findViewById(R.id.action_whiteList);
+        clickWhiteList.setOnClickListener(new View.OnClickListener(){
+
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this,WhiteList.class);
+                startActivity(intent);
+            }
+
         });
     }
 
