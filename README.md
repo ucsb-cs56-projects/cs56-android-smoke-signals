@@ -35,11 +35,11 @@ Essentially you can come up with tons of different things to automate, so you ca
 
 <h2>User Stories</h2>
 
-- As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app.
-- As a user, I can specify who can use certain functions so that I can maintain privacy.
-- As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use.
+- ~~As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app.~~ **150 points**
+- ~~As a user, I can specify who can use certain functions so that I can maintain privacy (whitelist or blacklist people).
+- ~~As a developer, I can save the preferences of the settings after it has been made.~~ **300 points**
+- ~~As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use.~~ **300 points**
 - As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
-- As a user, I can text my phone to send a message to a phone number so that people will know I don't have my phone. 
+- ~~As a user, I can text my phone to send a message to a phone number so that people will know I don't have my phone.~~ **50 points**
 - As a user, I can text my phone to check what functions are on, like wifi or bluetooth.
 - As a user, I can text my phone to turn off functions to save battery life.
-- As a user, I can blacklist or whitelist people from the app.
