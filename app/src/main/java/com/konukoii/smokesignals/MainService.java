@@ -35,11 +35,11 @@ public class MainService extends Service{
             String action = intent.getAction();
             SMSRequestManager smsRequestManager = new SMSRequestManager();
             if(action.equals("android.provider.Telephony.SMS_RECEIVED")){
-                if(smsRequestManager.toggle.getWhitelist() && verify(context, intent)==true){
+                if(smsRequestManager.toggle.getWhitelist()==true && verify(context, intent)==true){
                         Log.d(TAG, "Firing up the SMSRequestManager!");
                         smsRequestManager.go(context, intent);
                 }
-                if(smsRequestManager.toggle.getWhitelist()==false){
+                else if(smsRequestManager.toggle.getWhitelist()==false){
                     Log.d(TAG, "Firing up the SMSRequestManager!");
                     smsRequestManager.go(context, intent);
                 }

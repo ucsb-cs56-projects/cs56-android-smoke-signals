@@ -24,6 +24,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch tex;
     Switch wif;
     Switch whit;
+    Switch blu;
 
 
 
@@ -38,7 +39,8 @@ public class Settings extends Activity { //used to determine the state of the sw
         jok = (Switch) findViewById(R.id.switch6);
         tex = (Switch) findViewById(R.id.switch7);
         wif = (Switch) findViewById(R.id.switch8);
-        whit = (Switch) findViewById(R.id.switch9);
+        whit = (Switch) findViewById(R.id.switch10);
+        blu = (Switch) findViewById(R.id.switch9);
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -85,7 +87,12 @@ public class Settings extends Activity { //used to determine the state of the sw
                 toggleWhitelist(buttonView);
             }
         });
-        Log.d("onCreate", "onCreate");
+        blu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleBluetooth(buttonView);
+            }
+        });
+        Log.d("onCreate","onCreate");
 
     }
 
@@ -109,6 +116,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("sms", tex.isChecked());
         edit.putBoolean("wifi",wif.isChecked());
         edit.putBoolean("whitelist",whit.isChecked());
+        edit.putBoolean("bluetooth",blu.isChecked());
         edit.apply();
 
         Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
@@ -127,20 +135,22 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setSMS(sharePref.getBoolean("sms", true));
         this.setWifi(sharePref.getBoolean("wifi",true));
         this.setWhitelist(sharePref.getBoolean("whitelist",true));
+        this.setBluetooth(sharePref.getBoolean("bluetooth",true));
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
 
     //Shared variables so that every instance knows the state of the switches. Kinda cheating but it works.
-    private static boolean location = true; //"a"
-    private static boolean contact = true; //"b"
-    private static boolean calls = true; //"c"
-    private static boolean battery = true; //"d"
-    private static boolean ring = true; //"e"
+    private static boolean location = true;
+    private static boolean contact = true;
+    private static boolean calls = true;
+    private static boolean battery = true;
+    private static boolean ring = true;
     private static boolean joke = true;
     private static boolean sms = true;
     private static boolean wifi = true;
     private static boolean whitelist = true;
+    private static boolean bluetooth = true;
 
 
     // SETTER FUNCTIONS
@@ -189,6 +199,11 @@ public class Settings extends Activity { //used to determine the state of the sw
         whit.setChecked(state);
         whitelist=state;
     }
+    public void setBluetooth(boolean state) {
+        blu.setChecked(state);
+        bluetooth = state;
+    }
+
 
     // GETTER FUNCTIONS
     //gets the state of the functions
@@ -231,7 +246,13 @@ public class Settings extends Activity { //used to determine the state of the sw
         return wifi;
     }
 
-    public boolean getWhitelist() {return whitelist;}
+    public boolean getWhitelist(){
+        return whitelist;
+    }
+    public boolean getBluetooth(){
+        return bluetooth;
+    }
+
 
     //toggle the switches
     public void toggleLocation(View view) {
@@ -342,11 +363,22 @@ public class Settings extends Activity { //used to determine the state of the sw
         whitelist = whit.isChecked();
         whit.setChecked(whitelist);
 
-        if(whitelist){
+        if (whitelist) {
             Log.d("toggleWhitelist", "Whitelist is on");
+        } else {
+            Log.d("toggleWhitelist", "Whitelist is off");
+        }
+        this.saveSettings();
+    }
+    public void toggleBluetooth(View view) {
+        bluetooth = blu.isChecked();
+        blu.setChecked(bluetooth);
+
+        if(bluetooth){
+            Log.d("toggleBluetooth", "Bluetooth is on");
         }
         else{
-            Log.d("toggleWhitelist", "Whitelist is off");
+            Log.d("toggleBluetooth", "Bluetooth is off");
         }
         this.saveSettings();
     }

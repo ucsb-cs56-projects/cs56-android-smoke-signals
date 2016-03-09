@@ -2,6 +2,8 @@ package com.konukoii.smokesignals;
 
 import android.app.Activity;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,6 +69,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private final static int JOKE = 7;
     private final static int SMS = 8;
     private final static int WIFI = 9;
+    private final static int BLUETOOTH = 10;
 
     Settings toggle = new Settings();
 
@@ -212,6 +215,17 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             }
             else{
                 Toast.makeText(context, "Wifi is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        else if (msg_body.equals("//Bluetooth")){
+            if (toggle.getBluetooth()) {
+                Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
+                QueryBluetooth();
+                return BLUETOOTH;
+            }
+            else{
+                Toast.makeText(context, "Bluetooth is off", Toast.LENGTH_SHORT).show();
                 return 0;
             }
         }
@@ -465,6 +479,22 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             sendSMS(msg_from, "Wifi is off");
         }
     }
+
+    private void QueryBluetooth(){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryBluetooth",Toast.LENGTH_SHORT).show();
+
+        //make sure context is used for getSystemService
+        BluetoothManager bmanager = (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter check = bmanager.getAdapter();
+        if(check.isEnabled()){
+            sendSMS(msg_from, "Bluetooth is on");
+        }
+        else{
+            sendSMS(msg_from, "Bluetooth is off");
+        }
+    }
+
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
     /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.
