@@ -125,7 +125,8 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setRing(sharePref.getBoolean("ring", true));
         this.setJoke(sharePref.getBoolean("jokes", true));
         this.setSMS(sharePref.getBoolean("sms", true));
-        this.setSMS(sharePref.getBoolean("wifi",true));
+        this.setWifi(sharePref.getBoolean("wifi",true));
+        this.setBluetooth(sharePref.getBoolean("bluetooth",true));
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
