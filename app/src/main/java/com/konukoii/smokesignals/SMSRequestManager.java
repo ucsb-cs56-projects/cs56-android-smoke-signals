@@ -201,9 +201,15 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             return HELP;
         }
         else if (msg_body.equals("//Wifi")){
-            Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
-            QueryWifi();
-            return WIFI;
+            if (toggle.getWifi()) {
+                Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
+                QueryWifi();
+                return WIFI;
+            }
+            else{
+                Toast.makeText(context, "Wifi is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
         }
         else if (msg_body.substring(0,9).equals("//Contact")){
             if (toggle.getContact()) {

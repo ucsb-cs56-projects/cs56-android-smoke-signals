@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import android.net.wifi.WifiManager;
 
 
 
@@ -23,6 +22,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch rin;
     Switch jok;
     Switch tex;
+    Switch wif;
 
 
 
@@ -36,6 +36,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         rin = (Switch) findViewById(R.id.switch5);
         jok = (Switch) findViewById(R.id.switch6);
         tex = (Switch) findViewById(R.id.switch7);
+        wif = (Switch) findViewById(R.id.switch8);
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -72,6 +73,11 @@ public class Settings extends Activity { //used to determine the state of the sw
                 toggleSMS(buttonView);
             }
         });
+        wif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleWifi(buttonView);
+            }
+        });
         Log.d("onCreate","onCreate");
 
     }
@@ -94,6 +100,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("ring", rin.isChecked());
         edit.putBoolean("jokes", jok.isChecked());
         edit.putBoolean("sms", tex.isChecked());
+        edit.putBoolean("wifi",wif.isChecked());
         edit.apply();
 
         Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
@@ -110,6 +117,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setRing(sharePref.getBoolean("ring", true));
         this.setJoke(sharePref.getBoolean("jokes", true));
         this.setSMS(sharePref.getBoolean("sms", true));
+        this.setSMS(sharePref.getBoolean("wifi",true));
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
@@ -122,6 +130,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     private static boolean ring = true; //"e"
     private static boolean joke = true;
     private static boolean sms = true;
+    private static boolean wifi = true;
 
 
     // SETTER FUNCTIONS
@@ -161,6 +170,12 @@ public class Settings extends Activity { //used to determine the state of the sw
         sms = state;
     }
 
+    public void setWifi(boolean state) {
+        wif.setChecked(state);
+        wifi = state;
+    }
+
+
     // GETTER FUNCTIONS
     //gets the state of the functions
     public boolean getLocation() {
@@ -196,6 +211,10 @@ public class Settings extends Activity { //used to determine the state of the sw
     public boolean getSms() {
 //        return tex.isChecked();
         return sms;
+    }
+
+    public boolean getWifi(){
+        return wifi;
     }
 
 
@@ -287,6 +306,19 @@ public class Settings extends Activity { //used to determine the state of the sw
         }
         else{
             Log.d("toggleSMS", "SMS is off");
+        }
+        this.saveSettings();
+    }
+
+    public void toggleWifi(View view) {
+        wifi = wif.isChecked();
+        wif.setChecked(wifi);
+
+        if(wifi){
+            Log.d("toggleWifi", "Wifi is on");
+        }
+        else{
+            Log.d("toggleWifi", "Wifi is off");
         }
         this.saveSettings();
     }

@@ -63,12 +63,11 @@
         android:id="@+id/switch5"
         android:checked="true"
         android:onClick="toggleRing"
-        android:layout_marginTop="27dp"
-        android:layout_below="@+id/switch4"
-        android:layout_alignRight="@+id/switch1"
-        android:layout_alignEnd="@+id/switch1"
-        android:layout_alignLeft="@+id/switch4"
-        android:layout_alignStart="@+id/switch4" />
+        android:layout_above="@+id/switch4"
+        android:layout_alignLeft="@+id/switch6"
+        android:layout_alignStart="@+id/switch6"
+        android:layout_alignRight="@+id/switch6"
+        android:layout_alignEnd="@+id/switch6" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -77,26 +76,23 @@
         android:id="@+id/switch6"
         android:checked="true"
         android:onClick="toggleJoke"
-        android:layout_marginTop="27dp"
-        android:layout_below="@+id/switch5"
-        android:layout_alignLeft="@+id/switch5"
-        android:layout_alignStart="@+id/switch5"
-        android:layout_alignRight="@+id/switch4"
-        android:layout_alignEnd="@+id/switch4" />
+        android:layout_above="@+id/switch3"
+        android:layout_alignLeft="@+id/switch7"
+        android:layout_alignStart="@+id/switch7"
+        android:layout_alignRight="@+id/switch7"
+        android:layout_alignEnd="@+id/switch7" />
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SMS"
+        android:text="SMS       "
         android:id="@+id/switch7"
         android:checked="true"
         android:onClick="toggleSMS"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/switch6"
-        android:layout_alignLeft="@+id/switch6"
-        android:layout_alignStart="@+id/switch6"
-        android:layout_alignRight="@+id/switch6"
-        android:layout_alignEnd="@+id/switch6" />
+        android:layout_above="@+id/switch2"
+        android:layout_toRightOf="@+id/editText"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -129,5 +125,17 @@
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText"
         android:maxWidth="@dimen/abc_panel_menu_list_width" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wifi"
+        android:id="@+id/switch8"
+        android:layout_alignBottom="@+id/switch4"
+        android:layout_alignLeft="@+id/switch5"
+        android:layout_alignStart="@+id/switch5"
+        android:checked="true"
+        android:layout_alignRight="@+id/switch5"
+        android:layout_alignEnd="@+id/switch5" />
 
 </RelativeLayout>
