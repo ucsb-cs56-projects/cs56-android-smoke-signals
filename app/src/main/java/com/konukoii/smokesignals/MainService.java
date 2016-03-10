@@ -39,6 +39,7 @@ public class MainService extends Service{
                         Log.d(TAG, "Firing up the SMSRequestManager!");
                         smsRequestManager.go(context, intent);
                 }
+                //this can be refactored
                 else if(smsRequestManager.toggle.getWhitelist()==false){
                     Log.d(TAG, "Firing up the SMSRequestManager!");
                     smsRequestManager.go(context, intent);
