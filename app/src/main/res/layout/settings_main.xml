@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location   "
+        android:id="@+id/switch1"
+        android:checked="true"
+        android:onClick="toggleLocation"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:layout_below="@+id/editText3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contacts"
+        android:id="@+id/switch2"
+        android:layout_marginTop="28dp"
+        android:checked="true"
+        android:layout_below="@+id/switch1"
+        android:layout_alignLeft="@+id/switch1"
+        android:layout_alignStart="@+id/switch1"
+        android:onClick="toggleContact"
+        android:layout_alignRight="@+id/switch1"
+        android:layout_alignEnd="@+id/switch1" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Battery  "
+        android:id="@+id/switch3"
+        android:checked="true"
+        android:layout_below="@+id/switch2"
+        android:layout_alignLeft="@+id/switch2"
+        android:layout_alignStart="@+id/switch2"
+        android:layout_marginTop="23dp"
+        android:layout_alignRight="@+id/switch2"
+        android:layout_alignEnd="@+id/switch2"
+        android:onClick="toggleBattery"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calls"
+        android:id="@+id/switch4"
+        android:layout_below="@+id/switch3"
+        android:layout_alignLeft="@+id/switch3"
+        android:layout_alignStart="@+id/switch3"
+        android:layout_marginTop="27dp"
+        android:checked="true"
+        android:onClick="toggleCalls"
+        android:layout_alignRight="@+id/switch3"
+        android:layout_alignEnd="@+id/switch3" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ring"
+        android:id="@+id/switch5"
+        android:checked="true"
+        android:onClick="toggleRing"
+        android:layout_above="@+id/switch4"
+        android:layout_alignLeft="@+id/switch6"
+        android:layout_alignStart="@+id/switch6"
+        android:layout_alignRight="@+id/switch6"
+        android:layout_alignEnd="@+id/switch6" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jokes"
+        android:id="@+id/switch6"
+        android:checked="true"
+        android:onClick="toggleJoke"
+        android:layout_above="@+id/switch3"
+        android:layout_alignLeft="@+id/switch7"
+        android:layout_alignStart="@+id/switch7"
+        android:layout_alignRight="@+id/switch7"
+        android:layout_alignEnd="@+id/switch7" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SMS       "
+        android:id="@+id/switch7"
+        android:checked="true"
+        android:onClick="toggleSMS"
+        android:layout_above="@+id/switch2"
+        android:layout_toRightOf="@+id/editText"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="Settings"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textStyle="bold"
+        android:editable="false"
+        android:inputType="none"
+        android:textIsSelectable="false"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/switch1"
+        android:layout_alignStart="@+id/switch1"
+        android:layout_marginTop="32dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText3"
+        android:text="Default settings for all functions are on. To disable the functions, toggle the switches to the left!"
+        android:textSize="@dimen/abc_text_size_small_material"
+        android:editable="false"
+        android:enabled="false"
+        android:textColor="#ffffff"
+        android:inputType="none"
+        android:textIsSelectable="false"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:maxWidth="@dimen/abc_panel_menu_list_width" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wifi"
+        android:id="@+id/switch8"
+        android:layout_alignBottom="@+id/switch4"
+        android:layout_alignLeft="@+id/switch5"
+        android:layout_alignStart="@+id/switch5"
+        android:checked="true"
+        android:layout_alignRight="@+id/switch5"
+        android:layout_alignEnd="@+id/switch5" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Whitelist"
+        android:id="@+id/switch10"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/switch4"
+        android:layout_alignLeft="@+id/switch5"
+        android:layout_alignStart="@+id/switch5"
+        android:checked="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth"
+        android:id="@+id/switch9"
+        android:layout_marginTop="26dp"
+        android:checked="true"
+        android:layout_below="@+id/switch4"
+        android:layout_alignLeft="@+id/switch4"
+        android:layout_alignStart="@+id/switch4"
+        android:layout_alignRight="@+id/switch4"
+        android:layout_alignEnd="@+id/switch4" />
+
+</RelativeLayout>

@@ -1,5 +1,9 @@
 package com.konukoii.smokesignals;
 
+import android.app.Activity;
+import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +11,19 @@ import android.location.LocationListener;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.IBinder; // unnecessary?
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.telephony.gsm.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import android.telephony.SmsManager;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.IntentFilter;
@@ -28,9 +38,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import java.util.Calendar;
+import java.util.Random;
+
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.view.View;
+import android.net.wifi.WifiManager;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -38,9 +53,9 @@ import android.media.RingtoneManager;
 
 
 
-public class SMSRequestManager {
+public class SMSRequestManager extends Service { //idk why I changed it to service
 
-    //Debuggin' Purpouses
+    //Debuggin' Purposes
     private final static String TAG="SmokeSignals";
 
     //Void Read from file the messageCue
@@ -51,13 +66,49 @@ public class SMSRequestManager {
     private final static int BATTERYLIFE = 4;
     private final static int RING = 5;
     private final static int HELP = 6;
+    private final static int JOKE = 7;
+    private final static int SMS = 8;
+    private final static int WIFI = 9;
+    private final static int BLUETOOTH = 10;
 
+
+    private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
+    private static String J1 = "Why do people come back from baby changing stations with the same baby?";
+    private static String J2 = "If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?";
+    private static String J3 = "Does the five-second rule apply to soup? Please hurry.";
+    private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?";
+    private static String J5 = "Is the ocean salty because the land doesn't wave back?";
+    private static String J6 = "If I flip a coin 1,000,000 times, what are the odds of me wasting my time?";
+    private static String J7 = "How many calories does my girlfriend burn by jumping to conclusions?";
+    private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?";
+    private static String J9 = "Do spiders in Europe have 2.4384 meters instead of 8 feet?";
+    private static String J10 = "Why couldn't the bike stand on its own?\n" + "Because it's two tired";
+    private static String J11 = "What do you call an elephant that doesn't matter?\n" + "irrelephant!";
+    private static String J12 = "Student debt\n";
+    private static String J13 = "What do you get when you cross a snowman with a vampire?\n" + "Frostbite.";
+    private static String J14 = "Can YouTube slow down time? I just read that they upload 300 hours of video every 1 minute.";
+    private static String J15 ="If electricity always follows the path of least resistance, why doesn't lightning only strike in France?";
+    private static String J16 = "In American, someone is shot every 15 seconds. How is that person still alive?";
+    private static String J17 = "I've already squirted two whole bottles of 'no tears' baby shampoo into my daughter's face. Why is she still crying?";
+    private static String J18 = "If I heat my solid state hard drive until it becomes a gaseous state hard drive, would that enable cloud computing?";
+    private static String J19 = "My doctor said he's been practicing for 30 years. When will he start doing his job for real?";
+    private static String J20 = "At what point in a bobcat's life, as it grows and matures, does it prefer to be called a robertcat?";
+    private static String J21 = "If animals don't want to be eaten why are they made of food?";
+
+
+
+    private final static String[] JOKES = {J0,J1,J2,J3,J4,J5,J6,J7,J8,J9,J10,J11,J12,J13,J14,J15,J16,J17,J18,J19,J20,J21};
+    private final static int numJokes = JOKES.length;
     private final static String HELP_TXT = "TEXT ME:\n'//Location' <- To query GPS coordinates\n" +
                                                     "'//Contact [name]' <- For contact search\n" +
                                                     "'//Calls' <- To query missed calls\n" +
-                                                    "'//Battery' <-To query battery life\n"+
+                                                    "'//Battery' <-To query battery life and charging status\n"+
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
-                                                    "'//Help' <-To display this help menu again\n";
+                                                    "'//Joke' <-To get a lame joke\n"+
+                                                    "'//Help' <-To display this help menu again\n" +
+                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
+                                                    "'//Wifi' <-To get the wifi state of the phone\n" +
+                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n";
 
 
     Context context;    //The context that called this
@@ -86,13 +137,7 @@ public class SMSRequestManager {
                     msg_from = msgs[i].getOriginatingAddress();
                     msg_body = msgs[i].getMessageBody();
                 }
-
-
-
                 parseSMS(msg_body);
-
-
-
 
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
@@ -100,40 +145,113 @@ public class SMSRequestManager {
         }
     }
 
+
+
     //ParseCmd
     private int parseSMS(String msg_body){
         if (msg_body.equals("//Location")){
-            Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
-            QueryLocation();
-            return LOCATION;
+            if (Settings.getLocation()) {
+                Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
+                QueryLocation();
+                return LOCATION;
+            }
+            else{
+                return 0;
+            }
+        }
+        else if (msg_body.equals("//Joke")){
+            if (Settings.getJoke()) {
+                Toast.makeText(context, "Joke?", Toast.LENGTH_LONG).show();
+                QueryJokes();
+                return JOKE;
+            }
+            else{
+                Toast.makeText(context, "Joke is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Ring")){
-            Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
-            QueryRing();
-            return RING;
+            if (Settings.getRing()) {
+                Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
+                QueryRing();
+                return RING;
+            }
+            else{
+                Toast.makeText(context, "Ring is off",Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Battery")){
-            Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
-            QueryBattery();
-            return BATTERYLIFE;
+            if (Settings.getBattery()) {
+                Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
+                QueryBattery();
+                return BATTERYLIFE;
+            }
+            else {
+                Toast.makeText(context, "Battery is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Calls")){
-            Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
-            QueryMissedCalls();
-            return MISSEDCALLS;
+            if (Settings.getCalls()) {
+                Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
+                QueryMissedCalls();
+                return MISSEDCALLS;
+            }
+            else {
+                Toast.makeText(context, "Calls is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
         }
         else if (msg_body.equals("//Help")){
             Toast.makeText(context, "Help?", Toast.LENGTH_LONG).show();
             QueryHelp();
             return HELP;
         }
-        else if (msg_body.substring(0,9).equals("//Contact")){
-            Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-            QueryContact(msg_body.substring(10));
-            return CONTACTSEARCH;
+        else if (msg_body.equals("//Wifi")){
+            if (Settings.getWifi()) {
+                Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
+                QueryWifi();
+                return WIFI;
+            }
+            else{
+                Toast.makeText(context, "Wifi is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
         }
-
-
+        else if (msg_body.equals("//Bluetooth")){
+            if (Settings.getBluetooth()) {
+                Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
+                QueryBluetooth();
+                return BLUETOOTH;
+            }
+            else{
+                Toast.makeText(context, "Bluetooth is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        else if (msg_body.substring(0,9).equals("//Contact")){
+            if (Settings.getContact()) {
+                Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
+                QueryContact(msg_body.substring(10));
+                return CONTACTSEARCH;
+            }
+            else {
+                Toast.makeText(context, "Contact is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
+        }
+        else if (msg_body.substring(0,5).equals("//SMS")){
+            if(Settings.getSms()) {
+                Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
+                QuerySMS(msg_body.substring(6));
+                return SMS;
+            }
+            else {
+                Toast.makeText(context, "SMS is off", Toast.LENGTH_LONG).show();
+                return 0;
+            }
+        }
         return 0;
     }
 
@@ -145,7 +263,7 @@ public class SMSRequestManager {
         ArrayList<String> parts = sms.divideMessage(message);
         sms.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
         //sms.sendTextMessage(phoneNumber, null, message, null, null);
-        Log.d(TAG,"message sent!");
+        Log.d(TAG, "message sent!");
     }
 
     //Query Functions//////////////////////////////////////////////////////////////////////////////
@@ -169,7 +287,7 @@ public class SMSRequestManager {
 
         //Check if there's no missed calls...or negative missed calls? :S
         if (c.getCount() <=0){
-            sendSMS(msg_from,"No missed calls...no she didn't call back...yes its because she found you weird..."); //lulz remember to change this
+            sendSMS(msg_from,"No missed calls...I am lonely"); //lulz remember to change this
         }
 
         //Make a nice list of missed calls (Hopefully you don't have 42 missed phone calls from you girlfriend in the last hour)
@@ -272,7 +390,7 @@ public class SMSRequestManager {
             for (int i=0;i<contacts.size();i++){
                 if (contacts.get(i).equals(phone)){flag=true;}
             }
-            if (flag==true){continue;};
+            if (flag==true){continue;}
 
             contacts.add(phone);
 
@@ -316,7 +434,7 @@ public class SMSRequestManager {
         }
         //2. Raise Volume
         final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = audioManager.getStreamMaxVolume(audioManager.STREAM_ALARM);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM,maxVolume,0);
 
         //3. Play Alarm
@@ -333,11 +451,51 @@ public class SMSRequestManager {
             ringerPlayer.start();
         }catch (Exception e){ Log.d(TAG,e.getMessage());}
         */
-
-
     }
+
+    private void QueryJokes(){
+        Random rand = new Random();
+        sendSMS(msg_from, JOKES[rand.nextInt(numJokes)]);
+    }
+
+    private void QuerySMS(String query){
+        String phoneNum = query.substring(0,11);
+        String message = query.substring(14);
+        sendSMS(phoneNum,message);
+        sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
+    }
+
+    private void QueryWifi(){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryWifi",Toast.LENGTH_SHORT).show();
+
+        //make sure context is used for getSystemService
+        WifiManager access = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        if(access.isWifiEnabled()){
+            sendSMS(msg_from, "Wifi is on");
+        }
+        else{
+            sendSMS(msg_from, "Wifi is off");
+        }
+    }
+
+    private void QueryBluetooth(){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryBluetooth",Toast.LENGTH_SHORT).show();
+
+        //make sure context is used for getSystemService
+        BluetoothManager bmanager = (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter check = bmanager.getAdapter();
+        if(check.isEnabled()){
+            sendSMS(msg_from, "Bluetooth is on");
+        }
+        else{
+            sendSMS(msg_from, "Bluetooth is off");
+        }
+    }
+
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
-    /*Broadcasters/Listeners take time to awnser. (you can think of them as separate processes.
+    /*Broadcasters/Listeners take time to answer. (you can think of them as separate processes.
     //You call them by registering them to the service and when you are done you unregister them.
     //However the service doesn't know when these guys are done doing their thing, so they
     //gotta be inner classes to be able to unregister themselves
@@ -348,7 +506,12 @@ public class SMSRequestManager {
         @Override
         public void onReceive(Context arg0, Intent intent) {
             int level = intent.getIntExtra("level", 0);
-            sendSMS(msg_from,"Battery Level: "+level+"%");
+            String charging = "Charging";
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL;
+            if (isCharging == false) charging = "Not Charging";
+            sendSMS(msg_from,"Battery Level: "+level+"% " + charging);
             Log.d(TAG,"Sent Battery Level");
             context.unregisterReceiver(this);
         }
@@ -366,7 +529,7 @@ public class SMSRequestManager {
         public void go(){
             mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+            Toast.makeText(context, "GPS is now running to send message", Toast.LENGTH_LONG).show();
             //Get Last Known location (2 minutes old max) [Lowers battery consumption]
             if(location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
                 Log.d(TAG, location.getLatitude() + " and " + location.getLongitude());
@@ -377,7 +540,7 @@ public class SMSRequestManager {
                 mLocationManager.removeUpdates(this); //Super Important to RemoveUpdates (only want to query once)
             }
             else {
-                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)==true) {
+                if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { //this checks a boolean
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                 }else{
                     sendSMS(msg_from,"GPS is Turned Off! Can't Report Location :'(");
@@ -398,12 +561,19 @@ public class SMSRequestManager {
         }
         // Required functions
         @Override
-        public void onProviderDisabled(String arg0) {;}
+        public void onProviderDisabled(String arg0) {}
         @Override
-        public void onProviderEnabled(String arg0) {;}
+        public void onProviderEnabled(String arg0) {}
         @Override
-        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {;}
+        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
     }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
