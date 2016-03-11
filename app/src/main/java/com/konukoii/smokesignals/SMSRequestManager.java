@@ -148,8 +148,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
+//        if (msg_body.substring(0,10).equals("//Location")){
         if (msg_body.equals("//Location")){
-            if (toggle.getLocation()) {
+            if (Settings.getLocation()) {
                 Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
                 QueryLocation();
                 return LOCATION;
@@ -158,8 +159,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+        //else if (msg_body.substring(0,6).equals("//Joke")){
         else if (msg_body.equals("//Joke")){
-            if (toggle.getJoke()) {
+            if (Settings.getJoke()) {
                 Toast.makeText(context, "Joke?", Toast.LENGTH_LONG).show();
                 QueryJokes();
                 return JOKE;
@@ -169,8 +171,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+//        else if (msg_body.substring(0,6).equals("//Ring")){
         else if (msg_body.equals("//Ring")){
-            if (toggle.getRing()) {
+            if (Settings.getRing()) {
                 Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
                 QueryRing();
                 return RING;
@@ -180,8 +183,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+//        else if (msg_body.substring(0,9).equals("//Battery")){
         else if (msg_body.equals("//Battery")){
-            if (toggle.getBattery()) {
+            if (Settings.getBattery()) {
                 Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
                 QueryBattery();
                 return BATTERYLIFE;
@@ -191,8 +195,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+//        else if (msg_body.substring(0,7).equals("//Calls")){
         else if (msg_body.equals("//Calls")){
-            if (toggle.getCalls()) {
+            if (Settings.getCalls()) {
                 Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
                 QueryMissedCalls();
                 return MISSEDCALLS;
@@ -202,13 +207,15 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+//        else if (msg_body.substring(0,6).equals("//Help")){
         else if (msg_body.equals("//Help")){
             Toast.makeText(context, "Help?", Toast.LENGTH_LONG).show();
             QueryHelp();
             return HELP;
         }
+//        else if (msg_body.substring(0,6).equals("//Wifi")){
         else if (msg_body.equals("//Wifi")){
-            if (toggle.getWifi()) {
+            if (Settings.getWifi()) {
                 Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
                 QueryWifi();
                 return WIFI;
@@ -218,8 +225,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+//        else if (msg_body.substring(0,11).equals("//Bluetooth")){
         else if (msg_body.equals("//Bluetooth")){
-            if (toggle.getBluetooth()) {
+            if (Settings.getBluetooth()) {
                 Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
                 QueryBluetooth();
                 return BLUETOOTH;
@@ -230,7 +238,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             }
         }
         else if (msg_body.substring(0,9).equals("//Contact")){
-            if (toggle.getContact()) {
+            if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
                 QueryContact(msg_body.substring(10));
                 return CONTACTSEARCH;
@@ -242,7 +250,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
 
         else if (msg_body.substring(0,5).equals("//SMS")){
-            if(toggle.getSms()) {
+            if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
                 QuerySMS(msg_body.substring(6));
                 return SMS;

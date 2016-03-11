@@ -207,49 +207,46 @@ public class Settings extends Activity { //used to determine the state of the sw
 
     // GETTER FUNCTIONS
     //gets the state of the functions
-    public boolean getLocation() {
+    //try to make these static so you can use them in SMSRequestManager
+    public static boolean getLocation() {
 //        return loc.isChecked();
         return location;
     }
 
-    public boolean getContact() {
+    public static boolean getContact() {
 //        return con.isChecked();
         return contact;
     }
 
-    public boolean getCalls() {
-//        return cal.isChecked();
+    public static boolean getCalls() {
         return calls;
     }
 
-    public boolean getBattery() {
-//        return bat.isChecked();
+    public static boolean getBattery() {
         return battery;
     }
 
-    public boolean getRing() {
-//        return rin.isChecked();
+    public static boolean getRing() {
         return ring;
     }
 
-    public boolean getJoke() {
-//        return jok.isChecked();
+    public static boolean getJoke() {
         return joke;
     }
 
-    public boolean getSms() {
-//        return tex.isChecked();
+    public static boolean getSms() {
         return sms;
     }
 
-    public boolean getWifi(){
+    public static boolean getWifi(){
         return wifi;
     }
 
-    public boolean getWhitelist(){
+    public static boolean getWhitelist(){
         return whitelist;
     }
-    public boolean getBluetooth(){
+
+    public static boolean getBluetooth(){
         return bluetooth;
     }
 
