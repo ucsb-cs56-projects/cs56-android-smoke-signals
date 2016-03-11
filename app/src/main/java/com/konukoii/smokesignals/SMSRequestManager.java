@@ -71,7 +71,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private final static int WIFI = 9;
     private final static int BLUETOOTH = 10;
 
-    Settings toggle = new Settings();
 
     private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
     private static String J1 = "Why do people come back from baby changing stations with the same baby?";
@@ -107,7 +106,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
                                                     "'//Joke' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n" +
-                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n";
+                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
+                                                    "'//Wifi' <-To get the wifi state of the phone\n" +
+                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n";
 
 
     Context context;    //The context that called this
@@ -148,7 +149,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
-//        if (msg_body.substring(0,10).equals("//Location")){
         if (msg_body.equals("//Location")){
             if (Settings.getLocation()) {
                 Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
@@ -159,7 +159,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        //else if (msg_body.substring(0,6).equals("//Joke")){
         else if (msg_body.equals("//Joke")){
             if (Settings.getJoke()) {
                 Toast.makeText(context, "Joke?", Toast.LENGTH_LONG).show();
@@ -171,7 +170,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-//        else if (msg_body.substring(0,6).equals("//Ring")){
         else if (msg_body.equals("//Ring")){
             if (Settings.getRing()) {
                 Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
@@ -183,7 +181,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-//        else if (msg_body.substring(0,9).equals("//Battery")){
         else if (msg_body.equals("//Battery")){
             if (Settings.getBattery()) {
                 Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
@@ -195,7 +192,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-//        else if (msg_body.substring(0,7).equals("//Calls")){
         else if (msg_body.equals("//Calls")){
             if (Settings.getCalls()) {
                 Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
@@ -207,13 +203,11 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-//        else if (msg_body.substring(0,6).equals("//Help")){
         else if (msg_body.equals("//Help")){
             Toast.makeText(context, "Help?", Toast.LENGTH_LONG).show();
             QueryHelp();
             return HELP;
         }
-//        else if (msg_body.substring(0,6).equals("//Wifi")){
         else if (msg_body.equals("//Wifi")){
             if (Settings.getWifi()) {
                 Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
@@ -225,7 +219,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-//        else if (msg_body.substring(0,11).equals("//Bluetooth")){
         else if (msg_body.equals("//Bluetooth")){
             if (Settings.getBluetooth()) {
                 Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
@@ -248,7 +241,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-
         else if (msg_body.substring(0,5).equals("//SMS")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
@@ -260,7 +252,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-
         return 0;
     }
 

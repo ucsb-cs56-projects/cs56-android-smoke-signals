@@ -13,8 +13,11 @@ import android.widget.*;
 /**
  * Created by Franklin on 2/21/2016.
  */
+
+//Uses singleton design patterns
 public class Settings extends Activity { //used to determine the state of the switches across the App
 
+    //declare the variables as Switches, looks cleaner out here but you can move it to onCreate
     Switch loc;
     Switch con;
     Switch bat;
@@ -96,14 +99,17 @@ public class Settings extends Activity { //used to determine the state of the sw
 
     }
 
+
     protected void onPause() {
         super.onPause();
+        //makes sure that the moment you back out of the app, settings will automatically save
         this.saveSettings();
         Log.d("onPause","onPause");
     }
 
     //save the preferences of the settings
     public void saveSettings() {
+        //make sure that the settings are private so other function
         SharedPreferences sharePref = getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor edit = sharePref.edit();
@@ -117,6 +123,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("wifi",wif.isChecked());
         edit.putBoolean("whitelist",whit.isChecked());
         edit.putBoolean("bluetooth",blu.isChecked());
+        //it settles the variables that you added
         edit.apply();
 
         Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
@@ -140,7 +147,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
 
-    //Shared variables so that every instance knows the state of the switches. Kinda cheating but it works.
+    //Shared variables so that every instance knows the state of the switches.
     private static boolean location = true;
     private static boolean contact = true;
     private static boolean calls = true;
@@ -155,6 +162,8 @@ public class Settings extends Activity { //used to determine the state of the sw
 
     // SETTER FUNCTIONS
     //sets the state of the app functions to true or false
+    // The first line is to set the button's state
+    // The second line is to update the state of the static variables for SMSRequestManager to check if the button is on or not
     public void setLocation(boolean state) {
         loc.setChecked(state);
         location = state;
@@ -209,12 +218,10 @@ public class Settings extends Activity { //used to determine the state of the sw
     //gets the state of the functions
     //try to make these static so you can use them in SMSRequestManager
     public static boolean getLocation() {
-//        return loc.isChecked();
         return location;
     }
 
     public static boolean getContact() {
-//        return con.isChecked();
         return contact;
     }
 
