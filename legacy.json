@@ -6,6 +6,13 @@
     "M16" : {
       "ready" : false
     },
+    
+    "W16" : {
+      "students" : [
+        { "name" : "Jackey Lau" },
+        { "name" : "Franklin Tang"}
+      ]
+    }
   
     "W15" : {
       "students" : [
