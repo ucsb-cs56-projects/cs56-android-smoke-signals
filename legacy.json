@@ -1,0 +1,14 @@
+{
+  "quarters" : {
+  
+    "M16" : {
+      "ready" : false
+    },
+  
+    "W15" : {
+      "students" : [
+        { "name" : "Pedro Sosa"} , 
+      ]
+    }
+  }
+}
