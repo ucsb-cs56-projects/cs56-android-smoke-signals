@@ -20,7 +20,7 @@ Say you forgot your phone, Using someone else's phone you can text yourself:
 - **"//Joke" :** Send a random joke from an array of jokes from the phone's data base.
 - **"//Wifi :** Sends the Wifi state of the phone. (Enabled or Disabled)
 - **//Bluetooth :** Sends the bluetooth state of the phone. (Enabled or Disabled)
-- **WhiteList :** not a text but a function that allows the phone fucntions to be exclusive to the numbers that are saved on the phone.
+- **//WhiteList :** not a text but a function that allows the phone fucntions to be exclusive to the numbers that are saved on the phone.
 
 <h2>Ideas for Improvments</h2>
 
@@ -51,3 +51,6 @@ Essentially you can come up with tons of different things to automate, so you ca
 - As a developer, I can put jokes in a text file to read from so that I can allow the java file look cleaner. **50 points**
 - As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
 - As a user, I can blacklist people so that I can maintain privacy. **100 points**
+- As a developer, I can improve the whitelist function by allowing to add people from contacts or numbers with symbols. **100-300 points**
+- As a developer, I can make a blacklist function to be able to stop specific numbers from using the app's functions. When the blacklist setting is on, the whitelist setting is automatically turned off. **100 points**
+
