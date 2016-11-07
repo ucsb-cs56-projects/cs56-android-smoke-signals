@@ -70,6 +70,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private final static int SMS = 8;
     private final static int WIFI = 9;
     private final static int BLUETOOTH = 10;
+    private final static int POWERSAVE = 11;
 
 
     private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
@@ -108,7 +109,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//Help' <-To display this help menu again\n" +
                                                     "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
                                                     "'//Wifi' <-To get the wifi state of the phone\n" +
-                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n";
+                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n" +
+                                                    "'//PowerSave [function name]' <-To turn off function\n";
 
 
     Context context;    //The context that called this
@@ -227,6 +229,17 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             }
             else{
                 Toast.makeText(context, "Bluetooth is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        else if (msg_body.substring(0,11).equals("//Powersave")){
+            if(Settings.getPower()){
+                Toast.makeText(context,"Turning off features...", Toast.LENGTH_SHORT).show();
+                QueryPower(msg_body.substring(12));
+                return POWERSAVE;
+            }
+            else{
+                Toast.makeText(context, "Powersave is off", Toast.LENGTH_SHORT).show();
                 return 0;
             }
         }
@@ -492,6 +505,22 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else{
             sendSMS(msg_from, "Bluetooth is off");
         }
+    }
+
+    private void QueryPower(String funct){
+        if(funct.equals("wifi")){
+            WifiManager wifiManager = (WifiManager)this.context.getSystemService(Context.WIFI_SERVICE);
+            wifiManager.setWifiEnabled(false);
+        }
+        else if(funct.equals("bluetooth")){
+            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            mBluetoothAdapter.disable();
+        }
+        else if(funct.equals("all")){
+            QueryPower("wifi");
+            QueryPower("bluetooth");
+        }
+
     }
 
 //////Broadcast Receivers and Listeners Inner Classes///////////////////////////////////////////////
