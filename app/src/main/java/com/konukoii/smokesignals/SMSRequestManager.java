@@ -151,6 +151,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
+        msg_body = msg_body.replaceAll("\\s",""); 
+        msg_body = msg_body.substring(0, 2) + Character.toUpperCase(msg_body.charAt(2)) + (msg_body.substring(3)).toLowerCase(); 
+        
         if (msg_body.equals("//Location")){
             if (Settings.getLocation()) {
                 Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
