@@ -238,7 +238,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_body.substring(0,11).equals("//Powersave")){
             if(Settings.getPower()){
                 Toast.makeText(context,"Turning off features...", Toast.LENGTH_SHORT).show();
-                QueryPower(msg_body.substring(12));
+                QueryPower(msg_body.substring(11));
                 return POWERSAVE;
             }
             else{
@@ -249,7 +249,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_body.substring(0,9).equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                QueryContact(msg_body.substring(10));
+                QueryContact(msg_body.substring(9));
                 return CONTACTSEARCH;
             }
             else {
@@ -257,10 +257,10 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.substring(0,5).equals("//SMS")){
+        else if (msg_body.substring(0,5).equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                QuerySMS(msg_body.substring(6));
+                QuerySMS(msg_body.substring(5));
                 return SMS;
             }
             else {
@@ -453,6 +453,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM,maxVolume,0);
 
+        //make sure that the audio is on
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+
         //3. Play Alarm
         final Ringtone r = RingtoneManager.getRingtone(context, alert);
         r.play();
@@ -475,8 +478,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     }
 
     private void QuerySMS(String query){
-        String phoneNum = query.substring(0,11);
-        String message = query.substring(14);
+        String phoneNum = query.substring(0,10);
+        String message = query.substring(10);
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
@@ -514,14 +517,22 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         if(funct.equals("wifi")){
             WifiManager wifiManager = (WifiManager)this.context.getSystemService(Context.WIFI_SERVICE);
             wifiManager.setWifiEnabled(false);
+            Toast.makeText(context,"Wifi disabled", Toast.LENGTH_SHORT).show();
         }
         else if(funct.equals("bluetooth")){
             BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             mBluetoothAdapter.disable();
+            Toast.makeText(context,"Bluetooth disabled", Toast.LENGTH_SHORT).show();
+        }
+        else if(funct.equals("mute")){
+            AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            Toast.makeText(context,"Phone muted", Toast.LENGTH_SHORT).show();
         }
         else if(funct.equals("all")){
             QueryPower("wifi");
             QueryPower("bluetooth");
+            QueryPower("mute");
         }
 
     }
