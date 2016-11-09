@@ -151,10 +151,19 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
-        //msg_body = msg_body.replaceAll("\\s","");
-        //msg_body = msg_body.substring(0, 2) + Character.toUpperCase(msg_body.charAt(2)) + (msg_body.substring(3)).toLowerCase();
+        int spaceIndex = indexOf(" "); 
+        String msg_header;
+        if (spaceIndex == -1)
+            msg_header = msg_body; 
+            msg_body = ""; 
+        else{
+            msg_header = msg_body.substring(0, spaceIndex); 
+            msg_body = msg_body.substring(msg_header.length()); 
+            msg_body = msg_body.replaceAll("^\\s+", ""); 
+        }   
+        msg_header = msg_header.substring(0, 2) + Character.toUpperCase(msg_header.charAt(2)) + (msg_header.substring(3)).toLowerCase();
         
-        if (msg_body.equals("//Location")){
+        if (msg_header.equals("//Location")){
             if (Settings.getLocation()) {
                 Toast.makeText(context, "Location?", Toast.LENGTH_LONG).show();
                 QueryLocation();
@@ -164,7 +173,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Joke")){
+        else if (msg_header.equals("//Joke")){
             if (Settings.getJoke()) {
                 Toast.makeText(context, "Joke?", Toast.LENGTH_LONG).show();
                 QueryJokes();
@@ -175,7 +184,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Ring")){
+        else if (msg_header.equals("//Ring")){
             if (Settings.getRing()) {
                 Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
                 QueryRing();
@@ -186,7 +195,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Battery")){
+        else if (msg_header.equals("//Battery")){
             if (Settings.getBattery()) {
                 Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
                 QueryBattery();
@@ -197,7 +206,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Calls")){
+        else if (msg_header.equals("//Calls")){
             if (Settings.getCalls()) {
                 Toast.makeText(context, "Calls?", Toast.LENGTH_LONG).show();
                 QueryMissedCalls();
@@ -208,20 +217,20 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Help")){
+        else if (msg_header.equals("//Help")){
             Toast.makeText(context, "Help?", Toast.LENGTH_LONG).show();
             QueryHelp();
             return HELP;
         }
-        else if (msg_body.equals("//Wifi")){
+        else if (msg_header.equals("//Wifi")){
             if (Settings.getWifi()) {
-                if(msg_body.equals("//Wifi")){
+                if(msg_body.equals("")){
                     Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
                     QueryWifi();
                     return WIFI;
                 }
                 else{
-                    QueryWifi(msg_body.substring(7));
+                    QueryWifi(msg_body);
                     return WIFI;
                 }
             }
@@ -230,20 +239,26 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.equals("//Bluetooth")){
+        else if (msg_header.equals("//Bluetooth")){
             if (Settings.getBluetooth()) {
-                Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
-                QueryBluetooth();
-                return BLUETOOTH;
+                if (msg_body.equals("")){
+                    Toast.makeText(context, "Bluetooh Status?", Toast.LENGTH_SHORT).show();
+                    QueryBluetooth();
+                    return BLUETOOTH;
+                }
+                else {
+                    QueryBluetooth(msg_body);
+                    return BLUETOOTH;
+                }
             }
             else{
                 Toast.makeText(context, "Bluetooth is off", Toast.LENGTH_SHORT).show();
                 return 0;
             }
         }
-        else if (msg_body.substring(0,11).equals("//Powersave")){
+        else if (msg_header.equals("//Powersave")){
             if(Settings.getPower()){
-                QueryPower(msg_body.substring(12));
+                QueryPower(msg_body);
                 return POWERSAVE;
             }
             else{
@@ -251,10 +266,10 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.substring(0,9).equals("//Contact")){
+        else if (msg_header.equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                QueryContact(msg_body.substring(10));
+                QueryContact(msg_body);
                 return CONTACTSEARCH;
             }
             else {
@@ -262,10 +277,10 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.substring(0,5).equals("//SMS")){
+        else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                QuerySMS(msg_body.substring(6));
+                QuerySMS(msg_body);
                 return SMS;
             }
             else {
