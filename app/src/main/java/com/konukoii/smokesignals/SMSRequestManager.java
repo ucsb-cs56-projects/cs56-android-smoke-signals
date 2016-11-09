@@ -151,11 +151,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
-        int spaceIndex = indexOf(" "); 
+        int spaceIndex = msg_body.indexOf(" ");
         String msg_header;
-        if (spaceIndex == -1)
-            msg_header = msg_body; 
-            msg_body = ""; 
+        if (spaceIndex == -1) {
+            msg_header = msg_body;
+            msg_body = "";
+        }
         else{
             msg_header = msg_body.substring(0, spaceIndex); 
             msg_body = msg_body.substring(msg_header.length()); 
