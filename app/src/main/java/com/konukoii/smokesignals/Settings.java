@@ -28,8 +28,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch wif;
     Switch whit;
     Switch blu;
-
-
+    Switch pow;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +43,8 @@ public class Settings extends Activity { //used to determine the state of the sw
         wif = (Switch) findViewById(R.id.switch8);
         whit = (Switch) findViewById(R.id.switch10);
         blu = (Switch) findViewById(R.id.switch9);
+        pow = (Switch) findViewById(R.id.switch11);
+
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -95,6 +96,11 @@ public class Settings extends Activity { //used to determine the state of the sw
                 toggleBluetooth(buttonView);
             }
         });
+        pow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                togglePower(buttonView);
+            }
+        });
         Log.d("onCreate","onCreate");
 
     }
@@ -123,6 +129,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("wifi",wif.isChecked());
         edit.putBoolean("whitelist",whit.isChecked());
         edit.putBoolean("bluetooth",blu.isChecked());
+        edit.putBoolean("power",pow.isChecked());
         //it settles the variables that you added
         edit.apply();
 
@@ -143,6 +150,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setWifi(sharePref.getBoolean("wifi",true));
         this.setWhitelist(sharePref.getBoolean("whitelist",true));
         this.setBluetooth(sharePref.getBoolean("bluetooth",true));
+        this.setPower(sharePref.getBoolean("power",true));
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
@@ -158,6 +166,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     private static boolean wifi = true;
     private static boolean whitelist = true;
     private static boolean bluetooth = true;
+    private static boolean power = true;
 
 
     // SETTER FUNCTIONS
@@ -212,6 +221,10 @@ public class Settings extends Activity { //used to determine the state of the sw
         blu.setChecked(state);
         bluetooth = state;
     }
+    public void setPower(boolean state) {
+        pow.setChecked(state);
+        power = state;
+    }
 
 
     // GETTER FUNCTIONS
@@ -253,8 +266,10 @@ public class Settings extends Activity { //used to determine the state of the sw
         return whitelist;
     }
 
-    public static boolean getBluetooth(){
-        return bluetooth;
+    public static boolean getBluetooth(){ return bluetooth; }
+
+    public static boolean getPower(){
+        return power;
     }
 
 
@@ -383,6 +398,19 @@ public class Settings extends Activity { //used to determine the state of the sw
         }
         else{
             Log.d("toggleBluetooth", "Bluetooth is off");
+        }
+        this.saveSettings();
+    }
+
+    public void togglePower(View view) {
+        power = pow.isChecked();
+        pow.setChecked(power);
+
+        if(power){
+            Log.d("togglePower", "Power is on");
+        }
+        else{
+            Log.d("togglePower", "Power is off");
         }
         this.saveSettings();
     }
