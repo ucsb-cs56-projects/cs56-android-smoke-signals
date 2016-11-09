@@ -163,6 +163,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             msg_body = msg_body.replaceAll("^\\s+", ""); 
         }   
         msg_header = msg_header.substring(0, 2) + Character.toUpperCase(msg_header.charAt(2)) + (msg_header.substring(3)).toLowerCase();
+        if (!(msg_header.equals("//Sms"))){
+            msg_body = msg_body.replaceFirst("\\s++$", "");
+        }
         
         if (msg_header.equals("//Location")){
             if (Settings.getLocation()) {
