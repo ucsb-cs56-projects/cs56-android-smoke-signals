@@ -107,7 +107,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
                                                     "'//Joke' <-To get a lame joke\n"+
                                                     "'//Help' <-To display this help menu again\n" +
-                                                    "'//SMS [number] m:[message]' <-To send a text message to a 11-digit phone number\n" +
+                                                    "'//SMS [number] [message]' <-To send a text message to a 10-digit phone number\n" +
                                                     "'//Wifi' <-To get the wifi state of the phone\n" +
                                                     "'//Bluetooth' <-To get the bluetooth state of the phone\n" +
                                                     "'//PowerSave [function name]' <-To turn off function\n";
@@ -151,8 +151,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //ParseCmd
     private int parseSMS(String msg_body){
-        msg_body = msg_body.replaceAll("\\s",""); 
-        msg_body = msg_body.substring(0, 2) + Character.toUpperCase(msg_body.charAt(2)) + (msg_body.substring(3)).toLowerCase(); 
+        //msg_body = msg_body.replaceAll("\\s","");
+        //msg_body = msg_body.substring(0, 2) + Character.toUpperCase(msg_body.charAt(2)) + (msg_body.substring(3)).toLowerCase();
         
         if (msg_body.equals("//Location")){
             if (Settings.getLocation()) {
@@ -215,9 +215,15 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
         else if (msg_body.equals("//Wifi")){
             if (Settings.getWifi()) {
-                Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
-                QueryWifi();
-                return WIFI;
+                if(msg_body.equals("//Wifi")){
+                    Toast.makeText(context, "Wifi Status?", Toast.LENGTH_LONG).show();
+                    QueryWifi();
+                    return WIFI;
+                }
+                else{
+                    QueryWifi(msg_body.substring(7));
+                    return WIFI;
+                }
             }
             else{
                 Toast.makeText(context, "Wifi is off", Toast.LENGTH_SHORT).show();
@@ -237,8 +243,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
         else if (msg_body.substring(0,11).equals("//Powersave")){
             if(Settings.getPower()){
-                Toast.makeText(context,"Turning off features...", Toast.LENGTH_SHORT).show();
-                QueryPower(msg_body.substring(11));
+                QueryPower(msg_body.substring(12));
                 return POWERSAVE;
             }
             else{
@@ -249,7 +254,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_body.substring(0,9).equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                QueryContact(msg_body.substring(9));
+                QueryContact(msg_body.substring(10));
                 return CONTACTSEARCH;
             }
             else {
@@ -257,10 +262,10 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
-        else if (msg_body.substring(0,5).equals("//Sms")){
+        else if (msg_body.substring(0,5).equals("//SMS")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                QuerySMS(msg_body.substring(5));
+                QuerySMS(msg_body.substring(6));
                 return SMS;
             }
             else {
@@ -479,7 +484,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     private void QuerySMS(String query){
         String phoneNum = query.substring(0,10);
-        String message = query.substring(10);
+        String message = query.substring(11);
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
@@ -498,18 +503,47 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
     }
 
+    private void QueryWifi(String funct){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryWifi",Toast.LENGTH_SHORT).show();
+
+        //make sure context is used for getSystemService
+        WifiManager access = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        if(funct.equals("on")){
+            access.setWifiEnabled(true);
+            Toast.makeText(context,"Wifi enabled", Toast.LENGTH_SHORT).show();
+        }
+        if(funct.equals("off")){
+            access.setWifiEnabled(false);
+            Toast.makeText(context,"Wifi disabled", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void QueryBluetooth(){
         //Tell me that this function is being called
         Toast.makeText(context, "Fired up QueryBluetooth",Toast.LENGTH_SHORT).show();
 
         //make sure context is used for getSystemService
-        BluetoothManager bmanager = (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter check = bmanager.getAdapter();
-        if(check.isEnabled()){
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter.isEnabled()){
             sendSMS(msg_from, "Bluetooth is on");
         }
         else{
             sendSMS(msg_from, "Bluetooth is off");
+        }
+    }
+
+    private void QueryBluetooth(String funct){
+        //Tell me that this function is being called
+        Toast.makeText(context, "Fired up QueryBluetooth",Toast.LENGTH_SHORT).show();
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(funct.equals("on")){
+            mBluetoothAdapter.enable();
+            Toast.makeText(context,"Bluetooth enabled", Toast.LENGTH_SHORT).show();
+        }
+        if(funct.equals("off")) {
+            mBluetoothAdapter.disable();
+            Toast.makeText(context, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
         }
     }
 
