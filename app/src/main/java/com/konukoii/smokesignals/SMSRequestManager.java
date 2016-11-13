@@ -1,41 +1,29 @@
 package com.konukoii.smokesignals;
 
-import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationListener;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.IBinder; // unnecessary?
+import android.os.IBinder;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.telephony.gsm.SmsMessage;
+import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.IntentFilter;
-import android.provider.CallLog;
 import android.database.Cursor;
-import android.content.ContentResolver;
-import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import android.provider.ContactsContract.PhoneLookup;
-import android.content.ContentResolver;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import java.util.Calendar;
 import java.util.Random;
@@ -43,9 +31,7 @@ import java.util.Random;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.view.View;
 import android.net.wifi.WifiManager;
-import java.io.OutputStreamWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
