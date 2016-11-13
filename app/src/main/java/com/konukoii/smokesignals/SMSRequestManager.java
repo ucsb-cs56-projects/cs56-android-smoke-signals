@@ -46,6 +46,8 @@ import android.media.RingtoneManager;
 import android.view.View;
 import android.net.wifi.WifiManager;
 import java.io.OutputStreamWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by TransAtlantic on 2/14/2015.
@@ -483,6 +485,16 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         //3. Play Alarm
         final Ringtone r = RingtoneManager.getRingtone(context, alert);
         r.play();
+
+        // create a timer task to stop the ring after a certain time (2 minutes = 120000 ms)
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                r.stop();
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task,120000);
 
         /*
         try {
