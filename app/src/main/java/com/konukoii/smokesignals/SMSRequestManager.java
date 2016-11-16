@@ -250,7 +250,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
         else if (msg_header.equals("//Powersave")){
             if(Settings.getPower()){
-                QueryPower(msg_body);
+                if(msg_body == ""){
+                    QueryHelp();
+                }
+                else {
+                    QueryPower(msg_body);
+                }
                 return POWERSAVE;
             }
             else{
@@ -261,7 +266,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                QueryContact(msg_body);
+                if(msg_body == ""){
+                    QueryHelp();
+                }
+                else {
+                    QueryContact(msg_body);
+                }
                 return CONTACTSEARCH;
             }
             else {
@@ -272,7 +282,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                QuerySMS(msg_body);
+                if(msg_body == ""){
+                    QueryHelp();
+                }
+                else {
+                    QuerySMS(msg_body);
+                }
                 return SMS;
             }
             else {
@@ -502,6 +517,10 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private void QuerySMS(String query){
         String phoneNum = query.substring(0,10);
         String message = query.substring(11);
+            if(message == ""){
+                QueryHelp();
+                return;
+            }
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
