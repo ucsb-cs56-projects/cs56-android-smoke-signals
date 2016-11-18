@@ -250,8 +250,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
         else if (msg_header.equals("//Powersave")){
             if(Settings.getPower()){
-                if(msg_body == ""){
-                    QueryHelp();
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//Powersave [function name] <- please enter a function (wifi, bluetooth, mute, or all) after //Powersave to turn it off.");
                 }
                 else {
                     QueryPower(msg_body);
@@ -266,8 +266,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                if(msg_body == ""){
-                    QueryHelp();
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//Contact [name] <- please enter a name (3 or more letters) after //Contact command to find a contact.");
                 }
                 else {
                     QueryContact(msg_body);
@@ -282,8 +282,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                if(msg_body == ""){
-                    QueryHelp();
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
                 }
                 else {
                     QuerySMS(msg_body);
@@ -294,6 +294,22 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 Toast.makeText(context, "SMS is off", Toast.LENGTH_LONG).show();
                 return 0;
             }
+        }
+        else if (msg_header.substring(0,5).equals("//Loc")
+                ||msg_header.substring(0,5).equals("//Con")
+                ||msg_header.substring(0,5).equals("//Cal")
+                ||msg_header.substring(0,5).equals("//Bat")
+                ||msg_header.substring(0,5).equals("//Rin")
+                ||msg_header.substring(0,5).equals("//Jok")
+                ||msg_header.substring(0,5).equals("//Hel")
+                ||msg_header.substring(0,5).equals("//Wif")
+                ||msg_header.substring(0,5).equals("//Blu")
+                ||msg_header.substring(0,5).equals("//Pow")
+                ){
+            // if the first three letters of user's command matches the first three of any, but doesn't match a command
+            // but doesn't match a command we'll send them the help text
+            QueryHelp();
+            return 0;
         }
         return 0;
     }
@@ -515,12 +531,13 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     }
 
     private void QuerySMS(String query){
+        // if the length of the query (stuff after //SMS) is less than 10 numbers, plus a space, plus at least one character, send them help
+        if(query.length() <= 11){
+            sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
+            return;
+        }
         String phoneNum = query.substring(0,10);
         String message = query.substring(11);
-            if(message == ""){
-                QueryHelp();
-                return;
-            }
         sendSMS(phoneNum,message);
         sendSMS(msg_from,"Sent message to "+ phoneNum + " : " + message);
     }
