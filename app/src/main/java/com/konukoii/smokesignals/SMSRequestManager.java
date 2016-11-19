@@ -1,41 +1,29 @@
 package com.konukoii.smokesignals;
 
-import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationListener;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.IBinder; // unnecessary?
+import android.os.IBinder;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.telephony.gsm.SmsMessage;
+import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.IntentFilter;
-import android.provider.CallLog;
 import android.database.Cursor;
-import android.content.ContentResolver;
-import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import android.provider.ContactsContract.PhoneLookup;
-import android.content.ContentResolver;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import java.util.Calendar;
 import java.util.Random;
@@ -43,9 +31,7 @@ import java.util.Random;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.view.View;
 import android.net.wifi.WifiManager;
-import java.io.OutputStreamWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -264,7 +250,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         }
         else if (msg_header.equals("//Powersave")){
             if(Settings.getPower()){
-                QueryPower(msg_body);
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//Powersave [function name] <- please enter a function (wifi, bluetooth, mute, or all) after //Powersave to turn it off.");
+                }
+                else {
+                    QueryPower(msg_body);
+                }
                 return POWERSAVE;
             }
             else{
@@ -275,7 +266,12 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Contact")){
             if (Settings.getContact()) {
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
-                QueryContact(msg_body);
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//Contact [name] <- please enter a name (3 or more letters) after //Contact command to find a contact.");
+                }
+                else {
+                    QueryContact(msg_body);
+                }
                 return CONTACTSEARCH;
             }
             else {
@@ -286,13 +282,34 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                QuerySMS(msg_body);
+                if(msg_body.equals("")){
+                    sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
+                }
+                else {
+                    QuerySMS(msg_body);
+                }
                 return SMS;
             }
             else {
                 Toast.makeText(context, "SMS is off", Toast.LENGTH_LONG).show();
                 return 0;
             }
+        }
+        else if (msg_header.substring(0,5).equals("//Loc")
+                ||msg_header.substring(0,5).equals("//Con")
+                ||msg_header.substring(0,5).equals("//Cal")
+                ||msg_header.substring(0,5).equals("//Bat")
+                ||msg_header.substring(0,5).equals("//Rin")
+                ||msg_header.substring(0,5).equals("//Jok")
+                ||msg_header.substring(0,5).equals("//Hel")
+                ||msg_header.substring(0,5).equals("//Wif")
+                ||msg_header.substring(0,5).equals("//Blu")
+                ||msg_header.substring(0,5).equals("//Pow")
+                ){
+            // if the first three letters of user's command matches the first three of any, but doesn't match a command
+            // but doesn't match a command we'll send them the help text
+            QueryHelp();
+            return 0;
         }
         return 0;
     }
@@ -514,6 +531,11 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     }
 
     private void QuerySMS(String query){
+        // if the length of the query (stuff after //SMS) is less than 10 numbers, plus a space, plus at least one character, send them help
+        if(query.length() <= 11){
+            sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
+            return;
+        }
         String phoneNum = query.substring(0,10);
         String message = query.substring(11);
         sendSMS(phoneNum,message);

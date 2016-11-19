@@ -6,16 +6,14 @@ package com.konukoii.smokesignals;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.telephony.gsm.SmsMessage;
+import android.telephony.SmsMessage;
 import android.os.Bundle;
-import android.provider.Telephony.Sms;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -138,9 +136,10 @@ public class MainService extends Service{
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onStart");
+        return START_STICKY;
     }
 
     @Override
