@@ -44,7 +44,9 @@ public class WhiteList extends Activity {
         try {
 
             OutputStreamWriter out = new OutputStreamWriter(openFileOutput(storeText, 0));
-            out.write(txtEditor.getText().toString());
+            String numbers = txtEditor.getText().toString();
+            numbers = numbers.replaceAll("[^\\d\\n]", "");
+            out.write(numbers);
             out.close();
 
             Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();
@@ -59,7 +61,13 @@ public class WhiteList extends Activity {
     public void append(View v){
         try {
             OutputStreamWriter out = new OutputStreamWriter(openFileOutput(storeText, Context.MODE_APPEND));
-            out.write(appendText.getText().toString()+"\n");
+            String newNumber = appendText.getText().toString();
+            newNumber = newNumber.replaceAll("[^\\d]", "");
+            if(newNumber.length() < 10){
+                Toast.makeText(this, "Number must be at least 10 digits", Toast.LENGTH_LONG).show();
+                return;
+            }
+            out.write(newNumber+"\n");
             out.close();
 
             Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();

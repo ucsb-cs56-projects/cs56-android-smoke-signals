@@ -98,7 +98,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//SMS [number] [message]' <-To send a text message to a 10-digit phone number\n" +
                                                     "'//Wifi' <-To get the wifi state of the phone\n" +
                                                     "'//Bluetooth' <-To get the bluetooth state of the phone\n" +
-                                                    "'//PowerSave [function name]' <-To turn off function\n";
+                                                    "'//PowerSave [function name]' <-To turn off function";
 
 
     Context context;    //The context that called this
@@ -268,6 +268,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 Toast.makeText(context, "Contact?", Toast.LENGTH_LONG).show();
                 if(msg_body.equals("")){
                     sendSMS(msg_from, "//Contact [name] <- please enter a name (3 or more letters) after //Contact command to find a contact.");
+                    return CONTACTSEARCH;
                 }
                 else {
                     QueryContact(msg_body);
@@ -282,8 +283,9 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
         else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
-                if(msg_body.equals("")){
+                if(msg_body.length() <= 11){
                     sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
+                    return SMS;
                 }
                 else {
                     QuerySMS(msg_body);
@@ -532,10 +534,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     private void QuerySMS(String query){
         // if the length of the query (stuff after //SMS) is less than 10 numbers, plus a space, plus at least one character, send them help
-        if(query.length() <= 11){
-            sendSMS(msg_from, "//SMS [number] [message] <- please enter a 10 digit phone number, followed by a message after //SMS to send an SMS message.");
-            return;
-        }
         String phoneNum = query.substring(0,10);
         String message = query.substring(11);
         sendSMS(phoneNum,message);
