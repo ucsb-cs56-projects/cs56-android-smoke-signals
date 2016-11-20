@@ -46,6 +46,14 @@ public class WhiteList extends Activity {
             OutputStreamWriter out = new OutputStreamWriter(openFileOutput(storeText, 0));
             String numbers = txtEditor.getText().toString();
             numbers = numbers.replaceAll("[^\\d\\n]", "");
+            String[] lines = numbers.split(System.getProperty("line.separator"));
+            for (int i = 0; i < lines.length; i++){
+                if (lines[i].length() < 10){
+                    Toast.makeText(this, "Numbers must be at least 10 digits", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+            }
             out.write(numbers);
             out.close();
 
