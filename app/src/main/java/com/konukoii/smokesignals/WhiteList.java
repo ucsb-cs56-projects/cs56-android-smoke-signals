@@ -54,7 +54,7 @@ public class WhiteList extends Activity {
                 }
 
             }
-            out.write(numbers);
+            out.write(numbers+"\n");
             out.close();
 
             Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();

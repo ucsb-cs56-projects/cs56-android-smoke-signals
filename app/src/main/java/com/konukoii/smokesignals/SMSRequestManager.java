@@ -57,6 +57,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private final static int WIFI = 9;
     private final static int BLUETOOTH = 10;
     private final static int POWERSAVE = 11;
+    private final static int STATUS = 12; 
 
 
     private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
@@ -95,7 +96,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                                                     "'//Help' <-To display this help menu again\n" +
                                                     "'//SMS [number] [message]' <-To send a text message to a 10-digit phone number\n" +
                                                     "'//Wifi' <-To get the wifi state of the phone\n" +
-                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n" +
+                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n" + 
+                                                    "'//Status [argument]' <- To get the status of bluetooth, wifi, or both\n" + 
                                                     "'//PowerSave [function name]' <-To turn off function";
 
 
@@ -278,6 +280,50 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 return 0;
             }
         }
+        else if (msg_header.equals("//Status")){
+            if (Settings.getStatus()) {
+                if (msg_body.equals("all")){
+                    if (Settings.getWifi() && Settings.getBluetooth()){
+                        Toast.makeText(context, "Wifi and Bluetooth Status?", Toast.LENGTH_LONG).show();
+                        QueryWifi(); 
+                        QueryBluetooth(); 
+                        return STATUS; 
+                    }
+                    else {
+                         Toast.makeText(context, "Either wifi or bluetooth status is off", Toast.LENGTH_SHORT).show();
+                         return 0;
+                    }
+                } 
+                else if (msg_body.equals("wifi")){
+                    if (Settings.getWifi()) {
+                        QueryWifi(); 
+                        return WIFI; 
+                    }
+                    else{
+                        Toast.makeText(context, "Wifi is off", Toast.LENGTH_SHORT).show();
+                        return 0;
+                    }
+                }
+                else if (msg_body.equals("bluetooth")){
+                    if (Settings.getBluetooth()) {
+                        Toast.makeText(context, "Bluetooth Status?", Toast.LENGTH_SHORT).show();
+                        QueryBluetooth();
+                        return BLUETOOTH;
+                    } else {
+                        Toast.makeText(context, "Bluetooth is off", Toast.LENGTH_SHORT).show();
+                        return 0;
+                    }
+                }
+                else {
+                    sendSMS(msg_from, "//Status [function name] <- please enter a function (wifi, bluetooth, or all) after //Powersave to turn it off.");
+                    return STATUS; 
+                }
+            }
+            else {
+                Toast.makeText(context, "Status is off", Toast.LENGTH_SHORT).show();
+                return 0;
+            }    
+        }
         else if (msg_header.equals("//Sms")){
             if(Settings.getSms()) {
                 Toast.makeText(context, "SMS?", Toast.LENGTH_LONG).show();
@@ -305,6 +351,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                 ||msg_header.substring(0,5).equals("//Wif")
                 ||msg_header.substring(0,5).equals("//Blu")
                 ||msg_header.substring(0,5).equals("//Pow")
+                ||msg_header.substring(0,5).equals("//Sta")
                 ){
             // if the first three letters of user's command matches the first three of any, but doesn't match a command
             // but doesn't match a command we'll send them the help text

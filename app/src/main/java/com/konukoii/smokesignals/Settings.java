@@ -29,6 +29,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     Switch whit;
     Switch blu;
     Switch pow;
+    Switch sta; 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         whit = (Switch) findViewById(R.id.switch10);
         blu = (Switch) findViewById(R.id.switch9);
         pow = (Switch) findViewById(R.id.switch11);
+        sta = (Switch) findViewById(R.id.switch12); 
 
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -101,6 +103,11 @@ public class Settings extends Activity { //used to determine the state of the sw
                 togglePower(buttonView);
             }
         });
+        sta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                togglePower(buttonView);
+            }
+        });
         Log.d("onCreate","onCreate");
 
     }
@@ -130,6 +137,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         edit.putBoolean("whitelist",whit.isChecked());
         edit.putBoolean("bluetooth",blu.isChecked());
         edit.putBoolean("power",pow.isChecked());
+        edit.putBoolean("status",sta.isChecked()); 
         //it settles the variables that you added
         edit.apply();
 
@@ -151,6 +159,7 @@ public class Settings extends Activity { //used to determine the state of the sw
         this.setWhitelist(sharePref.getBoolean("whitelist",true));
         this.setBluetooth(sharePref.getBoolean("bluetooth",true));
         this.setPower(sharePref.getBoolean("power",true));
+        this.setStatus(sharePref.getBoolean("status",true)); 
 
         Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
     }
@@ -167,7 +176,7 @@ public class Settings extends Activity { //used to determine the state of the sw
     private static boolean whitelist = true;
     private static boolean bluetooth = true;
     private static boolean power = true;
-
+    private static boolean status = true; 
 
     // SETTER FUNCTIONS
     //sets the state of the app functions to true or false
@@ -225,6 +234,11 @@ public class Settings extends Activity { //used to determine the state of the sw
         pow.setChecked(state);
         power = state;
     }
+    
+    public void setStatus(boolean state){
+        sta.setChecked(state);
+        status = state; 
+    }
 
 
     // GETTER FUNCTIONS
@@ -270,6 +284,10 @@ public class Settings extends Activity { //used to determine the state of the sw
 
     public static boolean getPower(){
         return power;
+    }
+    
+    public static boolean getStatus(){
+        return status; 
     }
 
 
@@ -413,5 +431,17 @@ public class Settings extends Activity { //used to determine the state of the sw
             Log.d("togglePower", "Power is off");
         }
         this.saveSettings();
+    }
+    
+    public void toggleStatus(View view){
+        status = sta.isChecked(); 
+        sta.setChecked(status); 
+        if(status){
+            Log.d("toggleStatus", "Status is on"); 
+        }
+        else {
+            Log.d("toggleStatus", "Status is off"); 
+        }
+        this.saveSettings(); 
     }
 }
