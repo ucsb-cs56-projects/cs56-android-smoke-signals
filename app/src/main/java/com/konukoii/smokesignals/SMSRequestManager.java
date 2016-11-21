@@ -304,7 +304,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
                         return 0;
                     }
                 }
-                else if (msg_body.equals("bluetooth)){
+                else if (msg_body.equals("bluetooth")){
                     if (Settings.getBluetooth()) {
                         Toast.makeText(context, "Bluetooth Status?", Toast.LENGTH_SHORT).show();
                         QueryBluetooth();
