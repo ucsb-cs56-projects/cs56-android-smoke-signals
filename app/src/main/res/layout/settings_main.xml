@@ -176,6 +176,19 @@
         android:layout_alignStart="@+id/switch9"
         android:layout_alignRight="@+id/switch9"
         android:layout_alignEnd="@+id/switch9" />
+    
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:id="@+id/switch12"
+        android:layout_marginTop="26dp"
+        android:checked="true"
+        android:layout_below="@+id/switch10"
+        android:layout_alignLeft="@+id/switch10"
+        android:layout_alignStart="@+id/switch10"
+        android:layout_alignRight="@+id/switch10"
+        android:layout_alignEnd="@+id/switch10" />
 
 
 
