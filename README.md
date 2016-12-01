@@ -57,8 +57,16 @@ To be implemented:
 - As a user, I can blacklist people so that I can maintain privacy. **100 points**
 - As a developer, I can improve the whitelist function by allowing to add people from contacts or numbers with symbols. **100-300 points**
 - As a developer, I can make a blacklist function to be able to stop specific numbers from using the app's functions. When the blacklist setting is on, the whitelist setting is automatically turned off. **100 points**
--Further issues and point values can be found in the issues section of the repo. 
+- Further issues and point values can be found in the issues section of the repo. 
 
 <h2>F16 Final Remarks</h2>
+Currently, everything in the code that is a part of the implemented methods and implemented user stories works! The app compiles and runs and all of these functions return the correct output. Additionally, leniancy has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
 
+Potential features to be added: 
+
+Existing bugs: 
+
+Opportunities for refactoring: 
+
+Advice for working with code/legacy code in general: 
 
