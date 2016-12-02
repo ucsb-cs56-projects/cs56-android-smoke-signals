@@ -60,13 +60,25 @@ To be implemented:
 - Further issues and point values can be found in the issues section of the repo. 
 
 <h2>F16 Final Remarks</h2>
-Currently, everything in the code that is a part of the implemented methods and implemented user stories works! The app compiles and runs and all of these functions return the correct output. Additionally, leniancy has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
+Currently, everything in the code that is a part of the implemented methods and implemented user stories works. The app compiles and runs and all of these functions return the correct output. Additionally, leniancy has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
 
-Potential features to be added: 
+Potential features to be added: Besides the issues and features listed above, a few new issues that we added were
+- Add feature that can make phone light flash on and off (useful for when user is searching for a lost phone or using the ring function) 
+- Improve UI by making the interface more visually pleasing by potentially using more of the empty white space, etc. 
+- Add a toggle to switch all features on or off so users don't have set them individually 
 
 Existing bugs: 
+- In whitelist, make sure to test and potentially modify the two different functions (SAVE and SAVE NUMBER) for adding numbers to the whitelist, because in making the whitelist less strict, bugs could have been introduced when adding numbers to the whitelist under different situations
+- Again in whitelist, a bug that we didn't get around to fixing was that duplicate numbers are still added to the file
 
 Opportunities for refactoring: 
+- You could try seperating the different functions that the application provides into seperate classes, in coordinance with the Single Responsibility design principle, so that adding new functions and making changes to existing functions doesn't require that you modify multiple parts of the SMSRequestManager class
 
 Advice for working with code/legacy code in general: 
+- Start by looking at the Java files in the "app/src/main/java/com/konukoii/smokesignals" directory
+- Then, check out the corresponding .xml files for the layout of the application in the "app/src/main/res/layout" directory
+- Try to research and understand the different APIs that come with the code so that you can optimize the way you use the provided functions in the APIs 
+- Read the Android tutorial in the UCSB CS56 projects page 
+- Make sure that when you make in the Java portion of the code, you also change the layout in the .xml files if needed 
+- Good luck! 
 
