@@ -33,19 +33,18 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.wifi.WifiManager;
 
+import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.CommandManager;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by TransAtlantic on 2/14/2015.
  */
 
-
-
-public class SMSRequestManager extends Service { //idk why I changed it to service
-
-    //Debuggin' Purposes
-    private final static String TAG="SmokeSignals";
+public class SMSRequestManager extends Service {
 
     //Void Read from file the messageCue
-
     private final static int LOCATION = 1;
     private final static int CONTACTSEARCH = 2;
     private final static int MISSEDCALLS = 3;
@@ -57,54 +56,17 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     private final static int WIFI = 9;
     private final static int BLUETOOTH = 10;
     private final static int POWERSAVE = 11;
-    private final static int STATUS = 12; 
-
-
-    private static String J0 = "Will my college degree come in Fahrenheit or Celsius?";
-    private static String J1 = "Why do people come back from baby changing stations with the same baby?";
-    private static String J2 = "If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?";
-    private static String J3 = "Does the five-second rule apply to soup? Please hurry.";
-    private static String J4 = "I am now 22 and my eyesight is worsening, at what point do I get adult supervision?";
-    private static String J5 = "Is the ocean salty because the land doesn't wave back?";
-    private static String J6 = "If I flip a coin 1,000,000 times, what are the odds of me wasting my time?";
-    private static String J7 = "How many calories does my girlfriend burn by jumping to conclusions?";
-    private static String J8 = "I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?";
-    private static String J9 = "Do spiders in Europe have 2.4384 meters instead of 8 feet?";
-    private static String J10 = "Why couldn't the bike stand on its own?\n" + "Because it's two tired";
-    private static String J11 = "What do you call an elephant that doesn't matter?\n" + "irrelephant!";
-    private static String J12 = "Student debt\n";
-    private static String J13 = "What do you get when you cross a snowman with a vampire?\n" + "Frostbite.";
-    private static String J14 = "Can YouTube slow down time? I just read that they upload 300 hours of video every 1 minute.";
-    private static String J15 ="If electricity always follows the path of least resistance, why doesn't lightning only strike in France?";
-    private static String J16 = "In American, someone is shot every 15 seconds. How is that person still alive?";
-    private static String J17 = "I've already squirted two whole bottles of 'no tears' baby shampoo into my daughter's face. Why is she still crying?";
-    private static String J18 = "If I heat my solid state hard drive until it becomes a gaseous state hard drive, would that enable cloud computing?";
-    private static String J19 = "My doctor said he's been practicing for 30 years. When will he start doing his job for real?";
-    private static String J20 = "At what point in a bobcat's life, as it grows and matures, does it prefer to be called a robertcat?";
-    private static String J21 = "If animals don't want to be eaten why are they made of food?";
-
-
-
-    private final static String[] JOKES = {J0,J1,J2,J3,J4,J5,J6,J7,J8,J9,J10,J11,J12,J13,J14,J15,J16,J17,J18,J19,J20,J21};
-    private final static int numJokes = JOKES.length;
-    private final static String HELP_TXT = "TEXT ME:\n'//Location' <- To query GPS coordinates\n" +
-                                                    "'//Contact [name]' <- For contact search\n" +
-                                                    "'//Calls' <- To query missed calls\n" +
-                                                    "'//Battery' <-To query battery life and charging status\n"+
-                                                    "'//Ring' <-For phone to start ringing (for 2 Minutes)\n"+
-                                                    "'//Joke' <-To get a lame joke\n"+
-                                                    "'//Help' <-To display this help menu again\n" +
-                                                    "'//SMS [number] [message]' <-To send a text message to a 10-digit phone number\n" +
-                                                    "'//Wifi' <-To get the wifi state of the phone\n" +
-                                                    "'//Bluetooth' <-To get the bluetooth state of the phone\n" + 
-                                                    "'//Status [argument]' <- To get the status of bluetooth, wifi, or both\n" + 
-                                                    "'//PowerSave [function name]' <-To turn off function";
-
+    private final static int STATUS = 12;
 
     Context context;    //The context that called this
     Intent intent;      //The intent that called this
     String msg_from;    //Who is the app talking to
     MediaPlayer ringerPlayer; //The MediaPlayer for the Ringer
+    CommandManager manager;
+
+    public SMSRequestManager() {
+        manager = new CommandManager();
+    }
 
     //Void Go
         //Main thing from where everything stems from
@@ -188,15 +150,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
             }
         }
         else if (msg_header.equals("//Battery")){
-            if (Settings.getBattery()) {
-                Toast.makeText(context, "Battery?", Toast.LENGTH_LONG).show();
-                QueryBattery();
-                return BATTERYLIFE;
-            }
-            else {
-                Toast.makeText(context, "Battery is off", Toast.LENGTH_LONG).show();
-                return 0;
-            }
+            Command x = manager.getCommand("Battery");
+            if(x != null) x.execute(context, new String[]{});
         }
         else if (msg_header.equals("//Calls")){
             if (Settings.getCalls()) {
@@ -364,7 +319,6 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     //Respond_to_SMS
     private void sendSMS(String phoneNumber, String message){
-
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(message);
         sms.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
@@ -373,7 +327,7 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
     }
 
     //Query Functions//////////////////////////////////////////////////////////////////////////////
-    private void QueryHelp(){sendSMS(msg_from, HELP_TXT);}
+    private void QueryHelp(){sendSMS(msg_from, getResources().getString(R.string.help_text));}
 
     private void QueryBattery(){context.registerReceiver(this.BatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));}
 
@@ -564,7 +518,8 @@ public class SMSRequestManager extends Service { //idk why I changed it to servi
 
     private void QueryJokes(){
         Random rand = new Random();
-        sendSMS(msg_from, JOKES[rand.nextInt(numJokes)]);
+        String[] arr = getResources().getStringArray(R.array.jokes);
+        sendSMS(msg_from, arr[rand.nextInt(arr.length)]);
     }
 
     private void QuerySMS(String query){

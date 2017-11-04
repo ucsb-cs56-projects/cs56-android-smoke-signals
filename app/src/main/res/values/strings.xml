@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">SmokeSignals</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="help_text">TEXT</string>
 
 </resources>
