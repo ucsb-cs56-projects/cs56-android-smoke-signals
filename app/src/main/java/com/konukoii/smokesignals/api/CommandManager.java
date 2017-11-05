@@ -9,22 +9,22 @@ import java.util.HashMap;
 public class CommandManager {
     private HashMap<String, Command> commandMap;
 
-    private static HashMap<String, Command> getCommands() {
-        String[] commands = {
-                "Battery",
-                "Bluetooth",
-                "Calls",
-                "Contact",
-                "Help",
-                "Joke",
-                "Location",
-                "Powersave",
-                "Ring",
-                "SMS",
-                "Whitelist",
-                "Wifi"
-        };
+    public final static String[] commands = {
+            "Battery",
+            "Bluetooth",
+            "Calls",
+            "Contact",
+            "Help",
+            "Joke",
+            "Location",
+            "Powersave",
+            "Ring",
+            "SMS",
+            "Whitelist",
+            "Wifi"
+    };
 
+    private static HashMap<String, Command> getCommands() {
         HashMap<String, Command> map = new HashMap<String, Command>();
         for(String command : commands) {
             Class<?> commandClass;
