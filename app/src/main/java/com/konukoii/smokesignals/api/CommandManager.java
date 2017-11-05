@@ -21,7 +21,6 @@ public class CommandManager {
                 "Powersave",
                 "Ring",
                 "SMS",
-                "Status",
                 "Whitelist",
                 "Wifi"
         };

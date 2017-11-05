@@ -1,7 +1,6 @@
 package com.konukoii.smokesignals.api.commands;
 
 import android.content.Context;
-
 import com.konukoii.smokesignals.api.Command;
 
 /**
@@ -9,7 +8,9 @@ import com.konukoii.smokesignals.api.Command;
  */
 
 public class LocationCommand implements Command {
+
     public String execute(Context context, String[] args) {
+
         return "";
     }
 }
