@@ -139,15 +139,7 @@ public class SMSRequestManager extends Service {
             }
         }
         else if (msg_header.equals("//Ring")){
-            if (Settings.getRing()) {
-                Toast.makeText(context, "Ring?", Toast.LENGTH_LONG).show();
-                QueryRing();
-                return RING;
-            }
-            else{
-                Toast.makeText(context, "Ring is off",Toast.LENGTH_LONG).show();
-                return 0;
-            }
+            manager.getCommand("Ring").execute(context, new String[] {});
         }
         else if (msg_header.equals("//Battery")){
             Command x = manager.getCommand("Battery");
