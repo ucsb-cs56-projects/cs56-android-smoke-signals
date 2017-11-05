@@ -1,6 +1,8 @@
 package com.konukoii.smokesignals.api.commands;
 
 import android.content.Context;
+
+import com.konukoii.smokesignals.R;
 import com.konukoii.smokesignals.api.Command;
 import java.util.Random;
 
@@ -10,7 +12,7 @@ import java.util.Random;
 
 public class JokeCommand implements Command {
     public String execute(Context context, String[] args) {
-        final String[] jokes = context.getResources().getStringArray(jokes);
+        final String[] jokes = context.getResources().getStringArray(R.array.jokes);
         return jokes[(new Random()).nextInt(jokes.length)];
     }
 }

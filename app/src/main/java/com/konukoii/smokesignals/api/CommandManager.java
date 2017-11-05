@@ -52,6 +52,8 @@ public class CommandManager {
     }
 
     public Command getCommand(String command) {
-        return commandMap.get(command);
+        Command temp = commandMap.get(command);
+        if(temp == null) return getCommand("Help");
+        else return temp;
     }
 }
