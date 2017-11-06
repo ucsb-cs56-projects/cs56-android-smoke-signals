@@ -7,50 +7,55 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.commands.validators.NArgValidator;
+import com.konukoii.smokesignals.api.commands.validators.PowersaveValidator;
 
 /**
  * Created by ankushrayabhari on 11/4/17.
  */
 
-public class PowersaveCommand implements Command {
+public class PowersaveCommand extends PowersaveValidator implements Command {
 
-    /** Turns of things to save battery
-     * @param context Context
-     * @param args An array with a single element: The thing to turn off
-     * @return Confirmation message
-     */
+    @Override
+    public String getUsage() {
+        return "//powersave [wifi|bluetooth|audio - optional]";
+    }
+
     public String execute(Context context, String[] args) {
-        if (args.length == 1) {
-            throw new RuntimeException("Expected one arg, got " + args.length);
+        if (args.length == 0) {
+            disableWifi(context);
+            disableAudio(context);
+            disableBluetooth(context);
+        } else {
+            switch(args[0]) {
+                case "wifi":
+                    disableWifi(context);
+                    break;
+                case "bluetooth":
+                    disableBluetooth(context);
+                    break;
+                case "audio":
+                    disableAudio(context);
+                    break;
+            }
         }
-        return execute(context, args[0]);
 
-
+        return "Powersave activated";
     }
 
 
-    private String execute(Context context, String funct) {
-        if (funct.equals("wifi")){
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            wifiManager.setWifiEnabled(false);
-            Toast.makeText(context,"Wifi disabled", Toast.LENGTH_SHORT).show();
-        }
-        else if(funct.equals("bluetooth")){
-            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            mBluetoothAdapter.disable();
-            Toast.makeText(context,"Bluetooth disabled", Toast.LENGTH_SHORT).show();
-        }
-        else if(funct.equals("mute")){
-            AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            Toast.makeText(context,"Phone muted", Toast.LENGTH_SHORT).show();
-        }
-        else if(funct.equals("all")){
-            execute(context, "wifi");
-            execute(context, "bluetooth");
-            execute(context, "mute");
-        }
+    private void disableWifi(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wifiManager.setWifiEnabled(false);
+    }
 
-        return "Power save activated";
+    private void disableBluetooth(Context context) {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.disable();
+    }
+
+    private void disableAudio(Context context) {
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
     }
 }

@@ -6,12 +6,17 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 
 import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.commands.validators.NArgValidator;
 
 /**
  * Created by ankushrayabhari on 11/4/17.
  */
 
-public class BatteryCommand implements Command {
+public class BatteryCommand extends NArgValidator implements Command {
+
+    public BatteryCommand() {
+        super(0);
+    }
 
     private class BatteryStatus {
         public boolean charging;
@@ -20,6 +25,11 @@ public class BatteryCommand implements Command {
         public BatteryStatus(boolean charging, int percent) {
             this.charging = charging;
             this.percent = percent;
+        }
+
+        public String toString() {
+            String charging = (this.charging) ? "Currently Charging." : "Currently not charging.";
+            return "Battery Level: " + Integer.toString(this.percent) + "%. " + charging;
         }
     }
 
@@ -34,10 +44,12 @@ public class BatteryCommand implements Command {
         return new BatteryStatus(charging, percent);
     }
 
-    public String execute(Context context, String[] args) {
-        BatteryStatus status = getStatus(context);
+    @Override
+    public String getUsage() {
+        return "//battery";
+    }
 
-        String charging = (status.charging) ? "Currently Charging." : "Currently not charging.";
-        return "Battery Level: " + Integer.toString(status.percent) + "%. " + charging;
+    public String execute(Context context, String[] args) {
+        return getStatus(context).toString();
     }
 }

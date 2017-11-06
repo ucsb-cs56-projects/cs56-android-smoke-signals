@@ -35,10 +35,16 @@ public class SMSManager extends BroadcastReceiver {
         if(temp.length == 0) return;
 
         String[] arguments = Arrays.copyOfRange(temp, 1, temp.length);
-        String commandName = temp[0];
+        String commandName = temp[0].toLowerCase();
 
         Command command = commandManager.getCommand(commandName);
-        String returnMessage = command.execute(context, arguments);
+
+        String returnMessage = command.getUsage();
+
+        if(command.validate(arguments)) {
+            returnMessage = command.execute(context, arguments);
+        }
+
         sendMessage(phoneNumber, returnMessage);
     }
 

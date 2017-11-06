@@ -6,6 +6,7 @@ import android.provider.CallLog;
 import android.util.Log;
 
 import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.commands.validators.NArgValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +17,22 @@ import static android.content.ContentValues.TAG;
  * Created by ankushrayabhari on 11/4/17.
  */
 
-public class CallsCommand implements Command {
+public class CallsCommand extends NArgValidator implements Command {
 
-    /**
-     * Returns human readable output listing all the calls
-     * @param context Context
-     * @param args In this case an empty array
-     * @return human readable output listing all the calls
-     */
+    public CallsCommand() {
+        super(0);
+    }
+
+
+    @Override
+    public String getUsage() {
+        return "//calls";
+    }
+
     public String execute(Context context, String[] args) {
-
-
         List<Call> calls = getCalls(context);
         if (calls.isEmpty()) {
-            return "No new calls";
+            return "No new calls.";
         }
 
         StringBuilder sb = new StringBuilder("MISSED CALLS:\n");
@@ -39,15 +42,10 @@ public class CallsCommand implements Command {
             sb.append("-------\n");
         }
 
-        String output = sb.toString();
-
-        Log.d(TAG, output);
-
-        return output;
+        return sb.toString();
     }
 
     private List<Call> getCalls(Context context) {
-
         List<Call> calls = new ArrayList<>();
 
         String[] projection = { CallLog.Calls.CACHED_NAME, CallLog.Calls.CACHED_NUMBER_LABEL, CallLog.Calls.TYPE };

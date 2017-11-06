@@ -41,7 +41,7 @@ public class CommandManager {
                 continue;
             }
 
-            map.put(command, action);
+            map.put(command.toLowerCase(), action);
         }
 
         return map;

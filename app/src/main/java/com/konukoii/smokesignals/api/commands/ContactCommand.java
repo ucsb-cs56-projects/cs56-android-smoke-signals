@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.commands.validators.NArgValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,28 +15,25 @@ import java.util.List;
  * Created by ankushrayabhari on 11/4/17.
  */
 
-public class ContactCommand implements Command {
+public class ContactCommand extends NArgValidator implements Command {
 
-    /** Returns a list of user's contacts by query
-     * @param context Context
-     * @param args An array with a single element: The query
-     * @return a list of user's contacts by query
-     */
+    public ContactCommand() {
+        super(1);
+    }
+
+    @Override
+    public String getUsage() {
+        return "//contact [query]";
+    }
+
     public String execute(Context context, String[] args) {
-
-        if (args.length != 1) {
-            throw new RuntimeException("Expected 1 arg, got " + args.length);
-        }
-
         String query = args[0];
-        //DO NOT DELETE THIS. Believe me, I have seen what happens when you indiscriminatly query for 'a' and suddenly your phone is dumping all your contacts!
+
         if (query.length()<=2){
             return "Query is too short. Please provide a contact query at least of at 3 characters";
         }
 
-
         List<Contact> contacts = getContacts(context, query);
-
         if (contacts.isEmpty()) {
             return "No contact found matching " + query;
         }
@@ -52,7 +50,7 @@ public class ContactCommand implements Command {
     private List<Contact> getContacts(Context context, String query) {
         List<Contact> contacts = new ArrayList<>();
 
-        query = "%"+query+"%"; //Super important for the SQL LIKE command (LIKE %ed% returns true to EDuardo, pEDro, etc. (also LIKE is not case sensitive!)
+        query = "%"+query+"%";
         String where = ContactsContract.Data.MIMETYPE + " = ? AND " +
                 ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " LIKE ?" ;
 

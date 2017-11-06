@@ -7,6 +7,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 
 import com.konukoii.smokesignals.api.Command;
+import com.konukoii.smokesignals.api.commands.validators.NArgValidator;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +16,17 @@ import java.util.TimerTask;
  * Created by ankushrayabhari on 11/4/17.
  */
 
-public class RingCommand implements Command {
+public class RingCommand extends NArgValidator implements Command {
+
+    public RingCommand() {
+        super(0);
+    }
+
+    @Override
+    public String getUsage() {
+        return "//ring";
+    }
+
     public String execute(Context context, String[] args) {
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
