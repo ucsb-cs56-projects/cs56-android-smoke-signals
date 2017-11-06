@@ -42,6 +42,7 @@
         <receiver android:name=".SMSManager" android:exported="true">
             <intent-filter android:priority="10000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
+                <action android:name="android.intent.action.USER_PRESENT"></action>
             </intent-filter>
         </receiver>
     </application>

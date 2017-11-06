@@ -17,9 +17,41 @@ import java.util.TimerTask;
  */
 
 public class RingCommand extends NArgValidator implements Command {
+    private class RingStopTask {
+        private TimerTask stopTask;
+        private Timer timer;
+
+        public RingStopTask(final Ringtone r) {
+            stopTask = new TimerTask() {
+                @Override
+                public void run() {
+                    r.stop();
+                }
+            };
+
+            timer = new Timer();
+        }
+
+        public void scheduleStop(int delayInMin, Runnable runnable) {
+            timer.schedule(stopTask, delayInMin * 60 * 1000);
+            if(runnable != null) runnable.run();
+        }
+
+        public void scheduleStop(int delayInMin) {
+            scheduleStop(delayInMin, null);
+        }
+
+        public void immediateStop() {
+            timer.purge();
+            stopTask.run();
+        }
+    }
+
+    private RingStopTask task;
 
     public RingCommand() {
         super(0);
+        task = null;
     }
 
     @Override
@@ -49,15 +81,20 @@ public class RingCommand extends NArgValidator implements Command {
         final Ringtone r = RingtoneManager.getRingtone(context, alert);
         r.play();
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        task = new RingStopTask(r);
+        task.scheduleStop(2, new Runnable() {
             @Override
             public void run() {
-                r.stop();
+                task = null;
             }
-        }, 10000);
+        });
 
+        return "Phone will now ring for the next 2 minutes!";
+    }
 
-        return "Phone will now ring for the next 10 seconds!";
+    public void stopRinging() {
+        if(task != null) {
+            task.immediateStop();
+        }
     }
 }

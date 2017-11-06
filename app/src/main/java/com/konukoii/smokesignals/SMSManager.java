@@ -9,6 +9,7 @@ import android.telephony.SmsMessage;
 
 import com.konukoii.smokesignals.api.Command;
 import com.konukoii.smokesignals.api.CommandManager;
+import com.konukoii.smokesignals.api.commands.RingCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,11 +58,18 @@ public class SMSManager extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-            String body = smsMessage.getMessageBody().trim();
-            String phoneNumber = smsMessage.getOriginatingAddress();
+        if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                String body = smsMessage.getMessageBody().trim();
+                String phoneNumber = smsMessage.getOriginatingAddress();
 
-            messageReceived(context, phoneNumber, body);
+                messageReceived(context, phoneNumber, body);
+            }
+        } else {
+            RingCommand ringer = (RingCommand) commandManager.getCommand("ring");
+            ringer.stopRinging();
         }
+
+
     }
 }
