@@ -32,10 +32,12 @@ public class MainService extends Service{
     //Debuggin' Purpouses
     private final static String TAG="SmokeSignals";
     private PhoneNumberDao phoneNumberDao;
+    private SMSRequestManager smsRequestManager;
 
     public MainService() {
         super();
         phoneNumberDao = new DaoManager(this).getPhoneNumberDao();
+        smsRequestManager = new SMSRequestManager();
     }
 
 
@@ -44,20 +46,34 @@ public class MainService extends Service{
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            SMSRequestManager smsRequestManager = new SMSRequestManager();
-            if(action.equals("android.provider.Telephony.SMS_RECEIVED")){
-                if(Settings.getWhitelist()==true && verify(context, intent)==true){
-                        Log.d(TAG, "Firing up the SMSRequestManager!");
-                        smsRequestManager.go(context, intent);
-                }
-                //this can be refactored
-                else if(Settings.getWhitelist()==false){
+            if("android.provider.Telephony.SMS_RECEIVED".equals(action)){
+               handleSMS(context, intent);
+            }
+        }
+    };
+
+    private void handleSMS(final Context context, final Intent intent) {
+
+        Callback<Boolean> callback = new Callback<Boolean>() {
+            @Override
+            public void done(Boolean isVerified) {
+                if (isVerified) {
                     Log.d(TAG, "Firing up the SMSRequestManager!");
                     smsRequestManager.go(context, intent);
                 }
             }
+        };
+
+
+        if(Settings.getWhitelist()){ //whitelisting enabled
+            Log.d(TAG, "Whitelisting enabled, checking sender");
+            verify(intent, callback);
         }
-    };
+        else {
+            Log.d(TAG, "Whitelisting disabled, accepting text");
+            callback.done(true); // whitelisting is disabled, allow everything
+        }
+    }
 
     private Set<String> getMessageSenders(Bundle bundle) {
         Set<String> senders = new HashSet<>();
@@ -74,8 +90,9 @@ public class MainService extends Service{
         return senders;
     }
 
-    public boolean verify(Context context, Intent intent){
+    public void verify(Intent intent, Callback<Boolean> callback){
         Set<String> from = getMessageSenders(intent.getExtras());
+        Log.d(TAG, "checking numbers: " + from);
 
 
         List<PhoneNumber> whitelisted = phoneNumberDao.getAll();
@@ -98,13 +115,14 @@ public class MainService extends Service{
                 }
 
                 if (!isValid) {
-                    return false;
+                    Log.d(TAG, "Invalid phone number: " + msg_from);
+                    callback.done(false);
+                    return;
                 }
             }
         }
 
-
-        return true;
+        callback.done(true);
     }
 
 
