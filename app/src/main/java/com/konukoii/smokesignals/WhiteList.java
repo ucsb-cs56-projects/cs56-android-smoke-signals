@@ -22,7 +22,6 @@ import java.io.OutputStreamWriter;
 public class WhiteList extends Activity {
     //this is one way you can save and open a text file
     private final static String storeText ="storeText.txt";
-    private EditText txtEditor;
     private EditText appendText;
     private TextView phoneNumbers;
 
@@ -31,7 +30,6 @@ public class WhiteList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.whitelist_main);
 
-        txtEditor=(EditText)findViewById(R.id.numbers);
         appendText=(EditText)findViewById(R.id.editText4);
         phoneNumbers=(TextView)findViewById(R.id.textView);
         //puts up the list
@@ -39,31 +37,10 @@ public class WhiteList extends Activity {
     }
 
 
-    public void saveNumber(View v) {
+    public void addNumber(View v) {
 
-        try {
 
-            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(storeText, 0));
-            String numbers = txtEditor.getText().toString();
-            numbers = numbers.replaceAll("[^\\d\\n]", "");
-            String[] lines = numbers.split(System.getProperty("line.separator"));
-            for (int i = 0; i < lines.length; i++){
-                if (lines[i].length() < 10){
-                    Toast.makeText(this, "Numbers must be at least 10 digits", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-            }
-            out.write(numbers+"\n");
-            out.close();
-
-            Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();
-
-        } catch (Throwable t) {
-
-            Toast.makeText(this, "Exception: "+t.toString(), Toast.LENGTH_LONG).show();
-        }
-    readFile();
+        Toast.makeText(this, appendText.getText(), Toast.LENGTH_LONG).show();
     }
 
     public void append(View v){
@@ -99,7 +76,6 @@ public class WhiteList extends Activity {
                     buf.append(str+"\n");
                 }
                 in.close();
-                txtEditor.setText(buf.toString());
                 phoneNumbers.setText(buf.toString());
             }
         }
