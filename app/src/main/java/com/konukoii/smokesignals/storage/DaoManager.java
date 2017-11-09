@@ -13,6 +13,7 @@ public class DaoManager {
 
     public DaoManager(Context context) {
         if (appDatabase == null) {
+
             appDatabase = Room.databaseBuilder(context, AppDatabase.class, "database-name")
                     .build();
         }

@@ -2,13 +2,15 @@ package com.konukoii.smokesignals.storage;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by porterhaet on 11/6/17.
  */
 
-@Entity
+@Entity(indices = {
+        @Index(value = "number", unique = true)})
 public class PhoneNumber {
 
     public PhoneNumber(String number) {

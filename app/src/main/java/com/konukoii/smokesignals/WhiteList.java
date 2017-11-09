@@ -3,8 +3,10 @@ package com.konukoii.smokesignals;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,6 +50,20 @@ public class WhiteList extends Activity {
         populateNumbers();
     }
 
+    private void showToast(final String text) {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(WhiteList.this, text,
+                            Toast.LENGTH_LONG).show();
+            }
+        };
+
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(runnable);
+    }
+
 
     public void addNumber(View v) {
         String input = appendText.getText().toString();
@@ -57,13 +73,18 @@ public class WhiteList extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                phoneNumberDao.addPhoneNumber(phoneNumber);
-                whiteListed.add(phoneNumber);
-                setNumbers(whiteListed);
+                try {
+                    phoneNumberDao.addPhoneNumber(phoneNumber);
+                    whiteListed.add(phoneNumber);
+                    setNumbers(whiteListed);
+                }
+                catch (SQLiteConstraintException e) {
+                    showToast(phoneNumber + " is taken");
+                }
+
             }
         }).start();
 
-        Toast.makeText(WhiteList.this, appendText.getText(), Toast.LENGTH_LONG).show();
     }
 
     public void append(View v){
