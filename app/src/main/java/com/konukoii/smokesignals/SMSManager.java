@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 import com.konukoii.smokesignals.api.Command;
 import com.konukoii.smokesignals.api.CommandManager;
@@ -65,11 +66,6 @@ public class SMSManager extends BroadcastReceiver {
 
                 messageReceived(context, phoneNumber, body);
             }
-        } else {
-            RingCommand ringer = (RingCommand) commandManager.getCommand("ring");
-            ringer.stopRinging();
         }
-
-
     }
 }

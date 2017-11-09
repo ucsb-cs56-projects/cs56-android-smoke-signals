@@ -14,7 +14,8 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:allowBackup="true"
@@ -31,6 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RingActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
         <activity android:name="Settings"></activity>
         <activity android:name="WhiteList"></activity>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -42,7 +47,6 @@
         <receiver android:name=".SMSManager" android:exported="true">
             <intent-filter android:priority="10000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
-                <action android:name="android.intent.action.USER_PRESENT"></action>
             </intent-filter>
         </receiver>
     </application>
