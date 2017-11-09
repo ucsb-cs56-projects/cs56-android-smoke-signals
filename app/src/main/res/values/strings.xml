@@ -4,6 +4,6 @@
     <string name="app_name">SmokeSignals</string>
     <string name="action_settings">Settings</string>
     <string name="help_text">TEXT</string>
-    <string name="ringstop_header">Currently Ringing!</string>
+    <string name="ringstop_header">SmokeSignals Currently Ringing!</string>
     <string name="ringstop_button">Stop Ringing!</string>
 </resources>

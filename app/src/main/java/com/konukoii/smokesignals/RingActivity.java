@@ -28,22 +28,7 @@ public class RingActivity extends Activity {
     private CountDownTimer timer;
     static boolean active = false;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if(active) {
-            this.finish();
-            return;
-        }
-
-        setContentView(R.layout.activity_ringstop);
-
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        RingWakeLock.acquireLock(this.getApplicationContext());
-
+    private Ringtone getRingtone() {
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
         if (alert == null) {
@@ -60,7 +45,53 @@ public class RingActivity extends Activity {
 
         manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
-        final Ringtone r = RingtoneManager.getRingtone(this.getApplicationContext(), alert);
+        return RingtoneManager.getRingtone(this.getApplicationContext(), alert);
+    }
+
+    private void turnOnDisplay() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        RingWakeLock.acquireLock(this.getApplicationContext());
+    }
+
+    private void initializeButton() {
+        stopButton = (Button) findViewById(R.id.ringstop_button);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                timer.cancel();
+                stopRinging.run();
+            }
+        });
+    }
+
+    private void initializeTimer() {
+        timer = new CountDownTimer(2 * 60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                progressBar.setProgress((int) (1 - millisUntilFinished / (2.0 * 60 * 1000)));
+            }
+
+            @Override
+            public void onFinish() {
+                stopRinging.run();
+            }
+        };
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (active) {
+            this.finish();
+            return;
+        }
+        setContentView(R.layout.activity_ringstop);
+
+        final Ringtone r = this.getRingtone();
         r.play();
 
         stopRinging = new Runnable() {
@@ -71,27 +102,9 @@ public class RingActivity extends Activity {
             }
         };
 
-        stopButton = (Button)findViewById(R.id.ringstop_button);
-        stopButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v){
-                timer.cancel();
-                stopRinging.run();
-            }
-        });
-
-        timer = new CountDownTimer(2 * 60 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                progressBar.setProgress((int) (1 - millisUntilFinished/(2.0 * 60 * 1000)));
-            }
-
-            @Override
-            public void onFinish() {
-                stopRinging.run();
-            }
-        };
+        progressBar = (ProgressBar) findViewById(R.id.ringstop_progressbar);
+        this.initializeButton();
+        this.initializeTimer();
 
         active = true;
     }
