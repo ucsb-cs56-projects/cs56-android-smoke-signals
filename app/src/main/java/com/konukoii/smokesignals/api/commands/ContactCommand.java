@@ -51,47 +51,26 @@ public class ContactCommand extends NArgValidator implements Command {
         List<Contact> contacts = new ArrayList<>();
 
         query = "%"+query+"%";
-        String where = ContactsContract.Data.MIMETYPE + " = ? AND " +
-                ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " LIKE ?" ;
+        String where = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME + " LIKE ?" ;
 
+        String[] params = {ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, query};
 
-        String[] params = {
-                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
-                query
-        };
+        String[] projectionQuery = {ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Email.DATA, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME};
 
-        String[] projectionQuery = {
-                ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Email.DATA,
-                ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME
-        };
-
-        try (Cursor c = context.getContentResolver().query(
-                ContactsContract.Contacts.CONTENT_URI,
-                projectionQuery,
-                where,
-                params,
-                ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)) {
-
+        try (Cursor c = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projectionQuery, where, params, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)) {
 
             if (c == null || !c.moveToFirst()) {
                 return contacts;
             }
 
             do {
-                int numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                int emailIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-                int nameIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
-
-                String number = c.getString(numberIndex);
-                String name = c.getString(nameIndex);
-                String email = c.getString(emailIndex);
+                String number = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                String email = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
 
                 contacts.add(new Contact(number, name, email));
 
             } while (c.moveToNext());
-
-
         }
         return contacts;
     }
