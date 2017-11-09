@@ -90,6 +90,7 @@ public class RingActivity extends Activity {
             return;
         }
         setContentView(R.layout.activity_ringstop);
+        this.turnOnDisplay();
 
         final Ringtone r = this.getRingtone();
         r.play();
