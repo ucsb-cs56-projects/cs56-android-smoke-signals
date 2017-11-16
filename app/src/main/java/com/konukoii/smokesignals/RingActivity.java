@@ -86,7 +86,7 @@ public class RingActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         if (active) {
-            this.finish();
+            this.finishAndRemoveTask();
             return;
         }
         setContentView(R.layout.activity_ringstop);
@@ -99,7 +99,7 @@ public class RingActivity extends Activity {
             @Override
             public void run() {
                 r.stop();
-                RingActivity.this.finish();
+                RingActivity.this.finishAndRemoveTask();
             }
         };
 
@@ -111,9 +111,9 @@ public class RingActivity extends Activity {
     }
 
     @Override
-    public void finish() {
+    public void finishAndRemoveTask() {
         active = false;
         RingWakeLock.releaseLock(RingActivity.this.getApplicationContext());
-        super.finish();
+        super.finishAndRemoveTask();
     }
 }
