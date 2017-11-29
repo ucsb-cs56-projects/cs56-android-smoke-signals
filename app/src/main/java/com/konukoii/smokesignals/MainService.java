@@ -15,15 +15,30 @@ import android.content.IntentFilter;
 import android.telephony.SmsMessage;
 import android.os.Bundle;
 
+import com.konukoii.smokesignals.storage.DaoManager;
+import com.konukoii.smokesignals.storage.PhoneNumber;
+import com.konukoii.smokesignals.storage.PhoneNumberDao;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MainService extends Service{
 
     private final static String storeText ="storeText.txt";
     //Debuggin' Purpouses
     private final static String TAG="SmokeSignals";
+    private PhoneNumberDao phoneNumberDao;
+    private SMSRequestManager smsRequestManager;
+
+    public MainService() {
+        super();
+        phoneNumberDao = new DaoManager(this).getPhoneNumberDao();
+        smsRequestManager = new SMSRequestManager();
+    }
 
 
     //Broadcast Reciever
@@ -31,91 +46,83 @@ public class MainService extends Service{
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            SMSRequestManager smsRequestManager = new SMSRequestManager();
-            if(action.equals("android.provider.Telephony.SMS_RECEIVED")){
-                if(Settings.getWhitelist()==true && verify(context, intent)==true){
-                        Log.d(TAG, "Firing up the SMSRequestManager!");
-                        smsRequestManager.go(context, intent);
-                }
-                //this can be refactored
-                else if(Settings.getWhitelist()==false){
-                    Log.d(TAG, "Firing up the SMSRequestManager!");
-                    smsRequestManager.go(context, intent);
-                }
+            if("android.provider.Telephony.SMS_RECEIVED".equals(action)){
+               handleSMS(context, intent);
             }
         }
     };
 
-    public boolean verify(Context context, Intent intent){
-        boolean isValid = false;
+    private void handleSMS(final Context context, final Intent intent) {
 
-        Bundle bundle = intent.getExtras();
-        SmsMessage[] msgs = null;
-        String msg_from;
-        msg_from="";
-        String msg_body="";
+        Callback<Boolean> callback = new Callback<Boolean>() {
+            @Override
+            public void done(Boolean isVerified) {
+                if (isVerified) {
+                    Log.d(TAG, "Firing up the SMSRequestManager!");
+                    smsRequestManager.go(context, intent);
+                }
+            }
+        };
+
+
+        if(Settings.getWhitelist()){ //whitelisting enabled
+            Log.d(TAG, "Whitelisting enabled, checking sender");
+            verify(intent, callback);
+        }
+        else {
+            Log.d(TAG, "Whitelisting disabled, accepting text");
+            callback.done(true); // whitelisting is disabled, allow everything
+        }
+    }
+
+    private Set<String> getMessageSenders(Bundle bundle) {
+        Set<String> senders = new HashSet<>();
+
         if (bundle != null) {
-            try {
-                Object[] pdus = (Object[]) bundle.get("pdus");
-                msgs = new SmsMessage[pdus.length];
-                for (int i = 0; i < msgs.length; i++) {
-                    msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                    msg_from = msgs[i].getOriginatingAddress();
-                }
-
-
-            } catch (Exception e) {
-                Log.d(TAG, e.getMessage());
+            Object[] pdus = (Object[]) bundle.get("pdus");
+            SmsMessage[] msgs = new SmsMessage[pdus.length];
+            for (int i = 0; i < msgs.length; i++) {
+                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                senders.add(msgs[i].getOriginatingAddress());
             }
         }
 
+        return senders;
+    }
+
+    public void verify(Intent intent, Callback<Boolean> callback){
+        Set<String> from = getMessageSenders(intent.getExtras());
+        Log.d(TAG, "checking numbers: " + from);
 
 
-        try {
+        List<PhoneNumber> whitelisted = phoneNumberDao.getAll();
 
-            InputStream in = openFileInput(storeText);
-            if (in != null) {
-                InputStreamReader tmp=new InputStreamReader(in);
-                BufferedReader reader=new BufferedReader(tmp);
-                String str;
+        for (PhoneNumber number : whitelisted) {
 
-                while ((str = reader.readLine()) != null) {
+            String searchMe = number.getNumber();
+            boolean isValid = false;
+            for (String msg_from : from) {
 
+                if (searchMe.equals(msg_from)) { continue; }
 
-                    String searchMe = str;
-                    int phoneNumberLength = msg_from.length();
-                    int savedNumber = 7;//str.length();
-                    boolean foundIt = false;
-                    for (int i = 0; i <= (phoneNumberLength-savedNumber); i++) {
-                            if (msg_from.regionMatches(i, searchMe, 0, savedNumber)) {
-                                isValid = true;
-                                break;
-                            }
-                        }
-
-
-
-
-
-
-                    if (str.equals(msg_from)) isValid = true;
-
-
+                int phoneNumberLength = msg_from.length();
+                int savedNumber = 7;//str.length();
+                for (int i = 0; i <= (phoneNumberLength-savedNumber); i++) {
+                    if (msg_from.regionMatches(i, searchMe, 0, savedNumber)) {
+                        isValid = true;
+                        break;
+                    }
                 }
 
-                in.close();
-
+                if (!isValid) {
+                    Log.d(TAG, "Invalid phone number: " + msg_from);
+                    callback.done(false);
+                    return;
+                }
             }
         }
 
-        catch (java.io.FileNotFoundException e) {
-// that's OK, we probably haven't created it yet
-        }
-
-        catch (Throwable t) {
-            Toast.makeText(this, "Exception: " + t.toString(), Toast.LENGTH_LONG).show();
-        }
-        return isValid;
+        callback.done(true);
     }
 
 
