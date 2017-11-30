@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="jokes">
+        <item>Will my college degree come in Fahrenheit or Celsius?</item>
+        <item>Why do people come back from baby changing stations with the same baby?</item>
+        <item>If light travels faster than the speed of sound, how come I hear the guy in the BMW behind me honk before the light turns green?</item>
+        <item>Does the five-second rule apply to soup? Please hurry.</item>
+        <item>I am now 22 and my eyesight is worsening, at what point do I get adult supervision?</item>
+        <item>Is the ocean salty because the land doesn\'t wave back?</item>
+        <item>If I flip a coin 1,000,000 times, what are the odds of me wasting my time?</item>
+        <item>How many calories does my girlfriend burn by jumping to conclusions?</item>
+        <item>I heard Mars has no atmosphere. Could we create an atmosphere by dimming the lights and playing smooth jazz?</item>
+        <item>Do spiders in Europe have 2.4384 meters instead of 8 feet?</item>
+        <item>Why couldn\'t the bike stand on its own? Because it\'s two tired</item>
+        <item>What do you call an elephant that doesn\'t matter? irrelephant!</item>
+        <item>Student debt</item>
+        <item>What do you get when you cross a snowman with a vampire? Frostbite.</item>
+        <item>Can YouTube slow down time? I just read that they upload 300 hours of video every 1 minute.</item>
+        <item>If electricity always follows the path of least resistance, why doesn\'t lightning only strike in France?</item>
+        <item>In America, someone is shot every 15 seconds. How is that person still alive?</item>
+        <item>I\'ve already squirted two whole bottles of \'no tears\' baby shampoo into my daughter\'s face. Why is she still crying?</item>
+        <item>If I heat my solid state hard drive until it becomes a gaseous state hard drive, would that enable cloud computing?</item>
+        <item>My doctor said he\'s been practicing for 30 years. When will he start doing his job for real?</item>
+        <item>At what point in a bobcat\'s life, as it grows and matures, does it prefer to be called a robertcat?</item>
+        <item>If animals don\'t want to be eaten why are they made of food?</item>
+    </string-array>
+</resources>
