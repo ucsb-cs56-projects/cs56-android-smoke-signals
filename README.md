@@ -1,4 +1,4 @@
-# SmokeSignals#
+# SmokeSignals
 CS56 Winter 2016 - Independent Android Project
 
 Original Author: [Pedro M. Sosa]
@@ -6,11 +6,17 @@ Original Author: [Pedro M. Sosa]
 Authors: Franklin Tang, Jackey Lau
 Authors: Simon Wong, Sayali Kakade 
 
-<h2>Project Objective</h2>
+### Project Objective
 Android app that allows you to automate several tasks that can be triggered by an incoming SMS
 
-<h2>Implemented Methods</h2>
+![Before clicking](https://i.imgur.com/s7xqA4d.png)
+![After clicking](https://i.imgur.com/nffqEPv.png)
+
+### Implemented Methods
+
+
 Say you forgot your phone, Using someone else's phone you can text yourself:
+
 - **"//Location" :**  and the phone will text you back with it's gps coordinates.
 - **"//Contact [name]" :** and the phone will text you back with the stored contact info of anyone who fully or partially matches [name].
 - **"//Battery" :** and the phone will text you back with its battery percentage and charging status.
@@ -25,7 +31,7 @@ Say you forgot your phone, Using someone else's phone you can text yourself:
 - **//Powersave [function name]:** to turn off function. 
 - **//WhiteList :** not a text but a function that allows the phone fucntions to be exclusive to the numbers that are saved on the phone.
 
-<h2>Ideas for Improvments</h2>
+### Ideas for Improvments
 
 Essentially you can come up with tons of different things to automate, so you can use that phone "by proxy" through SMS from some other phone.
 
@@ -39,9 +45,10 @@ Essentially you can come up with tons of different things to automate, so you ca
 - **(NEW) //Joke:** Instead of having an array of jokes, use Whitelist as a base to read from a file to get the jokes. This allows the java file to look much cleaner.
 
 
-<h2>User Stories</h2>
+### User Stories
 
 Completed issues: 
+
 - As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app. **150 points**
 - As a developer, I can save the preferences of the settings after it has been made. **300 points**
 - As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use. **300 points**
@@ -51,6 +58,7 @@ Completed issues:
 - As a user, I can whitelist phone numbers to prohibit most people from using the app so that I can maintain privacy. **100 points**
 
 To be implemented: 
+
 - As a user, I can text my phone to turn off functions to save battery life.**100 points**
 - As a developer, I can put jokes in a text file to read from so that I can allow the java file look cleaner. **50 points**
 - As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
@@ -59,26 +67,30 @@ To be implemented:
 - As a developer, I can make a blacklist function to be able to stop specific numbers from using the app's functions. When the blacklist setting is on, the whitelist setting is automatically turned off. **100 points**
 - Further issues and point values can be found in the issues section of the repo. 
 
-<h2>F16 Final Remarks</h2>
-Currently, everything in the code that is a part of the implemented methods and implemented user stories works. The app compiles and runs and all of these functions return the correct output. Additionally, leniancy has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
+### F16 Final Remarks
+
+Currently, everything in the code that is a part of the implemented methods and implemented user stories works. The app compiles and runs and all of these functions return the correct output. Additionally, leniency has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
 
 Potential features to be added: Besides the issues and features listed above, a few new issues that we added were
+
 - Add feature that can make phone light flash on and off (useful for when user is searching for a lost phone or using the ring function) 
 - Improve UI by making the interface more visually pleasing by potentially using more of the empty white space, etc. 
 - Add a toggle to switch all features on or off so users don't have set them individually 
 
 Existing bugs: 
+
 - In whitelist, make sure to test and potentially modify the two different functions (SAVE and SAVE NUMBER) for adding numbers to the whitelist, because in making the whitelist less strict, bugs could have been introduced when adding numbers to the whitelist under different situations
 - Again in whitelist, a bug that we didn't get around to fixing was that duplicate numbers are still added to the file
 
 Opportunities for refactoring: 
+
 - You could try seperating the different functions that the application provides into seperate classes, in coordinance with the Single Responsibility design principle, so that adding new functions and making changes to existing functions doesn't require that you modify multiple parts of the SMSRequestManager class
 
 Advice for working with code/legacy code in general: 
+
 - Start by looking at the Java files in the "app/src/main/java/com/konukoii/smokesignals" directory
 - Then, check out the corresponding .xml files for the layout of the application in the "app/src/main/res/layout" directory
 - Try to research and understand the different APIs that come with the code so that you can optimize the way you use the provided functions in the APIs 
 - Read the Android tutorial in the UCSB CS56 projects page 
 - Make sure that when you make in the Java portion of the code, you also change the layout in the .xml files if needed 
 - Good luck! 
-
