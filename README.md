@@ -68,17 +68,30 @@ To be implemented:
 - Further issues and point values can be found in the issues section of the repo. 
 
 ### F17 Final Remarks
+Currently the codebase is in decent condition, and the android app is bug free. The bulk of the work that was done this quarter was refactoring the old code into something more maintainable. The guiding principle we followed in refactoring was that it should be easy for future code editors to add new commands, etc. There is some code that used topics not covered in class, such as reflection and Android’s Room Library over SQLLite. Reflection is used `CommandManager.java` to be able to execute a command when given a SMS command. Room is used in the storage package to store data in a Sqlite database. I recommend reading up about it [here](https://developer.android.com/topic/libraries/architecture/room.html). Besides those two things, the code is fairly straightforward. Running the Android app can be a little tricky; I would ask your mentor if you run into trouble with any Android related issues. The gist of it is setting up an emulator.
 
-Currently the codebase is in decent condition, and the android app is relatively bug free. The bulk of the work that was done this quarter was refactoring the old code into something more maintainable. Ideally new features should be able to be implemented without having to understand the entirety of the codebase. There is some code that used topics not covered in class, such as reflection and Android’s Room Library. Reflection is used `CommandManager.java` to be able to execute a command when given a SMS command. Room is used in the storage package to store data in a Sqlite database. I recommend reading up about it [here](https://developer.android.com/topic/libraries/architecture/room.html). Besides those two things, the code is fairly straightforward. Running the Android app can be a little tricky; I would ask your mentor if you run into trouble with any Android related issues.
+How the Code Works:
+There are two flows the user can use. 
+- The first is texting to control the device. A broadcast receiver inside the manifest file sets up a BroadcastReceiver for text messages. The listener is defined in SMSRequestManager. It initializes a command manager to load up the commands and then parses the body of the text into a command. It then calls the execute method of the appropriate command passing in the args.
+- The second is interacting with the app settings by opening it up. The class to look for is MainActivity which directs the user to the settings activity or the whitelist activity. From there, look at the Settings or Whitelist class.
 
 Refactoring opportunities:
-- The Activity classes a little all over the place. By the Single Responsibility Principle, they would just manage the UI and related events. The “back end” code that runs when the events happen in the UI should be refactored into different files.
+- The Activity classes are a little all over the place. By the Single Responsibility Principle, they would just manage the UI and related events. The “back end” code that runs when the events happen in the UI should be refactored into different files.
 - In the storage package, there is some boiler plate code that is necessary in order to use Room. That could be refactored into its own package.
+- Ideally, settings should be reworked as we didn't get a chance to refactor it this quarter. It uses SharedPreferences to store the data which is okay but the frontend and backend are coupled together. Try and follow Single Responsibility Principle when refactoring it.
+- Maybe look into how to switch from inheritance to composition for the command validators.
+
+New features:
+- Take a look under issues. Previous quarters have added a lot of fun issues that you can tackle. A lot of them involve looking at a new API like the Camera or reworking another feature. Use the Android docs/online tutorials as a resource to learn more about them. Always look up what features are supported on your min API level as that dictates which new features you can use.
+- We didn't get a chance to write unit tests for our code. Please take a look into how to do that!
 
 Advice
-- The code is in `app/src/main/java/com/konukoii/smokesignals`
-- Instead of using ant, you will use Gradle. Gradle uses `build.gradle` instead of `build.xml`. There are two `build.gradle`s, a `build.gradle` in the root directory and `app/build.gradle`. If you are making edits you most likely want to edit `app/build.gradle`.
+- The code is in `app/src/main/java/com/konukoii/smokesignals`. Using Android Studio is highly recommended to edit the code.
+- Instead of using ant, you will use Gradle. Gradle uses `build.gradle` instead of `build.xml`. There are two `build.gradle`s, a `build.gradle` in the root directory and `app/build.gradle`. If you are making edits you most likely want to edit `app/build.gradle`. You should only have to do this if you are updating dependencies or increasing the min API level for the app.
 - The UI is constructed by the files in `app/src/res/layout`. If you are unfamiliar with this I’d take a look [here](https://developer.android.com/guide/topics/ui/declaring-layout.html)
+- Any strings/hardcoded values should go into `app/src/res/values/strings.xml`.
+- Adding a command is relatively easy: update the string array in the strings file above and then create the appropriately named class in the commands package. See `CommandManager.java` for how that gets instantiated.
+- 
 
 ### F16 Final Remarks
 
