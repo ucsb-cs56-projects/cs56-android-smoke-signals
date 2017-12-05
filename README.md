@@ -67,6 +67,19 @@ To be implemented:
 - As a developer, I can make a blacklist function to be able to stop specific numbers from using the app's functions. When the blacklist setting is on, the whitelist setting is automatically turned off. **100 points**
 - Further issues and point values can be found in the issues section of the repo. 
 
+### F17 Final Remarks
+
+Currently the codebase is in decent condition, and the android app is relatively bug free. The bulk of the work that was done this quarter was refactoring the old code into something more maintainable. Ideally new features should be able to be implemented without having to understand the entirety of the codebase. There is some code that used topics not covered in class, such as reflection and Android’s Room Library. Reflection is used `CommandManager.java` to be able to execute a command when given a SMS command. Room is used in the storage package to store data in a Sqlite database. I recommend reading up about it [here](https://developer.android.com/topic/libraries/architecture/room.html). Besides those two things, the code is fairly straightforward. Running the Android app can be a little tricky; I would ask your mentor if you run into trouble with any Android related issues.
+
+Refactoring opportunities:
+- The Activity classes a little all over the place. By the Single Responsibility Principle, they would just manage the UI and related events. The “back end” code that runs when the events happen in the UI should be refactored into different files.
+- In the storage package, there is some boiler plate code that is necessary in order to use Room. That could be refactored into its own package.
+
+Advice
+- The code is in `app/src/main/java/com/konukoii/smokesignals`
+- Instead of using ant, you will use Gradle. Gradle uses `build.gradle` instead of `build.xml`. There are two `build.gradle`s, a `build.gradle` in the root directory and `app/build.gradle`. If you are making edits you most likely want to edit `app/build.gradle`.
+- The UI is constructed by the files in `app/src/res/layout`. If you are unfamiliar with this I’d take a look [here](https://developer.android.com/guide/topics/ui/declaring-layout.html)
+
 ### F16 Final Remarks
 
 Currently, everything in the code that is a part of the implemented methods and implemented user stories works. The app compiles and runs and all of these functions return the correct output. Additionally, leniency has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
