@@ -3,6 +3,7 @@ package com.konukoii.smokesignals;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -11,6 +12,9 @@ import android.util.Log;
 import com.konukoii.smokesignals.api.Command;
 import com.konukoii.smokesignals.api.CommandManager;
 import com.konukoii.smokesignals.api.commands.RingCommand;
+import com.konukoii.smokesignals.storage.DaoManager;
+import com.konukoii.smokesignals.storage.PhoneNumber;
+import com.konukoii.smokesignals.storage.PhoneNumberDao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +26,7 @@ import java.util.Arrays;
 public class SMSManager extends BroadcastReceiver {
     private SmsManager smsManager;
     private CommandManager commandManager;
+    private PhoneNumberDao phoneNumberDao;
 
     public SMSManager() {
         smsManager = SmsManager.getDefault();
@@ -30,6 +35,15 @@ public class SMSManager extends BroadcastReceiver {
 
     private void messageReceived(Context context, String phoneNumber, String body) {
         if(!body.startsWith("//")) return;
+
+        SharedPreferences sharePref = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        if(sharePref.getBoolean("whitelist", true)) {
+            phoneNumberDao = new DaoManager(context).getPhoneNumberDao();
+            if(!phoneNumberDao.getAll().contains(new PhoneNumber(phoneNumber))) {
+                return;
+            }
+        }
 
         body = body.substring(2);
 
