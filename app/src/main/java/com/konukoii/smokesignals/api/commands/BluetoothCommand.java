@@ -22,7 +22,7 @@ public class BluetoothCommand extends ToggleValidator implements Command {
 
         boolean status = adapter.isEnabled();
         if (args.length > 0) {
-            status = getNewStatus(status, args[0]);
+            status = Toggle.getNewStatus(status, args[0]);
 
             if (status) {
                 adapter.enable();
@@ -32,22 +32,5 @@ public class BluetoothCommand extends ToggleValidator implements Command {
         }
 
         return (status) ? "Bluetooth Enabled" : "Bluetooth Disabled";
-    }
-
-
-    private boolean getNewStatus(boolean status, String arg) {
-        switch (arg) {
-            case "on":
-                status = true;
-                break;
-            case "off":
-                status = false;
-                break;
-            case "toggle":
-                status = !status;
-                break;
-        }
-
-        return status;
     }
 }
