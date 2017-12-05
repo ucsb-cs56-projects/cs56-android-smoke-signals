@@ -4,7 +4,10 @@ CS56 Winter 2016 - Independent Android Project
 Original Author: [Pedro M. Sosa]
 
 Authors: Franklin Tang, Jackey Lau
+
 Authors: Simon Wong, Sayali Kakade 
+
+Authors: Ankush Rayabhari, Porter Haet
 
 ### Project Objective
 Android app that allows you to automate several tasks that can be triggered by an incoming SMS
