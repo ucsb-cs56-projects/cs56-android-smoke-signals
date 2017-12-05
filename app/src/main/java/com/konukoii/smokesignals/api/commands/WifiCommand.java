@@ -20,20 +20,10 @@ public class WifiCommand extends ToggleValidator implements Command {
     public String execute(Context context, String[] args) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
-        boolean status = wifiManager.isWifiEnabled();;
-        if (args.length > 0) {
-            switch(args[0]) {
-                case "on":
-                    status = true;
-                    break;
-                case "off":
-                    status = false;
-                    break;
-                case "toggle":
-                    status = !status;
-                    break;
-            }
+        boolean status = wifiManager.isWifiEnabled();
 
+        if (args.length > 0) {
+            status = Toggle.getNewStatus(status, args[0]);
             wifiManager.setWifiEnabled(status);
         }
 

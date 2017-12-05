@@ -44,4 +44,12 @@ public class PhoneNumber {
     public String toString() {
         return number;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof PhoneNumber) {
+            return ((PhoneNumber) o).getNumber().equals(this.getNumber());
+        }
+        return false;
+    }
 }
