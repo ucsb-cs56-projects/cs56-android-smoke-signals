@@ -36,7 +36,7 @@ Say you forgot your phone, Using someone else's phone you can text yourself:
 
 ### Ideas for Improvments
 
-Essentially you can come up with tons of different things to automate, so you can use that phone "by proxy" through SMS from some other phone.
+Essentially you can come up with tons of different things to automate, so you can use that phone "by proxy" through SMS from some other phone. See issues for the list of potential fixes/updates to make.
 
 - **Custom Commands:** Commands shouldn't be hardcoded. The user should be allowed to change them.
 - **Fix Ringing:** It should ring for say 2 minutes and then stop ringing as soon as the user interacts with the phone *(hint: you might find Intent android.intent.action.USER_PRESENT usefull)*
@@ -45,8 +45,6 @@ Essentially you can come up with tons of different things to automate, so you ca
 - **//Location:** Use Fused location instead of GSM only. Maybe add some timer, so that if it can't find any GSM location it stops after certain time (otherwise it'll drain the battery)
 - **//Snap:** Take a selfie and send media sms with the picture (mobile data has to be enabled)
 - **//ScreenSnap:** Take a screenshot of what is going on your phone currently and send media sms with the picture
-- **(NEW) //Joke:** Instead of having an array of jokes, use Whitelist as a base to read from a file to get the jokes. This allows the java file to look much cleaner.
-
 
 ### User Stories
 
