@@ -25,7 +25,6 @@ public class SMSManager extends BroadcastReceiver {
     private SmsManager smsManager;
     private CommandManager commandManager;
     private AppDatabase mDb;
-    private boolean validPhoneNumber;
 
     public SMSManager() {
         smsManager = SmsManager.getDefault();
