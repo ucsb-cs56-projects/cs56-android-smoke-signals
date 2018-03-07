@@ -1,8 +1,6 @@
 package com.konukoii.smokesignals;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +14,6 @@ import com.konukoii.smokesignals.storage.AppDatabase;
 import com.konukoii.smokesignals.storage.PhoneNumber;
 
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
