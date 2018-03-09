@@ -101,19 +101,17 @@ public class SMSManager extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        final Context context1 = context;
-        final Intent intent1 = intent;
+    public void onReceive(final Context context, final Intent intent) {
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                if(intent1.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
-                    for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent1)) {
+                if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+                    for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
                         String body = smsMessage.getMessageBody().trim();
                         String phoneNumber = smsMessage.getOriginatingAddress();
 
-                        messageReceived(context1, phoneNumber, body);
+                        messageReceived(context, phoneNumber, body);
                     }
                 }
             }
