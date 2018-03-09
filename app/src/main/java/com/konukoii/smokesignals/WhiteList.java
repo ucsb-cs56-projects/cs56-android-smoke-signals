@@ -1,8 +1,6 @@
 package com.konukoii.smokesignals;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.konukoii.smokesignals.storage.DaoManager;
+import com.konukoii.smokesignals.storage.AppDatabase;
 import com.konukoii.smokesignals.storage.PhoneNumber;
-import com.konukoii.smokesignals.storage.PhoneNumberDao;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 import java.util.List;
 
 /**
@@ -30,8 +24,7 @@ public class WhiteList extends Activity {
     private final static String storeText ="storeText.txt";
     private EditText appendText;
     private TextView phoneNumbers;
-    private DaoManager daoManager;
-    private PhoneNumberDao phoneNumberDao;
+    private AppDatabase mDb;
     List<PhoneNumber> whiteListed;
 
     @Override
@@ -41,8 +34,8 @@ public class WhiteList extends Activity {
 
         appendText=(EditText)findViewById(R.id.editText4);
         phoneNumbers=(TextView)findViewById(R.id.textView);
-        daoManager = new DaoManager(getApplicationContext());
-        phoneNumberDao = daoManager.getPhoneNumberDao();
+        mDb = AppDatabase.getDataBaseInstance(getApplicationContext());
+
 
         //puts up the list
         populateNumbers();
@@ -72,7 +65,7 @@ public class WhiteList extends Activity {
             @Override
             public void run() {
                 try {
-                    phoneNumberDao.addPhoneNumber(phoneNumber);
+                    mDb.phoneNumberDao().addPhoneNumber(phoneNumber);
                     whiteListed.add(phoneNumber);
                     setNumbers(whiteListed);
                 }
@@ -112,7 +105,7 @@ public class WhiteList extends Activity {
             @Override
             public void run() {
                 // DB queries have to be run on a separate thread
-                whiteListed = phoneNumberDao.getAll();
+                whiteListed = mDb.phoneNumberDao().getAll();
                 setNumbers(whiteListed);
             }
         }).start();

@@ -19,8 +19,6 @@ public class PhoneNumber {
 
     @PrimaryKey
     private Integer id;
-
-    @ColumnInfo(name = "number")
     private String number;
 
     public String getNumber() {

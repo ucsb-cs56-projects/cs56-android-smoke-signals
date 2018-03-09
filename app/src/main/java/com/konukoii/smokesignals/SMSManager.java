@@ -11,10 +11,8 @@ import android.util.Log;
 
 import com.konukoii.smokesignals.api.Command;
 import com.konukoii.smokesignals.api.CommandManager;
-import com.konukoii.smokesignals.api.commands.RingCommand;
-import com.konukoii.smokesignals.storage.DaoManager;
+import com.konukoii.smokesignals.storage.AppDatabase;
 import com.konukoii.smokesignals.storage.PhoneNumber;
-import com.konukoii.smokesignals.storage.PhoneNumberDao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +24,7 @@ import java.util.Arrays;
 public class SMSManager extends BroadcastReceiver {
     private SmsManager smsManager;
     private CommandManager commandManager;
-    private PhoneNumberDao phoneNumberDao;
+    private AppDatabase mDb;
 
     public SMSManager() {
         smsManager = SmsManager.getDefault();
@@ -34,11 +32,12 @@ public class SMSManager extends BroadcastReceiver {
     }
 
     public boolean validPhoneNumber(String phoneNumber, Context context) {
+
         SharedPreferences sharePref = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         if(sharePref.getBoolean("whitelist", true)) {
-            phoneNumberDao = new DaoManager(context).getPhoneNumberDao();
-            return phoneNumberDao.getAll().contains(new PhoneNumber(phoneNumber));
+            mDb = AppDatabase.getDataBaseInstance(context);
+            return mDb.phoneNumberDao().getAll().contains(new PhoneNumber(phoneNumber));
         } else {
             return false;
         }
@@ -102,14 +101,24 @@ public class SMSManager extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
-            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-                String body = smsMessage.getMessageBody().trim();
-                String phoneNumber = smsMessage.getOriginatingAddress();
+    public void onReceive(final Context context, final Intent intent) {
 
-                messageReceived(context, phoneNumber, body);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+                    for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                        String body = smsMessage.getMessageBody().trim();
+                        String phoneNumber = smsMessage.getOriginatingAddress();
+
+                        messageReceived(context, phoneNumber, body);
+                    }
+                }
             }
-        }
+        };
+
+        Thread t = new Thread(r);
+        t.start();
+
     }
 }
