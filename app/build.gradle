@@ -5,7 +5,7 @@ android {
     buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId "com.konukoii.smokesignals"
+        applicationId "edu.ucsb.cs56.projects.androidapp.smokesignals"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
