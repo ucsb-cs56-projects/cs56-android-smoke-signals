@@ -1,4 +1,4 @@
-# > SmokeSignals
+# <SmokeSignals>
 CS56 Winter 2016 - Independent Android Project
 
 # Tabble of Contents
