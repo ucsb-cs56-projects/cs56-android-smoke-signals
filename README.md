@@ -1,5 +1,8 @@
-# SmokeSignals
+# > SmokeSignals
 CS56 Winter 2016 - Independent Android Project
+
+# Tabble of Contents
+<a name="team-members"></a>Team Members
 
 Original Author: [Pedro M. Sosa]
 
