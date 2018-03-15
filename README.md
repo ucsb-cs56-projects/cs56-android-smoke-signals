@@ -5,13 +5,27 @@ Android app that allows you to automate several tasks that can be triggered by a
 ##### Javadoc
 file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html
 
+### Requirements
+Android Studio
+
+### Features
+- **"//Location" :**  and the phone will text you back with it's gps coordinates.
+- **"//Contact [name]" :** and the phone will text you back with the stored contact info of anyone who fully or partially matches [name].
+- **"//Battery" :** and the phone will text you back with its battery percentage and charging status.
+- **"//Calls" :** and the phone will text you back the last phone calls it has gotten.
+- **"//Ring" : (WIP)** and the phone will start ringing.
+- **"//Help" :** Return the list of all possible 
+- **"//SMS [number] m:[message]" :** Send an sms to [number] saying [message].
+- **"//Joke" :** Send a random joke from an array of jokes from the phone's data base.
+- **"//Wifi [arguemnt] :** and the phone will turn the wifi "on", "off", or will return the status if there is no argument. 
+- **//Bluetooth [argument]:** and the phone will turn the bluetooth "on", "off", or will return the status if there is no argument.
+- **//Status [argument]:** get the status of the "wifi", "bluetooth", or "all" using these arguments. 
+- **//Powersave [function name]:** to turn off function. 
+- **//WhiteList :** not a text but a function that allows the phone fucntions to be exclusive to the numbers that are saved on the phone.
+
 Ex:
 ![Before clicking](https://i.imgur.com/s7xqA4d.png)
 ![After clicking](https://i.imgur.com/nffqEPv.png)
-
-
-### Requirements
-Android Studio
 
 
 ## Project History
