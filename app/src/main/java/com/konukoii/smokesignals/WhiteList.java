@@ -19,9 +19,7 @@ import java.util.List;
 /**
  * Created by bioburn on 2016/03/09.
  */
-public class
-
-WhiteList extends Activity {
+public class WhiteList extends Activity {
     //this is one way you can save and open a text file
     private final static String storeText ="storeText.txt";
     private EditText appendText;
@@ -68,7 +66,7 @@ WhiteList extends Activity {
             public void run() {
                 try {
                     mDb.phoneNumberDao().addPhoneNumber(phoneNumber);
-                    boolean exist = whiteListed.add(phoneNumber);
+                    whiteListed.add(phoneNumber);
                     updateWhiteList(whiteListed);
                 }
                 catch (SQLiteConstraintException e) {
@@ -91,17 +89,18 @@ WhiteList extends Activity {
                 try {
                     final PhoneNumber phoneNumber = mDb.phoneNumberDao().findByNumber(input);
                     mDb.phoneNumberDao().deletePhoneNumber(phoneNumber);
-                    boolean exist = whiteListed.remove(phoneNumber);
+                    whiteListed.remove(phoneNumber);
                     updateWhiteList(whiteListed);
                 }
                 catch (Exception e) {
                     showToast(input + " does not exist");
-            }
+                }
 
             }
         }).start();
 
     }
+
 
     public void deleteAll(View v) {
         new Thread(new Runnable() {
@@ -121,10 +120,6 @@ WhiteList extends Activity {
         }).start();
 
     }
-
-
-
-
 
     private void updateWhiteList(final List<PhoneNumber> numbers) {
         // Doing UI stuff has to be done on the main Thread

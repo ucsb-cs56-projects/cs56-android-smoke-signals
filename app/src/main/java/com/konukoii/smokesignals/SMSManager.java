@@ -61,10 +61,27 @@ public class SMSManager extends BroadcastReceiver {
         return temp[0].toLowerCase();
     }
 
-    private void messageReceived(Context context, String phoneNumber, String body) {
-        if(!body.startsWith("//") || !validPhoneNumber(phoneNumber, context)) {
-            return;
+    private void messageReceived(final Context context, final String phoneNumber, String body) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                // DB queries have to be run on a separate thread
+                if(!validPhoneNumber(phoneNumber, context))
+                    return;
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        if (!body.startsWith("//"))
+            return;
+        
+
 
         body = body.substring(2);
         String[] arguments;
@@ -102,23 +119,15 @@ public class SMSManager extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                String body = smsMessage.getMessageBody().trim();
+                String phoneNumber = smsMessage.getOriginatingAddress();
 
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                if(intent.getAction() == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
-                    for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-                        String body = smsMessage.getMessageBody().trim();
-                        String phoneNumber = smsMessage.getOriginatingAddress();
-
-                        messageReceived(context, phoneNumber, body);
-                    }
-                }
+                messageReceived(context, phoneNumber, body);
             }
-        };
+        }
 
-        Thread t = new Thread(r);
-        t.start();
 
     }
 }
