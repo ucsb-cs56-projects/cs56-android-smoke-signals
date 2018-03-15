@@ -2,13 +2,11 @@
 CS56 Winter 2016 - Independent Android Project
 ### Project Description
 Android app that allows you to automate several tasks that can be triggered by an incoming SMS
+[Javadoc](file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html)
 
 Ex:
 ![Before clicking](https://i.imgur.com/s7xqA4d.png)
 ![After clicking](https://i.imgur.com/nffqEPv.png)
-
-### Javadoc
-file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html
 
 ### Requirements
 Android Studio
