@@ -7,6 +7,9 @@ Android app that allows you to automate several tasks that can be triggered by a
 ### Javadoc
 file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html
 
+## Android Debug Databbase
+https://github.com/amitshekhariitbhu/Android-Debug-Database
+
 ### Requirements
 Android Studio
 
