@@ -19,7 +19,9 @@ import java.util.List;
 /**
  * Created by bioburn on 2016/03/09.
  */
-public class WhiteList extends Activity {
+public class
+
+WhiteList extends Activity {
     //this is one way you can save and open a text file
     private final static String storeText ="storeText.txt";
     private EditText appendText;
@@ -66,8 +68,8 @@ public class WhiteList extends Activity {
             public void run() {
                 try {
                     mDb.phoneNumberDao().addPhoneNumber(phoneNumber);
-                    whiteListed.add(phoneNumber);
-                    setNumbers(whiteListed);
+                    boolean exist = whiteListed.add(phoneNumber);
+                    updateWhiteList(whiteListed);
                 }
                 catch (SQLiteConstraintException e) {
                     showToast(phoneNumber + " is taken");
@@ -78,10 +80,53 @@ public class WhiteList extends Activity {
 
     }
 
-    public void append(View v){
+    public void deleteNumber(View v) {
+        final String input = appendText.getText().toString();
+
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final PhoneNumber phoneNumber = mDb.phoneNumberDao().findByNumber(input);
+                    mDb.phoneNumberDao().deletePhoneNumber(phoneNumber);
+                    boolean exist = whiteListed.remove(phoneNumber);
+                    updateWhiteList(whiteListed);
+                }
+                catch (Exception e) {
+                    showToast(input + " does not exist");
+            }
+
+            }
+        }).start();
+
     }
 
-    private void setNumbers(final List<PhoneNumber> numbers) {
+    public void deleteAll(View v) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mDb.phoneNumberDao().deleteAll();
+
+                    whiteListed.clear();
+                    updateWhiteList(whiteListed);
+                }
+                catch (Exception e) {
+                    showToast(" deleteAll Ex");
+                }
+
+            }
+        }).start();
+
+    }
+
+
+
+
+
+    private void updateWhiteList(final List<PhoneNumber> numbers) {
         // Doing UI stuff has to be done on the main Thread
 
         Handler mainHandler = new Handler(getMainLooper());
@@ -106,7 +151,7 @@ public class WhiteList extends Activity {
             public void run() {
                 // DB queries have to be run on a separate thread
                 whiteListed = mDb.phoneNumberDao().getAll();
-                setNumbers(whiteListed);
+                updateWhiteList(whiteListed);
             }
         }).start();
     }
