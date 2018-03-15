@@ -190,6 +190,19 @@
         android:layout_alignRight="@+id/switch10"
         android:layout_alignEnd="@+id/switch10" />
 
+    <Switch
+        android:id="@+id/switch13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switch11"
+        android:layout_marginTop="23dp"
+        android:layout_toEndOf="@+id/switch11"
+        android:checked="true"
+        android:gravity="center"
+        android:text="Reset" />
+
+
+
 
 
 </RelativeLayout>
