@@ -4,7 +4,7 @@ CS56 Winter 2016 - Independent Android Project
 Android app that allows you to automate several tasks that can be triggered by an incoming SMS
 
 ### Javadoc
-[Javadoc](file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html)
+- Javadoc [Javadoc](file:///Users/briankim/Desktop/cs56-android-smoke-signals/javadoc/index.html)
 
 Ex:
 ![Before clicking](https://i.imgur.com/s7xqA4d.png)
@@ -26,7 +26,7 @@ Android Studio
 - Powersave
 - Snap
 
-### F16
+#### F16
 - Add feature that can make phone light flash on and off [#25](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/25)
 - GUI for Debugging [#9](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/9)
 - Add RemindMe Feature [#11](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/11)
@@ -34,7 +34,7 @@ Android Studio
 - Add a toggle to switch all feature on or off [18](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/18)
 - Improve UI [#24](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/24)
 
-### F17
+#### F17
 - Refactor Settings [#48](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/48)
 - Add unit testing [#47](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/47)
 - Add a notification command [#46](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/46)
