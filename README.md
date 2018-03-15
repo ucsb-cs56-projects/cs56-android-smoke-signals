@@ -1,5 +1,6 @@
 # SmokeSignals
-+ CS56 Winter 2016 - Independent Android Project
+CS56 Winter 2016 - Independent Android Project
+
 ### Project Description
 Android app that allows you to automate several tasks that can be triggered by an receiving a SMS from a different phone
 
