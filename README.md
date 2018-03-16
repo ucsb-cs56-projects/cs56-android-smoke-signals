@@ -62,7 +62,24 @@ Ex:
 - Keep a record of user actions [#37](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/37)
 - Create user accounts [#36](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/36)
 
+#### W18 Final Remarks
+When we first go the app, none of the use cases worked. We added a thread to the SMSManager that fixed this issue. Currently the app compiles and runs with no bugs and all the funtions return what they are intended to return.
 
+Features we added
+ - Added a toggle switch that turns all the settings off or on
+ - Added a delete and reset button to the whitelist to delete a number or all numbers.
+ - Fixed the app crashing when SMSmanager tried to intercept a text message.
+ 
+ Features to add
+ - New functions that a user can text for their phone to do
+  -Ex. Toggle flashlight, text back a lists of apps open the phone.
+ - Think of a better way than the thread to fix the crashing of the app when a message is intercepted.
+ - Rename the packages.
+ 
+ Advice
+  - If new to Android Studio, look up tutorial videos on how to navigate through Android Studio. Learn how to make layouts for an app and how to link those layouts to certain java classes.
+  - Look over the java code for the app. Understand how the app intercepts the message within the SMSManager class.
+  - Play with the app. Test out its current functions and try to understand how these functions work.
 ### Credits
 Original Author: [Pedro M. Sosa] 
 
