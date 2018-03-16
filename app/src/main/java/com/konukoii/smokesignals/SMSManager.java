@@ -80,7 +80,7 @@ public class SMSManager extends BroadcastReceiver {
 
         if (!body.startsWith("//"))
             return;
-        
+
 
 
         body = body.substring(2);
