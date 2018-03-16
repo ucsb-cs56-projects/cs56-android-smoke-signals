@@ -62,6 +62,13 @@ Ex:
 - Keep a record of user actions [#37](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/37)
 - Create user accounts [#36](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/36)
 
+#### W18
+- Implement //Snap [#8] https://github.com/ucsb-cs56-projects/cs56-android-smoke-signals/issues/8
+- Add RemindMe Feature [#11] https://github.com/ucsb-cs56-projects/cs56-android-smoke-signals/issues/11
+- Make package name proper [#53] https://github.com/ucsb-cs56-projects/cs56-android-smoke-signals/issues/53
+- Add feature that can make phone light flash on and off [#25] https://github.com/ucsb-cs56-projects/cs56-android-smoke-signals/issues/25
+Total Points Possible
+
 ## Remarks
 #### W18 Final Remarks
 This application is basically utilizing the Broadcast Reciever and Room Persistance Library. Highly reccomend to look at the storage file to understand hwo the Room Persistance Library works. If you understand these two topics well, adding new features and fixing issues will become very simple(this project is still on its early phase).
