@@ -7,29 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
-
+import com.konukoii.smokesignals.SettingsService;
 
 /**
  * Created by Franklin on 2/21/2016.
  */
 
 //Uses singleton design patterns
-public class Settings extends Activity { //used to determine the state of the switches across the App
-
+public class Settings extends SettingsService { //used to determine the state of the switches across the App
+    //private SettingsService settings;
     //declare the variables as Switches, looks cleaner out here but you can move it to onCreate
-    Switch loc;
-    Switch con;
-    Switch bat;
-    Switch cal;
-    Switch rin;
-    Switch jok;
-    Switch tex;
-    Switch wif;
-    Switch whit;
-    Switch blu;
-    Switch pow;
-    Switch sta; 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +32,9 @@ public class Settings extends Activity { //used to determine the state of the sw
         whit = (Switch) findViewById(R.id.switch10);
         blu = (Switch) findViewById(R.id.switch9);
         pow = (Switch) findViewById(R.id.switch11);
-        sta = (Switch) findViewById(R.id.switch12); 
+        sta = (Switch) findViewById(R.id.switch12);
+        res = (Switch) findViewById(R.id.switch13);
+
 
         this.setSettings();
         loc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -106,6 +95,27 @@ public class Settings extends Activity { //used to determine the state of the sw
         sta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 togglePower(buttonView);
+
+            }
+        });
+
+        res.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleReset(buttonView);
+                if(loc.isChecked()!=res.isChecked())
+                {loc.toggle();}
+                if(loc.isChecked()!=res.isChecked()){con.toggle();}
+                if(bat.isChecked()!=res.isChecked()){bat.toggle();}
+                if(cal.isChecked()!=res.isChecked()){cal.toggle();}
+                if(jok.isChecked()!=res.isChecked()){jok.toggle();}
+                if(tex.isChecked()!=res.isChecked()){tex.toggle();}
+                if(wif.isChecked()!=res.isChecked()){wif.toggle();}
+                if(whit.isChecked()!=res.isChecked()){whit.toggle();}
+                if(blu.isChecked()!=res.isChecked()){blu.toggle();}
+                if(pow.isChecked()!=res.isChecked()){pow.toggle();}
+                if(sta.isChecked()!=res.isChecked()){sta.toggle();}
+                if(rin.isChecked()!=res.isChecked()){rin.toggle();}
+                if(con.isChecked()!=res.isChecked()){con.toggle();}
             }
         });
         Log.d("onCreate","onCreate");
@@ -120,125 +130,6 @@ public class Settings extends Activity { //used to determine the state of the sw
         Log.d("onPause","onPause");
     }
 
-    //save the preferences of the settings
-    public void saveSettings() {
-        //make sure that the settings are private so other function
-        SharedPreferences sharePref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor edit = sharePref.edit();
-        edit.putBoolean("location", loc.isChecked());
-        edit.putBoolean("contacts", con.isChecked());
-        edit.putBoolean("battery", bat.isChecked());
-        edit.putBoolean("calls", cal.isChecked());
-        edit.putBoolean("ring", rin.isChecked());
-        edit.putBoolean("jokes", jok.isChecked());
-        edit.putBoolean("sms", tex.isChecked());
-        edit.putBoolean("wifi",wif.isChecked());
-        edit.putBoolean("whitelist",whit.isChecked());
-        edit.putBoolean("bluetooth",blu.isChecked());
-        edit.putBoolean("power",pow.isChecked());
-        edit.putBoolean("status",sta.isChecked()); 
-        //it settles the variables that you added
-        edit.apply();
-
-        Toast.makeText(this, "Saved the settings!", Toast.LENGTH_LONG).show();
-    }
-
-    //set the preferences of the settings from saved data
-    public void setSettings() {
-        SharedPreferences sharePref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-
-        this.setLocation(sharePref.getBoolean("location", true));
-        this.setContact(sharePref.getBoolean("contacts", true));
-        this.setBattery(sharePref.getBoolean("battery", true));
-        this.setCalls(sharePref.getBoolean("calls", true));
-        this.setRing(sharePref.getBoolean("ring", true));
-        this.setJoke(sharePref.getBoolean("jokes", true));
-        this.setSMS(sharePref.getBoolean("sms", true));
-        this.setWifi(sharePref.getBoolean("wifi",true));
-        this.setWhitelist(sharePref.getBoolean("whitelist",true));
-        this.setBluetooth(sharePref.getBoolean("bluetooth",true));
-        this.setPower(sharePref.getBoolean("power",true));
-        this.setStatus(sharePref.getBoolean("status",true)); 
-
-        Toast.makeText(this, "Settings are set!", Toast.LENGTH_LONG).show();
-    }
-
-    //Shared variables so that every instance knows the state of the switches.
-    private static boolean location = true;
-    private static boolean contact = true;
-    private static boolean calls = true;
-    private static boolean battery = true;
-    private static boolean ring = true;
-    private static boolean joke = true;
-    private static boolean sms = true;
-    private static boolean wifi = true;
-    private static boolean whitelist = true;
-    private static boolean bluetooth = true;
-    private static boolean power = true;
-    private static boolean status = true; 
-
-    // SETTER FUNCTIONS
-    //sets the state of the app functions to true or false
-    // The first line is to set the button's state
-    // The second line is to update the state of the static variables for SMSRequestManager to check if the button is on or not
-    public void setLocation(boolean state) {
-        loc.setChecked(state);
-        location = state;
-    }
-
-    public void setContact(boolean state) {
-        con.setChecked(state);
-        contact = state;
-    }
-
-    public void setCalls(boolean state) {
-        cal.setChecked(state);
-        calls = state;
-    }
-
-    public void setBattery(boolean state) {
-        bat.setChecked(state);
-        battery = state;
-    }
-
-    public void setRing(boolean state) {
-        rin.setChecked(state);
-        ring = state;
-    }
-
-    public void setJoke(boolean state) {
-        jok.setChecked(state);
-        joke = state;
-    }
-
-    public void setSMS(boolean state) {
-        tex.setChecked(state);
-        sms = state;
-    }
-
-    public void setWifi(boolean state) {
-        wif.setChecked(state);
-        wifi = state;
-    }
-
-    public void setWhitelist(boolean state){
-        whit.setChecked(state);
-        whitelist=state;
-    }
-    public void setBluetooth(boolean state) {
-        blu.setChecked(state);
-        bluetooth = state;
-    }
-    public void setPower(boolean state) {
-        pow.setChecked(state);
-        power = state;
-    }
-    
-    public void setStatus(boolean state){
-        sta.setChecked(state);
-        status = state; 
-    }
 
 
     // GETTER FUNCTIONS
@@ -289,6 +180,8 @@ public class Settings extends Activity { //used to determine the state of the sw
     public static boolean getStatus(){
         return status; 
     }
+
+    public static boolean getReset(){return reset;}
 
 
     //toggle the switches
@@ -442,6 +335,18 @@ public class Settings extends Activity { //used to determine the state of the sw
         else {
             Log.d("toggleStatus", "Status is off"); 
         }
-        this.saveSettings(); 
+        this.saveSettings();
+    }
+
+    public void toggleReset(View view){
+        reset = res.isChecked();
+        res.setChecked(reset);
+        if (reset){
+            Log.d("toggleReset", "Reset is on");
+        }
+        else{
+            Log.d("toggleReset", "Reset is off");
+        }
+        this.saveSettings();
     }
 }

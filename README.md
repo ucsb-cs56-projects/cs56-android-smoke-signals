@@ -1,25 +1,19 @@
 # SmokeSignals
 CS56 Winter 2016 - Independent Android Project
 
-Original Author: [Pedro M. Sosa]
+### Project Description
+Android app that allows you to automate several tasks that can be triggered by an receiving a SMS from a different phone
 
-Authors: Franklin Tang, Jackey Lau
+### Javadoc
+insert here
 
-Authors: Simon Wong, Sayali Kakade 
+## Android Debug Databbase
+https://github.com/amitshekhariitbhu/Android-Debug-Database
 
-Authors: Ankush Rayabhari, Porter Haet
+### Requirements
+Android Studio
 
-### Project Objective
-Android app that allows you to automate several tasks that can be triggered by an incoming SMS
-
-![Before clicking](https://i.imgur.com/s7xqA4d.png)
-![After clicking](https://i.imgur.com/nffqEPv.png)
-
-### Implemented Methods
-
-
-Say you forgot your phone, Using someone else's phone you can text yourself:
-
+### Features
 - **"//Location" :**  and the phone will text you back with it's gps coordinates.
 - **"//Contact [name]" :** and the phone will text you back with the stored contact info of anyone who fully or partially matches [name].
 - **"//Battery" :** and the phone will text you back with its battery percentage and charging status.
@@ -34,41 +28,42 @@ Say you forgot your phone, Using someone else's phone you can text yourself:
 - **//Powersave [function name]:** to turn off function. 
 - **//WhiteList :** not a text but a function that allows the phone fucntions to be exclusive to the numbers that are saved on the phone.
 
-### Ideas for Improvments
+Ex:
+![Before clicking](https://i.imgur.com/s7xqA4d.png)
+![After clicking](https://i.imgur.com/nffqEPv.png)
 
-Essentially you can come up with tons of different things to automate, so you can use that phone "by proxy" through SMS from some other phone. See issues for the list of potential fixes/updates to make.
 
-- **Custom Commands:** Commands shouldn't be hardcoded. The user should be allowed to change them.
-- **Fix Ringing:** It should ring for say 2 minutes and then stop ringing as soon as the user interacts with the phone *(hint: you might find Intent android.intent.action.USER_PRESENT usefull)*
-- **GUI :**Setup a GUI that lets you change commands to custom commands, blacklist, whitelists.
-- **Blacklist:** which phones are prohibited to use our service.
-- **//Location:** Use Fused location instead of GSM only. Maybe add some timer, so that if it can't find any GSM location it stops after certain time (otherwise it'll drain the battery)
-- **//Snap:** Take a selfie and send media sms with the picture (mobile data has to be enabled)
-- **//ScreenSnap:** Take a screenshot of what is going on your phone currently and send media sms with the picture
+## Project History
+#### W16
+- Fix the Ring feature, it rings for too long.
+- Implement a BlackList feature
+- Commands are too strict, make it check the substring instead. For example - "//Joke " will not trigger the joke feature -because it has a space after.
+- WhiteList and BlackList should have a GUI that allows users to check boxes off in a list of contacts.
+- More commands that check if other services are on or off.
+- Add a RemindMe feature that sets an event on the calendar
+- Debugging GUI
+- Tune location
+- Powersave
+- Snap
 
-### User Stories
+#### F16
+- Add feature that can make phone light flash on and off [#25](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/25)
+- GUI for Debugging [#9](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/9)
+- Add RemindMe Feature [#11](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/11)
+- Allow user to choose how to run commands [#13](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/13)
+- Add a toggle to switch all feature on or off [18](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/18)
+- Improve UI [#24](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/24)
 
-Completed issues: 
+#### F17
+- Refactor Settings [#48](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/48)
+- Add unit testing [#47](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/47)
+- Add a notification command [#46](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/46)
+- Add a "Did you mean" feature for misspelled commands [#45](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/45)
+- Keep a record of user actions [#37](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/37)
+- Create user accounts [#36](https://github.com/UCSB-CS56-Projects/cs56-android-smoke-signals/issues/36)
 
-- As a user, I can text my phone "Jokes" so that I can random grab a joke from a data base in the app. **150 points**
-- As a developer, I can save the preferences of the settings after it has been made. **300 points**
-- As a developer, I can provide a GUI to switch off functions so that I can turn off functions that I don't want to use. **300 points**
-- As a user, I can text my phone to send a message to a phone number so that people will know I don't have my phone. **50 points**
-- As a user, I can text my phone to send the Wifi state of my phone so I know if it's using battery life on Wifi. **75 points**
-- As a user, I can text my phone to send the Bluetooth state of my phone so I know if it's using battery life on Bluetooth. **75 points**
-- As a user, I can whitelist phone numbers to prohibit most people from using the app so that I can maintain privacy. **100 points**
 
-To be implemented: 
-
-- As a user, I can text my phone to turn off functions to save battery life.**100 points**
-- As a developer, I can put jokes in a text file to read from so that I can allow the java file look cleaner. **50 points**
-- As a developer, I can provide a screen to record activies so that I can debug activities and show the actions of the app to the user.
-- As a user, I can blacklist people so that I can maintain privacy. **100 points**
-- As a developer, I can improve the whitelist function by allowing to add people from contacts or numbers with symbols. **100-300 points**
-- As a developer, I can make a blacklist function to be able to stop specific numbers from using the app's functions. When the blacklist setting is on, the whitelist setting is automatically turned off. **100 points**
-- Further issues and point values can be found in the issues section of the repo. 
-
-### F17 Final Remarks
+## F17 Final Remarks
 Currently the codebase is in decent condition, and the android app is bug free. The bulk of the work that was done this quarter was refactoring the old code into something more maintainable. The guiding principle we followed in refactoring was that it should be easy for future code editors to add new commands, etc. There is some code that used topics not covered in class, such as reflection and Android’s Room Library over SQLLite. Reflection is used `CommandManager.java` to be able to execute a command when given a SMS command. Room is used in the storage package to store data in a Sqlite database. I recommend reading up about it [here](https://developer.android.com/topic/libraries/architecture/room.html). Besides those two things, the code is fairly straightforward. Running the Android app can be a little tricky; I would ask your mentor if you run into trouble with any Android related issues. The gist of it is setting up an emulator.
 
 How the Code Works:
@@ -94,7 +89,7 @@ Advice
 - Adding a command is relatively easy: update the string array in the strings file above and then create the appropriately named class in the commands package. See `CommandManager.java` for how that gets instantiated.
 - 
 
-### F16 Final Remarks
+## F16 Final Remarks
 
 Currently, everything in the code that is a part of the implemented methods and implemented user stories works. The app compiles and runs and all of these functions return the correct output. Additionally, leniency has been implemented to make the commands less strict, so texting a variation of the commands will either provide the help text or still continue to work. 
 
@@ -121,3 +116,16 @@ Advice for working with code/legacy code in general:
 - Read the Android tutorial in the UCSB CS56 projects page 
 - Make sure that when you make in the Java portion of the code, you also change the layout in the .xml files if needed 
 - Good luck! 
+
+
+
+### Credits
+Original Author: [Pedro M. Sosa] 
+
+Authors: Franklin Tang, Jackey Lau (W16)
+
+Authors: Simon Wong, Sayali Kakade (F16)
+
+Authors: Ankush Rayabhari, Porter Haet (F17)
+
+Authors: Brian Kim, Juan Manzo (W18)
