@@ -5,7 +5,7 @@ CS56 Winter 2016 - Independent Android Project
 Android app that allows you to automate several tasks that can be triggered by an receiving a SMS from a different phone
 
 ### Javadoc
-
+http://ucsb-cs56-projects.github.io/cs56-android-smoke-signals/
 
 ## Android Debug Databbase
 https://github.com/amitshekhariitbhu/Android-Debug-Database
